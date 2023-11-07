@@ -9,19 +9,12 @@ scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C ma
 fs = 44100  # Sampling rate in Hertz
 base_duration = 1.0  # Base duration in seconds for a tone
 max_interval = 0.5  # Shorter max interval in seconds between successive tones
-attack_duration = 0.01  # Shorter duration of the attack (fade-in) in seconds
-release_duration = 0.01  # Shorter duration of the release (fade-out) in seconds
 tone_queue = queue.Queue()  # Queue to manage tones
 
 # Generate a tone with a specific frequency and duration
-def generate_tone(frequency, duration, fs, attack_duration, release_duration):
+def generate_tone(frequency, duration, fs):
     t = np.linspace(0, duration, int(fs * duration), endpoint=False)
-    envelope = np.ones_like(t)
-    attack_samples = int(attack_duration * fs)
-    release_samples = int(release_duration * fs)
-    envelope[:attack_samples] = np.linspace(0, 1, attack_samples)
-    envelope[-release_samples:] = np.linspace(1, 0, release_samples)
-    tone = np.sin(2 * np.pi * frequency * t) * envelope
+    tone = np.sin(2 * np.pi * frequency * t)
     return tone
 
 # Function to play tones from the queue
@@ -39,7 +32,7 @@ player_thread.start()
 
 # Function to add a frequency to the queue
 def queue_tone(frequency, duration):
-    tone = generate_tone(frequency, duration, fs, attack_duration, release_duration)
+    tone = generate_tone(frequency, duration, fs)
     tone *= 32767 / np.max(np.abs(tone))
     tone = tone.astype(np.int16)
     tone_queue.put(tone)
@@ -57,7 +50,7 @@ try:
             duration = np.random.uniform(0.5, base_duration)
             queue_tone(frequency, duration)
             # Schedule the next tone based on a sine wave interval
-            next_play_time += (np.sin(current_time * 0.5) + 1) / 2 * max_interval
+            next_play_time += max_interval
         time.sleep(0.01)
 except KeyboardInterrupt:
     print("Stopping wind chime...")
