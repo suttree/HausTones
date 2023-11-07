@@ -1,70 +1,50 @@
 import numpy as np
 import sounddevice as sd
+import itertools
 import time
 
 # Parameters
 scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
 fs = 44100  # Sampling rate in Hertz
-max_interval = 0.5  # Maximum interval in seconds between notes
-phase_increment = 0.01  # How quickly the "wind" changes
-tone_counter = 0  # Count the number of tones played
+note_duration = 0.5  # Duration of each note in seconds
 
-# Global variables for keeping track of state
-current_phase = 0.0  # Phase for the sine-wave-based interval timing
-next_frequency = np.random.choice(scale)  # Next note to play
+# Generate a sequence that goes forwards and backwards through the scale
+full_scale = scale + scale[-2:0:-1]  # Forward and backward without repeating ends
+tone_sequence = itertools.cycle(full_scale)  # Create an iterator that cycles through the sequence
 
 # Function to generate tones with a specific frequency
-def generate_tone(frequency, sample_count):
-    t = (np.arange(sample_count) / fs)
-    #tone = np.sin(2 * np.pi * frequency * t)
-    tone = np.pi * frequency * t
+def generate_tone(frequency, duration, fs):
+    t = np.linspace(0, duration, int(fs * duration), endpoint=False)
+    tone = np.sin(2 * np.pi * frequency * t)
     return tone
-    
 
 # Callback function for the stream
 def callback(outdata, frames, time_info, status):
-    global current_phase, next_frequency, tone_counter
+    global tone_sequence
     if status:
         print(status)
-    interval = (np.sin(current_phase) + 1) / 2 * max_interval
-    # Fill the output buffer with the current frequency tone
-    tone_data = generate_tone(next_frequency, frames)
-    if tone_counter % 12 == 0:  # Add an octave or harmony on every 12th tone
-        # Choose whether to go an octave above or below
-        octave_factor = 2 if (tone_counter // 12) % 2 == 0 else 0.5
-        octave_frequency = next_frequency * octave_factor
-        octave_data = generate_tone(octave_frequency, frames)
-        tone_data += octave_data  # Add octave tone to the normal tone for overlap
-    outdata[:] = safe_normalize(tone_data).reshape(-1, 1)
-    # Update phase and frequency at intervals based on the sine wave
-    current_time = time_info.outputBufferDacTime
-    if (current_time % interval) < (frames / fs):
-        current_phase += phase_increment
-        if current_phase >= (2 * np.pi):
-            current_phase = 0
-        next_frequency = np.random.choice(scale)
-        tone_counter += 1
-
-# Normalize and prevent clipping in the callback
-def safe_normalize(samples):
-    peak = np.max(np.abs(samples))
-    if peak > 0:
-        return samples / peak
-    return samples
+    tone_data = generate_tone(next(tone_sequence), note_duration, fs)
+    outdata[:] = tone_data[:frames].reshape(-1, 1)
+    if frames < len(tone_data):
+        # If the buffer is not filled, append zeros
+        outdata[frames:] = 0
 
 # Open an output stream
 stream = sd.OutputStream(
     channels=1,
     samplerate=fs,
+    blocksize=int(note_duration * fs),  # Set the block size to the note duration
     callback=callback
 )
 
-# Start playing the wind chimes
-print("Starting wind chime... Press Ctrl+C to stop.")
+# Start playing the sequence
+print("Starting sequence... Press Ctrl+C to stop.")
 
 try:
     with stream:
-        while True:  # Infinite loop to keep the stream open
-            time.sleep(0.1)
+        input("Press Enter to stop...")
 except KeyboardInterrupt:
-    print("Wind chime stopped by user.")
+    pass
+finally:
+    stream.close()
+    print("Sequence stopped.")
