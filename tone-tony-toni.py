@@ -3,10 +3,13 @@ import sounddevice as sd
 import time
 
 # Parameters
-frequencies = [440, 550, 660, 880]  # A sequence of frequencies
-duration = 0.5   # Duration each tone plays in seconds
+# Here we add more notes to create a longer sequence.
+# These frequencies correspond to the musical notes A4, C#5, E5, A5, A4, E5, C#5, and A4
+# creating a simple melody that will loop indefinitely.
+frequencies = [440, 554.37, 659.25, 880, 440, 659.25, 554.37, 440]  # Frequencies in Hertz
+duration = 0.25   # Duration each tone plays in seconds
 fs = 44100       # Sampling rate in Hertz
-interval = 0.5   # Time interval in seconds between tones
+interval = 0.15   # Time interval in seconds between tones
 
 # Generate time array for the full duration
 t = np.linspace(0, duration, int(fs * duration), endpoint=False)
