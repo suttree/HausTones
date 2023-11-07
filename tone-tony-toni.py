@@ -5,7 +5,7 @@ import time
 # Parameters
 scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
 fs = 44100  # Sampling rate in Hertz
-max_interval = 0.2  # Maximum interval in seconds between notes
+max_interval = 0.5  # Maximum interval in seconds between notes
 phase_increment = 0.01  # How quickly the "wind" changes
 
 # Global variables for keeping track of state
