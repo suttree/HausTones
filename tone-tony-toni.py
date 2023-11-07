@@ -1,62 +1,60 @@
 import numpy as np
 import sounddevice as sd
 import time
-import queue
-import threading
 
 # Parameters
 scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
 fs = 44100  # Sampling rate in Hertz
-base_duration = 1.0  # Base duration in seconds for a tone
-max_interval = 0.5  # Shorter max interval in seconds between successive tones
-tone_queue = queue.Queue()  # Queue to manage tones
+max_time = 10  # How long to play the chimes in seconds
+max_interval = 0.2  # Maximum interval in seconds between notes
+phase_increment = 0.01  # How quickly the "wind" changes
 
-# Generate a tone with a specific frequency and duration
-def generate_tone(frequency, duration, fs):
-    t = np.linspace(0, duration, int(fs * duration), endpoint=False)
+# Global variables for keeping track of state
+current_phase = 0.0  # Phase for the sine-wave-based interval timing
+last_note_time = -max_interval  # Ensures the first note plays immediately
+next_frequency = np.random.choice(scale)  # Next note to play
+stream_open = True  # Stream state
+
+# Function to generate tones with a specific frequency
+def generate_tone(frequency, sample_count):
+    t = (np.arange(sample_count) + current_sample) / fs
     tone = np.sin(2 * np.pi * frequency * t)
     return tone
 
-# Function to play tones from the queue
-def play_from_queue():
-    while True:
-        item = tone_queue.get()  # Block until a tone is available
-        if item is None:
-            break  # None is the signal to stop
-        sd.play(item, samplerate=fs, blocking=False)
-        tone_queue.task_done()
+# Callback function for the stream
+def callback(outdata, frames, time, status):
+    global last_note_time, current_phase, next_frequency, current_sample, stream_open
+    if status:
+        print(status)
+    if not stream_open:  # Stop filling buffer with data if stream is closed
+        outdata.fill(0)
+        return
+    current_time = last_note_time + frames / fs
+    interval = (np.sin(current_phase) + 1) / 2 * max_interval
+    if (current_time - last_note_time) >= interval:
+        # Time for a new note
+        outdata[:] = generate_tone(next_frequency, frames).reshape(-1, 1)
+        next_frequency = np.random.choice(scale)
+        last_note_time = current_time
+    else:
+        # Continue the previous note
+        outdata[:] = generate_tone(next_frequency, frames).reshape(-1, 1)
+    current_phase += phase_increment
+    current_sample += frames
 
-# Start the tone player thread
-player_thread = threading.Thread(target=play_from_queue)
-player_thread.start()
+# Open an output stream
+stream = sd.OutputStream(
+    channels=1,
+    samplerate=fs,
+    callback=callback
+)
 
-# Function to add a frequency to the queue
-def queue_tone(frequency, duration):
-    tone = generate_tone(frequency, duration, fs)
-    tone *= 32767 / np.max(np.abs(tone))
-    tone = tone.astype(np.int16)
-    tone_queue.put(tone)
-
-# Start generating and queuing tones
+# Start playing the wind chimes
 print("Starting wind chime... Press Ctrl+C to stop.")
-try:
-    next_play_time = time.time() - max_interval  # Start immediately
-    while True:
-        current_time = time.time()
-        if current_time >= next_play_time:
-            # Randomly select a frequency from the scale
-            frequency = np.random.choice(scale)
-            # Randomize duration to vary the sound
-            duration = np.random.uniform(0.5, base_duration)
-            queue_tone(frequency, duration)
-            # Schedule the next tone based on a sine wave interval
-            next_play_time += max_interval
-        time.sleep(0.01)
-except KeyboardInterrupt:
-    print("Stopping wind chime...")
-finally:
-    # Stop the player thread
-    tone_queue.put(None)  # Signal to stop the thread
-    player_thread.join()
-    sd.stop()  # Stop any remaining sound
-    print("Wind chime stopped.")
+current_sample = 0  # Current global sample count
+
+with stream:
+    time.sleep(max_time)  # Play for a determined duration
+    stream_open = False  # Signal to stop the audio stream
+
+print("Wind chime stopped.")
