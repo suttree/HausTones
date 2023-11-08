@@ -5,14 +5,24 @@ import threading
 
 # Parameters
 scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
+
+#
+# ADD MORE SCALES HERE, INCLUDING MAJOR AND MINOR
+#
+
+#
+# PICK A RANDOM SCALE
+#
+
+
 fs = 44100  # Sampling rate in Hertz
-fast_note_duration = 0.5  # Duration of each fast note in seconds
-slow_note_duration = 0.75  # Duration of each slow note in seconds
+fast_note_duration = 0.36  # Duration of each fast note in seconds
+slow_note_duration = 0.73  # Duration of each slow note in seconds
 
 # Generate a sequence that goes forwards and backwards through the scale
 full_scale = scale + scale[-2:0:-1]  # Forward and backward without repeating ends
 fast_sequence = itertools.cycle(full_scale)  # Fast sequence iterator
-slow_sequence = itertools.cycle(full_scale)  # Slow sequence iterator
+slow_sequence = itertools.cycle(full_scale + scale)  # Slow sequence iterator
 
 # Lock for thread safety when accessing the slow sequence
 sequence_lock = threading.Lock()
@@ -35,6 +45,10 @@ def callback(outdata, frames, time_info, status):
 
     if status:
         print(status)
+
+    #
+    # ADD CODE HERE TO GENTLY ALTER fast_note_duration AND slow_note_duration USING PERLIN NOISE
+    #
 
     # Generate tones for the current frame
     fast_tone_data = generate_tone(current_fast_tone, fast_note_duration, fs)[:frames]
