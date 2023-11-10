@@ -3,18 +3,22 @@ import sounddevice as sd
 import itertools
 import threading
 
-# Parameters
-scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
+# Define additional scales
+scales = {
+    'C_major': [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25],
+    'G_major': [392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 739.99, 783.99],
+    'A_minor': [440.00, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99, 880.00],
+    'E_minor': [329.63, 392.00, 415.30, 440.00, 493.88, 587.33, 659.25, 783.99],
+    # Add more scales as needed
+}
 
-# GPT
-# ADD MORE SCALES HERE, INCLUDING MAJOR AND MINOR
-#
+# Select a random scale from the defined scales
+import random
+scale_name, scale = random.choice(list(scales.items()))
+print(f"Selected scale: {scale_name}")
 
-# GPT
-# PICK A RANDOM SCALE
-#
-
-
+# GTP
+# USE PERLIN NOISE TO ADJUST THE DURATION OF fast_note_duration AND slow_note_duration
 fs = 44100  # Sampling rate in Hertz
 fast_note_duration = 0.36  # Duration of each fast note in seconds
 slow_note_duration = 0.73  # Duration of each slow note in seconds

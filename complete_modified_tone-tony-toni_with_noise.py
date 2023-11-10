@@ -3,17 +3,19 @@ import sounddevice as sd
 import itertools
 import threading
 
-# Parameters
-scale = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25]  # C major scale frequencies (C4 to C5)
+# Define additional scales
+scales = {
+    'C_major': [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25],
+    'G_major': [392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 739.99, 783.99],
+    'A_minor': [440.00, 493.88, 523.25, 587.33, 659.25, 698.46, 783.99, 880.00],
+    'E_minor': [329.63, 392.00, 415.30, 440.00, 493.88, 587.33, 659.25, 783.99],
+    # Add more scales as needed
+}
 
-# GPT
-# ADD MORE SCALES HERE, INCLUDING MAJOR AND MINOR
-#
-
-# GPT
-# PICK A RANDOM SCALE
-#
-
+# Select a random scale from the defined scales
+import random
+scale_name, scale = random.choice(list(scales.items()))
+print(f"Selected scale: {scale_name}")
 
 fs = 44100  # Sampling rate in Hertz
 fast_note_duration = 0.36  # Duration of each fast note in seconds
@@ -34,7 +36,6 @@ slow_sequence = itertools.cycle(full_scale + scale)  # Slow sequence iterator
 # TODO: play a harmonising chord at the end of every slow_sequence iteration
 # TODO: add in a mellow bass line
 # TODO: add in effects like reverb and delay
-#
 
 
 # Lock for thread safety when accessing the slow sequence
@@ -52,6 +53,38 @@ current_slow_tone = next(slow_sequence)
 fast_elapsed = 0
 slow_elapsed = 0
 
+# Simulated Perlin-like noise adjustment code
+def lerp(t, a, b):
+    """Linear interpolation between a and b with t"""
+    return a + t * (b - a)
+
+def fade(t):
+    """Fade function for Perlin noise"""
+    return t * t * t * (t * (t * 6 - 15) + 10)
+
+def gradient(h, x):
+    """Gradient function based on hash like Perlin noise"""
+    h = h & 15
+    grad = 1 + (h & 7)  # Gradient value is one of 1, 2, ..., 8
+    if h&8:
+        grad = -grad  # and a random sign for the gradient
+    return grad * x  # Multiply the gradient with x (grad * x)
+
+def perlin(x):
+    """Perlin noise at x"""
+    # Determine grid cell coordinates
+    x0 = int(np.floor(x)) & 255   # & 255 for wraparound in hash table of size 256
+    x1 = (x0 + 1) & 255
+    # Relative x position in grid cell
+    tx = x - np.floor(x)
+    # Compute fade curves for x
+    u = fade(tx)
+    # Hash coordinates of the cube corners
+    gx0 = gradient(x0, tx - 0)
+    gx1 = gradient(x1, tx - 1)
+    # Interpolate the grid point gradients with the fade value
+    return lerp(u, gx0, gx1)
+
 # Callback function for the stream
 def callback(outdata, frames, time_info, status):
     global current_fast_tone, current_slow_tone, fast_elapsed, slow_elapsed
@@ -59,9 +92,16 @@ def callback(outdata, frames, time_info, status):
     if status:
         print(status)
 
-    # GPT
-    # ADD CODE HERE TO GENTLY ALTER fast_note_duration AND slow_note_duration USING PERLIN NOISE
-    #
+
+    # Here we simulate the time increment used in Perlin noise
+    perlin_time_increment = 0.01  # Increment value for 'time' used in Perlin noise
+    time_counter = 0  # Counter to act as time for the Perlin noise function
+
+    # Adjust the note durations based on Perlin noise
+    time_counter += perlin_time_increment
+    fast_note_duration = np.clip(0.5 + perlin(time_counter) * 0.25, 0.1, 1.0)
+    slow_note_duration = np.clip(0.75 + perlin(time_counter + 100) * 0.25, 0.1, 1.5)
+
 
     # Generate tones for the current frame
     fast_tone_data = generate_tone(current_fast_tone, fast_note_duration, fs)[:frames]
