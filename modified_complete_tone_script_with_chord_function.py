@@ -116,7 +116,6 @@ def callback(outdata, frames, time_info, status):
     if status:
         print(status)
 
-
     # Here we simulate the time increment used in Perlin noise
     perlin_time_increment = 0.01  # Increment value for 'time' used in Perlin noise
     time_counter = 0  # Counter to act as time for the Perlin noise function
