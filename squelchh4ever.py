@@ -22,7 +22,7 @@ pp.pprint(scale)
 
 note = key
 chunks = []
-duration = 0.25
+duration = 0.125
 
 """
 for i in range(2):
