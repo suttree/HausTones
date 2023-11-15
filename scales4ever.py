@@ -11,7 +11,7 @@ pp = pprint.PrettyPrinter(indent=4)
 #scale = Scale(key, 'major')
 
 key = Note(random.choice(Note.NOTES))
-scales = ['major', 'minor', 'melodicminor', 'harmonicminor', 'pentatonicmajor', 'bluesmajor', 'pentatonicminor', 'bluesminor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
+scales = ['major', 'pentatonicmajor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
 
 scale = Scale(key, random.choice(scales))
 progression = Chord.progression(scale, base_octave=key.octave)
@@ -32,12 +32,12 @@ pp.pprint(notes)
 offset = 0.6
 interval = 0.2
 for i in range(80):
-    timeline.add(time + interval * 1, Hit(chord.notes[2].transpose(12), 8.0))
-    timeline.add(time + interval * 2, Hit(chord.notes[1].transpose(12), 8.0))
-    timeline.add(time + interval * 3, Hit(chord.notes[0].transpose(12), 8.0))
-    timeline.add(time + interval * 4, Hit(chord.notes[2], 4.0))
-    timeline.add(time + interval * 5, Hit(chord.notes[1], 4.0))
-    timeline.add(time + interval * 6, Hit(chord.notes[0], 4.0))
+    timeline.add(time + interval * 1, Hit(chord.notes[2].transpose(0), 8.0))
+    timeline.add(time + interval * 2, Hit(chord.notes[1].transpose(0), 8.0))
+    timeline.add(time + interval * 3, Hit(chord.notes[0].transpose(0), 8.0))
+    timeline.add(time + interval * 4, Hit(chord.notes[2], 8.0))
+    timeline.add(time + interval * 5, Hit(chord.notes[1], 8.0))
+    timeline.add(time + interval * 6, Hit(chord.notes[0], 8.0))
 
     o_interval = interval + offset
     timeline.add(time + o_interval * 1, Hit(chord.notes[0].transpose(0), 8.0))
@@ -53,10 +53,10 @@ for i in range(80):
         chord = progression[0]
 
     if(i % 20 == 0 and i > 0):
-        timeline.add(time + 0.03, Hit(chord.notes[0].transpose(-12), 4.0))
-        timeline.add(time + 0.04, Hit(chord.notes[1].transpose(-24), 4.0))
-        timeline.add(time + 0.05, Hit(chord.notes[2].transpose(-36), 4.0))
-        time += 2.0
+        timeline.add(time + 0.03, Hit(chord.notes[0].transpose(0), 4.0))
+        timeline.add(time + 0.04, Hit(chord.notes[1].transpose(-6), 4.0))
+        timeline.add(time + 0.05, Hit(chord.notes[2].transpose(-12), 4.0))
+        time += 4.0
 
 print("Rendering audio...")
 data = timeline.render()
