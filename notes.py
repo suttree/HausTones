@@ -3,7 +3,7 @@ from musical.audio import playback
 
 from timeline import Hit, Timeline
 
-import pprint, random
+import pprint, random, keyboard
 pp = pprint.PrettyPrinter(indent=4)
 
 # Define key and scale
