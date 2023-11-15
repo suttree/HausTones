@@ -6,6 +6,14 @@ from timeline import Hit, Timeline
 import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
+
+# TODO
+# add in more notes?
+    # for j, _note in enumerate(chord):
+# sin/cos on the duration and offset wobbles?
+
+
+
 # Define key and scale
 #key = Note('C')
 #scale = Scale(key, 'major')
@@ -47,7 +55,7 @@ for i in range(80):
     time += 2.2
     interval += 0.025
 
-    if(i % 4 == 0 and i > 0):
+    if(i % 10 == 0 and i > 0):
         scale = Scale(key, random.choice(scales))
         progression = Chord.progression(scale, base_octave=key.octave)
         chord = progression[0]
