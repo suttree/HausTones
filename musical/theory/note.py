@@ -42,6 +42,7 @@ class Note:
     def __float__(self):
         return self.frequency()
 
+    # Added by duncan - 17/11/23
     def shift_down_octave(self, octaves = 1):
         ''' Return a new Note instance with the frequency shifted down by one octave
         '''
