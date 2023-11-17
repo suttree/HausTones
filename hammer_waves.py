@@ -17,8 +17,8 @@ timeline = Timeline()
 interval = 0.2
 offset = 0.3
 
-root_note = 'C'
-iterations = 10
+root_note = 'F'
+iterations = 25
 
 def notes_from_scale(starting_note, intervals):
     # Initialize a list to store the notes
@@ -52,67 +52,38 @@ pp.pprint(notes)
 
 for i in range(iterations):
     for note in notes[::-1]:
-        timeline.add(time + interval, Hit(Note(note), 4.0))
+        note = Note(note)
+        #note = note.shift_down_octave(0.5)
+        
+        """
+        pp.pprint(note)
+        pp.pprint(note.index)
+        note.index = note.index / 2
+        pp.pprint(note.index)
+        pp.pprint(note.frequency())
+        pp.pprint(note.at_octave(-1))
+        pp.pprint(note.frequency())
+        pp.pprint(note.transpose(-2))
+        pp.pprint(note.frequency())
+        """
+
+        timeline.add(time + interval, Hit(note, 4.0))
 
         if( i == 0):
-            timeline.add(time + interval, Hit(Note(note), 4.0))
+            timeline.add(time + interval, Hit(note, 4.0))
         elif( i < (iterations - 1)):
-            timeline.add(time + interval + offset, Hit(Note(note), 4.0))
+            timeline.add(time + interval + offset, Hit(note, 4.0))
 
         time += 0.7
 
     if( i % 2 == 0):
-        interval += 0.1
-        offset += 0.2
+        interval += 0.15
+        offset += 0.25
 
     if( i % 3 == 0):
-        #chord = progression[0]
-        timeline.add(time + interval, Hit(Note(note), 4.0))
-        timeline.add(time + interval + 0.1, Hit(Note(note), 5.0))
-        timeline.add(time + interval + 0.2, Hit(Note(note), 6.0))
-        timeline.add(time + interval + 0.3, Hit(Note(note), 7.0))
-
-
-    # Strum out root chord to finish
-    #chord = progression[0]
-    #timeline.add(time + interval, Hit(chord.notes[0], 2.0))
-    #timeline.add(time + interval, Hit(chord.notes[0], 2.0))
-    #timeline.add(time + interval, Hit(chord.notes[0], 2.0))
-"""
-all_notes = []
-for chord in progression:
-    all_notes.append(chord.notes[0])
-    all_notes.append(chord.notes[1])
-    all_notes.append(chord.notes[2])
-pp.pprint(all_notes)
-"""
-
-"""
-for interval in scale.intervals[::-1]:
-    pp.pprint(interval)
-    note = scale.transpose(key, interval)
-    #progression.root.transpose(interval)
-    timeline.add(time + interval, Hit(note, 1.0))
-    time += 1.0
-"""
-
-"""
-for index, note in enumerate(all_notes):
-    pp.pprint(note)
-    timeline.add(time + interval * index, Hit(note, 0.1))
-    time += 0.2
-"""
-
-"""
-for index in [5, 4, 3, 2, 1, 0]:
-    chord = progression[index]
-    root, third, fifth = chord.notes
-    arpeggio = [fifth, third, root]
-    for i, interval in enumerate(arpeggio):
-        ts = float(i * 2) / len(arpeggio)
-        timeline.add(time + ts, Hit(interval, 1.0))
-    time += 2.0
-"""
+        timeline.add(time + interval, Hit(note, 4.0))
+        timeline.add(time + interval + 0.1, Hit(note, 4.0))
+        timeline.add(time + interval + 0.2, Hit(note, 4.0))
 
 print("Rendering audio...")
 data = timeline.render()

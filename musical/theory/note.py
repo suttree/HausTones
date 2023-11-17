@@ -42,6 +42,11 @@ class Note:
     def __float__(self):
         return self.frequency()
 
+    def shift_down_octave(self, octaves = 1):
+        ''' Return a new Note instance with the frequency shifted down by one octave
+        '''
+        return Note(self.index - (12 * octaves))
+    
     @property
     def note(self):
         ''' note name property
