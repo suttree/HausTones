@@ -17,9 +17,11 @@ timeline = Timeline()
 interval = 0.2
 offset = 0.3
 
-iterations = 2
+iterations = 6
 
-package = { 'interval': 0.2, 'offset': 0.3, 'iterations': 50 }
+package = { 'interval': 0.2, 'offset': 0.3, 'igap': 0.15, 'ogap': 0.25, 'iterations': 22 }
+#package = { 'interval': 0.1, 'offset': 0.2, 'igap': 0.25, 'ogap': 0.05, 'iterations': 22 }
+p = package
 
 def notes_from_scale(starting_note, intervals):
     pp.pprint(starting_note[0])
@@ -55,7 +57,12 @@ pp.pprint(scale)
 pp.pprint(key)
 pp.pprint(notes)
 
-for i in range(iterations):
+interval = p['interval']
+offset = p['offset']
+igap = p['igap']
+ogap = p['ogap']
+
+for i in range(p['iterations']):
     for note in notes[::-1]:
         note = Note(note)
 
@@ -83,8 +90,8 @@ for i in range(iterations):
         time += 0.7
         
     if( i % 2 == 0 and i > 0):
-        interval += 0.15
-        offset += 0.25
+        interval += igap
+        offset += ogap
 
     if( i % 3 == 0 and i > 0):
         
@@ -100,6 +107,7 @@ for i in range(iterations):
 
         timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
         timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
+        timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
         timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
 
         """
