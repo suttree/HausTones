@@ -17,10 +17,13 @@ timeline = Timeline()
 interval = 0.2
 offset = 0.3
 
-root_note = 'F'
-iterations = 35
+iterations = 2
+
+package = { 'interval': 0.2, 'offset': 0.3, 'iterations': 50 }
 
 def notes_from_scale(starting_note, intervals):
+    pp.pprint(starting_note[0])
+    starting_note = starting_note[0]
     # Initialize a list to store the notes
     scale = [starting_note]
 
@@ -40,15 +43,12 @@ def notes_from_scale(starting_note, intervals):
     return scale
 
 # Define key and scale
-#key = Note(root_note)
-#scale = Scale(key, 'chromatic')
 key = Note(random.choice(Note.NOTES))
 pp.pprint(key)
-root_note = key.note
 scales = ['major', 'pentatonicmajor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
 
 scale = Scale(key, random.choice(scales))
-notes = notes_from_scale(root_note, scale.intervals)
+notes = notes_from_scale(key.note, scale.intervals)
 progression = Chord.progression(scale, base_octave=key.octave)
 
 pp.pprint(scale)
