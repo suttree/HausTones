@@ -18,7 +18,7 @@ interval = 0.2
 offset = 0.3
 
 root_note = 'F'
-iterations = 5
+iterations = 35
 
 def notes_from_scale(starting_note, intervals):
     # Initialize a list to store the notes
