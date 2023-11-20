@@ -16,7 +16,7 @@ timeline = Timeline()
 
 interval = 0.1      # gap between notes
 offset = 0.2        # offset applied each loop
-iterations = 12     # number of times to loop
+iterations = 48     # number of times to loop
 
 def notes_from_scale(starting_note, intervals):
     pp.pprint(starting_note[0])
@@ -58,7 +58,6 @@ for i in range(iterations):
     for note in notes:
         note = Note(note)
 
-        # main melody
         timeline.add(time, Hit(note, 3.14))
         time += interval
         
@@ -66,36 +65,41 @@ for i in range(iterations):
     for note in notes:
         note = Note(note)
 
-        # main melody
-        timeline.add(time, Hit(note, 3.14*2))
+        timeline.add(time, Hit(note, 3.14))
         time += offset
         
     time = base_time
     for note in notes:
         note = Note(note)
 
-        # main melody
         timeline.add(time, Hit(note, 3.14))
         time += interval + offset
-        
-    if( i % 3 == 0 and i > 0):
-        timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
-        
+
     if( i % 6 == 0 and i > 0):
+        timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
+        timeline.add(time + interval, Hit(note.shift_down_octave(1), 6.0))
+        timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
+
+    if( i % 12 == 0 and i > 0):
         timeline.add(time + 0.1, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(time + 0.2, Hit(note.shift_down_octave(1), 8.0))
+        timeline.add(time + 0.2, Hit(note.shift_down_octave(1), 6.0))
         timeline.add(time + 0.3, Hit(note.shift_down_octave(2), 8.0))
 
+    if( i % 24 == 0 and i > 0):
+        interval += 0.012
+        offset += 0.017
+
+    if( i % 36 == 0 and i > 0):
+        interval -= 0.021
+        offset -= 0.013
 
 print("Rendering audio...")
 data = timeline.render()
 
 # Reduce volume to 25%
 data = data * 0.25
-data = effect.tremolo(data, 0.3)
-#data = effect.flanger(data, 0.4)
+data = effect.tremolo(data, 0.24)
+data = effect.flanger(data, 0.027)
 
 print("Playing audio...")
 playback.play(data)
