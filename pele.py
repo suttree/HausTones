@@ -31,12 +31,8 @@ while True:
     melody_thread = threading.Thread(target=run_melody, args=(script_path,))
     melody_thread.start()
 
-    # Sleep for a minute or until the user presses Ctrl-C
-    try:
-        for _ in range(60):
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\nStopping the current melody...")
-        melody_thread.join()
-        print("Script stopped by user.")
-        break
+    # Wait for the thread to complete before moving to the next file
+    melody_thread.join()
+
+    # Optionally, you can still have a small sleep here, but it's not necessary for the threading logic
+    time.sleep(60)
