@@ -23,7 +23,7 @@ package = { 'interval': 0.2, 'offset': 0.3, 'iterations': 50 }
 p = package
 
 def notes_from_scale(starting_note, intervals):
-    pp.pprint(starting_note[0])
+    #pp.pprint(starting_note[0])
     starting_note = starting_note[0]
     # Initialize a list to store the notes
     scale = [starting_note]
@@ -45,16 +45,16 @@ def notes_from_scale(starting_note, intervals):
 
 # Define key and scale
 key = Note(random.choice(Note.NOTES))
-pp.pprint(key)
+#pp.pprint(key)
 scales = ['major', 'pentatonicmajor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
 
 scale = Scale(key, random.choice(scales))
 notes = notes_from_scale(key.note, scale.intervals)
 progression = Chord.progression(scale, base_octave=key.octave)
 
-pp.pprint(scale)
-pp.pprint(key)
-pp.pprint(notes)
+#pp.pprint(scale)
+#pp.pprint(key)
+#pp.pprint(notes)
 
 for i in range(iterations):
     for note in notes[::-1]:
