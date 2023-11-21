@@ -35,6 +35,10 @@ for i in range(4):
         #varb = duration
         #varb = duration + (1 - math.cos(time.time()))
         #duration = min(max(duration, 0.1), 6.0)
+        
+        
+        # TRY THIS?!
+        #varb = duration + min(max(duration + (1 - math.cos(time.time())), -1.0), 1.0)
 
         arpeggio = [root, third, fifth, root, third, fifth]
         random.shuffle(arpeggio)
