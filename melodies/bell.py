@@ -44,11 +44,11 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(2, 4)
+iterations = random.randint(2, 8)
 interval = 16.0
-interval = random.uniform(12.2, 18.8)
+interval = random.uniform(14.2, 22.8)
 offset = 0.6
-offset = random.uniform(0.1, 0.7)
+offset = random.uniform(0.025, 1.2)
 pp.pprint(iterations)
 pp.pprint(interval)
 pp.pprint(offset)

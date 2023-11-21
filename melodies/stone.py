@@ -17,7 +17,7 @@ timeline = Timeline()
 x = 0.0             # sin/cos variance
 interval = 1.3417   # gap between notes
 offset = 1.72       # offset applied each loop
-iterations = 52     # number of times to loop
+iterations = 32     # number of times to loop
 amplitude = 2.9     # Amplitude of the oscillation (controls the range)
 frequency = 0.9     # Frequency of the oscillation (controls how fast it changes)
 
@@ -56,7 +56,7 @@ pp.pprint(key)
 pp.pprint(notes)
 
 notes = notes[::-1]         # descending
-random.shuffle(notes)       # random
+#random.shuffle(notes)       # random
 
 for i in range(iterations):
     for note in notes:
@@ -81,7 +81,6 @@ for i in range(iterations):
             timeline.add(time + interval + offset, Hit(note, 3.0))
 
         time += 0.74
-
 
     modulation = amplitude * math.sin(frequency * i)
     x += modulation

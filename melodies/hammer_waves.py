@@ -17,7 +17,7 @@ timeline = Timeline()
 interval = 0.2
 offset = 0.3
 
-iterations = 15
+iterations = 14
 
 package = { 'interval': 0.2, 'offset': 0.3, 'iterations': 50 }
 p = package

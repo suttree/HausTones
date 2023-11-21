@@ -42,7 +42,7 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(8, 66)
+iterations = random.randint(8, 24)
 interval = 0.4
 offset = 0.6
 
