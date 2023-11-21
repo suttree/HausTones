@@ -70,7 +70,7 @@ for i in range(iterations):
 
         timeline.add(stime, Hit(note, 3.14))
         stime += interval
-        
+
     stime = base_time
     for note in notes:
         note = Note(note)
