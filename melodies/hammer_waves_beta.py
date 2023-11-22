@@ -15,12 +15,9 @@ time = 0.0 # Keep track of currect note placement time in seconds
 timeline = Timeline()
 
 interval = 0.2
-interval = random.uniform(0.1, 0.6)
 offset = 0.3
-offset = interval + random.uniform(0.1, 0.6)
 
 iterations = 14
-iterations = random.randint(6, 22)
 
 package = { 'interval': 0.2, 'offset': 0.3, 'iterations': 50 }
 p = package
@@ -59,17 +56,13 @@ progression = Chord.progression(scale, base_octave=key.octave)
 #pp.pprint(key)
 #pp.pprint(notes)
 
-looper_x = random.randint(1, 4)
-looper_y = random.randint(2, 5)
-looper_z = random.randint(0, 3)
-
 for i in range(iterations):
     for note in notes[::-1]:
         note = Note(note)
 
-        if( i <= looper_x):
+        if( i < 2):
             timeline.add(time + interval, Hit(note, 4.0))
-        elif(i > looper_x):
+        elif(i > 2):
             timeline.add(time + interval, Hit(note, 4.0))
             timeline.add(time + interval, Hit(note, 4.0))
             
@@ -83,18 +76,18 @@ for i in range(iterations):
         #note = note.shift_down_octave(1)
         #timeline.add(time + interval, Hit(note, 4.0))
 
-        if( i < looper_y):
+        if( i < 2):
             timeline.add(time + interval, Hit(note, 4.0))
         elif( i < (iterations - 1)):
             timeline.add(time + interval + offset, Hit(note, 4.0))
 
         time += 0.7
         
-    if( i % looper_y == 0 and i > 0):
+    if( i % 2 == 0 and i > 0):
         interval += 0.15
         offset += 0.25
 
-    if( i % looper_z == 0 and i > 0):
+    if( i % 3 == 0 and i > 0):
         
         """
         chord = progression[0]
