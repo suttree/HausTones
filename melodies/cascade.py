@@ -46,7 +46,7 @@ else:
 for i in range(iterations):
     for j, note in enumerate(note_progression):
         note = Note(note)
-        timeline.add(time, Hit(note, duration))
+        timeline.add(time + offset_i * j, Hit(note, duration))
 
     time += interval + random.uniform(2.0, 8.0) + offset_i # 2.5 # random.uniform(1.0, 2.0) #1.25
 
