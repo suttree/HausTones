@@ -129,13 +129,13 @@ if(switch % 6 == 0):
     pp.pprint('tremelo...')
     data = effect.tremolo(data, 0.24)
 
-if(switch % 5 == 0):
-    pp.pprint('feedback delay...')
-    data = effect.feedback_modulated_delay(data, data, 0.036, 0.64)
+#if(switch % 5 == 0):
+#    pp.pprint('feedback delay...')
+#    data = effect.feedback_modulated_delay(data, data, 0.036, 0.64)
 
-if(switch % 3 == 0):
-    pp.pprint('delaying...')
-    data = effect.modulated_delay(data, data, 0.024, 0.26)
+#if(switch % 3 == 0):
+#    pp.pprint('delaying...')
+#    data = effect.modulated_delay(data, data, 0.024, 0.26)
 
 if(switch % 2 == 0):
     pp.pprint('flanger...')
