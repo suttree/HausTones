@@ -16,7 +16,7 @@ from musical.audio import source, effect, playback
 
 from timeline import Hit, Timeline
 
-import numpy, random, pprint, noise, math, time
+import numpy, random, pprint, math, time
 
 pp = pprint.PrettyPrinter(indent=4)
 
