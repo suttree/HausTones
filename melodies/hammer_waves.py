@@ -6,18 +6,14 @@ from timeline import Hit, Timeline
 import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
-# .plan
-# 15 descending notes
-# Every fourth repetition add in a chord with a few seconds of reverb
-
 # Config vars
 time = 0.0 # Keep track of currect note placement time in seconds
 timeline = Timeline()
 
 interval = 0.2
-interval = random.uniform(0.1, 0.6)
+interval = random.uniform(0.2, 0.6)
 offset = 0.3
-offset = interval + random.uniform(0.1, 0.6)
+offset = interval + random.uniform(0.1, 0.8)
 
 iterations = 14
 iterations = random.randint(6, 22)
@@ -61,10 +57,14 @@ progression = Chord.progression(scale, base_octave=key.octave)
 
 looper_x = random.randint(1, 4)
 looper_y = random.randint(2, 5)
-looper_z = random.randint(0, 3)
+looper_z = random.randint(1, 3)
+
+# descending/ascending flip
+if(random.randint(0, 1) == 1):
+    notes = notes[::-1]
 
 for i in range(iterations):
-    for note in notes[::-1]:
+    for note in notes:
         note = Note(note)
 
         if( i <= looper_x):
@@ -77,7 +77,7 @@ for i in range(iterations):
                 timeline.add(time + interval + offset, Hit(note, 4.0))
                 timeline.add(time + interval, Hit(note.shift_down_octave(1), 4.0))
 
-        time += 0.7
+        time += offset
 
         # repeat lower
         #note = note.shift_down_octave(1)
@@ -88,11 +88,11 @@ for i in range(iterations):
         elif( i < (iterations - 1)):
             timeline.add(time + interval + offset, Hit(note, 4.0))
 
-        time += 0.7
+        time += offset
         
     if( i % looper_y == 0 and i > 0):
-        interval += 0.15
-        offset += 0.25
+        interval += interval/2
+        offset += offset/2
 
     if( i % looper_z == 0 and i > 0):
         
@@ -111,12 +111,10 @@ for i in range(iterations):
         timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
 
         """
+        time += offset
         timeline.add(time + interval, Hit(note, 4.0))
-        timeline.add(time + interval + 0.1, Hit(note, 4.0))
         timeline.add(time + interval + 0.2, Hit(note, 4.0))
-        timeline.add(time + interval + 0.3, Hit(note.transpose(12), 4.0))
         timeline.add(time + interval + 0.4, Hit(note.transpose(12), 4.0))
-        timeline.add(time + interval + 0.5, Hit(note.transpose(12), 4.0))
         """
         
 print("Rendering audio...")
