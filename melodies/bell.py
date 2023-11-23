@@ -75,7 +75,7 @@ for i in range(iterations):
 
 data = timeline.render()
 data = effect.feedback_modulated_delay(data, data, 0.36, 0.64)
-data = effect.modulated_delay(data, data, 0.2, 1.6)
-data = effect.flanger(data, 0.4)
+#data = effect.modulated_delay(data, data, 0.2, 1.6)
+#data = effect.flanger(data, 0.4)
 
 playback.play(data)
