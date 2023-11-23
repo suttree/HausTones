@@ -9,11 +9,11 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
 time = 0.0 # Keep track of currect note placement time in seconds
-duration = 3.147 * random.randint(1, 8)
+duration = 3.147 * random.randint(4, 12)
 timeline = Timeline()
 
 # Define key and scale
-key = Note(random.choice(['F4', 'Bb', 'C4']))
+key = Note(random.choice(['F4', 'Bb', 'C4', 'E']))
 scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
 random.shuffle(scales)
 scale = Scale(key, scales[0])

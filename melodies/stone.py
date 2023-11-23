@@ -17,7 +17,7 @@ timeline = Timeline()
 x = 0.0             # sin/cos variance
 interval = 1.3417   # gap between notes
 offset = 1.72       # offset applied each loop
-iterations = 32     # number of times to loop
+iterations = 54     # number of times to loop
 amplitude = 2.9     # Amplitude of the oscillation (controls the range)
 frequency = 0.9     # Frequency of the oscillation (controls how fast it changes)
 

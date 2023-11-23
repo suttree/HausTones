@@ -17,7 +17,7 @@ interval = random.uniform(0.1, 1.2)
 offset = 0.2        # offset applied each loop
 offset = interval + random.uniform(0.1, 0.7)
 iterations = 48     # number of times to loop
-iterations = random.randint(6, 22)
+iterations = random.randint(6, 72)
 
 pp.pprint(interval)
 pp.pprint(offset)

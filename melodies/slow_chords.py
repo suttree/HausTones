@@ -12,7 +12,7 @@ time = 0.0 # Keep track of currect note placement time in seconds
 timeline = Timeline()
 interval = random.uniform(1.2, 2.6)
 offset_i = random.uniform(0.08, 0.137)
-iterations = random.randint(6, 22)
+iterations = random.randint(6, 64)
 duration = random.uniform(6.0, 12.0)
 
 # Define key and scale

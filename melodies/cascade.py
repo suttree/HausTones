@@ -1,6 +1,9 @@
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
+from musical.utils import notes_from_scale
+
 from timeline import Hit, Timeline
+
 import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -9,29 +12,8 @@ time = 0.0 # Keep track of currect note placement time in seconds
 timeline = Timeline()
 interval = random.uniform(1.2, 2.6)
 offset_i = random.uniform(0.08, 0.137)
-iterations = random.randint(6, 22)
+iterations = random.randint(12, 64)
 duration = random.uniform(6.0, 18.0)
-
-def notes_from_scale(starting_note, intervals):
-    #pp.pprint(starting_note[0])
-    starting_note = starting_note[0]
-    # Initialize a list to store the notes
-    scale = [starting_note]
-
-    # Calculate the notes in the scale
-    current_note = starting_note
-    for interval in intervals:
-        # Calculate the next note by adding the interval to the current note
-        next_note_index = (ord(current_note) - ord('A') + interval) % 7
-        next_note = chr(ord('A') + next_note_index)
-        
-        # Append the next note to the scale
-        scale.append(next_note)
-        
-        # Update the current note for the next iteration
-        current_note = next_note
-
-    return scale
 
 # Define key and scale
 key = Note(random.choice(Note.NOTES))

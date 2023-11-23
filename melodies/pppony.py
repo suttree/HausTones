@@ -1,16 +1,3 @@
-# Pick a chord
-# Pick a scale
-# Pluck/strum the notes of the scale
-# Repeat
-# Then fuck with intervals etc
-
-
-# play sequence of notes at interval 0.2
-# play harmony notes at interval 0.4
-# play chord at end of harmony
-# repeat
-
-
 from musical.theory import Note, Scale, Chord
 from musical.audio import source, effect, playback
 
@@ -42,7 +29,7 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(8, 24)
+iterations = random.randint(8, 48)
 interval = 0.4
 offset = 0.6
 
