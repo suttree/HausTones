@@ -1,14 +1,11 @@
 from musical.theory import Note, Scale, Chord
 from musical.audio import playback
+from musical.utils import notes_from_scale
 
 from timeline import Hit, Timeline
 
 import pprint, random, math
 pp = pprint.PrettyPrinter(indent=4)
-
-# .plan
-# 15 descending notes
-# Every fourth repetition add in a chord with a few seconds of reverb
 
 # Config vars
 time = 0.0 # Keep track of currect note placement time in seconds
@@ -17,30 +14,9 @@ timeline = Timeline()
 x = 0.0             # sin/cos variance
 interval = 1.3417   # gap between notes
 offset = 1.72       # offset applied each loop
-iterations = 54     # number of times to loop
+iterations = 12     # number of times to loop
 amplitude = 2.9     # Amplitude of the oscillation (controls the range)
 frequency = 0.9     # Frequency of the oscillation (controls how fast it changes)
-
-def notes_from_scale(starting_note, intervals):
-    pp.pprint(starting_note[0])
-    starting_note = starting_note[0]
-    # Initialize a list to store the notes
-    scale = [starting_note]
-
-    # Calculate the notes in the scale
-    current_note = starting_note
-    for interval in intervals:
-        # Calculate the next note by adding the interval to the current note
-        next_note_index = (ord(current_note) - ord('A') + interval) % 7
-        next_note = chr(ord('A') + next_note_index)
-        
-        # Append the next note to the scale
-        scale.append(next_note)
-        
-        # Update the current note for the next iteration
-        current_note = next_note
-
-    return scale
 
 # Define key and scale
 key = Note(random.choice(Note.NOTES))
@@ -63,21 +39,18 @@ for i in range(iterations):
         note = Note(note)
 
         # main melody
-        if(i < 5):
-            timeline.add(time + interval, Hit(note, 6.0))
-        else:
-            timeline.add(time + interval, Hit(note, 6.0))
-            timeline.add(time + interval * 2.0, Hit(note.shift_down_octave(1), 4.0))
+        timeline.add(time + interval, Hit(note, 6.0))
+        timeline.add(time + interval * 2.0, Hit(note.shift_down_octave(1), 4.0))
 
-            if( i < (iterations - 1)):
-                timeline.add(time + interval, Hit(note.shift_down_octave(-1), 4.0))
+        if( i < (iterations - 1)):
+            timeline.add(time + interval, Hit(note.shift_down_octave(-1), 4.0))
 
         time += 0.35
 
         # offset melody
-        if( i < 3):
+        if( i < 2):
             timeline.add(time + interval, Hit(note, 5.0))
-        elif( i < (iterations - 4)):
+        elif( i < (iterations - 2)):
             timeline.add(time + interval + offset, Hit(note, 3.0))
 
         time += 0.74
