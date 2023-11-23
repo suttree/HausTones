@@ -1,6 +1,8 @@
 from musical.theory import Note, Scale, Chord
 from musical.audio import playback, effect
 
+from musical.utils import notes_from_scale
+
 from timeline import Hit, Timeline
 
 import pprint, random, math, time
@@ -25,27 +27,6 @@ pp.pprint(interval)
 pp.pprint(offset)
 pp.pprint(iterations)
 pp.pprint('----')
-
-def notes_from_scale(starting_note, intervals):
-    pp.pprint(starting_note[0])
-    starting_note = starting_note[0].upper()
-    # Initialize a list to store the notes
-    scale = [starting_note]
-
-    # Calculate the notes in the scale
-    current_note = starting_note
-    for interval in intervals:
-        # Calculate the next note by adding the interval to the current note
-        next_note_index = (ord(current_note) - ord('A') + interval) % 7
-        next_note = chr(ord('A') + next_note_index)
-        
-        # Append the next note to the scale
-        scale.append(next_note)
-        
-        # Update the current note for the next iteration
-        current_note = next_note
-
-    return scale
 
 # Define key and scale
 key = Note(random.choice(Note.NOTES))
@@ -106,7 +87,7 @@ for i in range(iterations):
         
     if(i % 44 == 0 and i > 0):
         pp.pprint('rewinzd')
-        stime -= 1.4
+        stime -= 3.14
 
     if(interval <= 0.0):
         interval = 0.2
@@ -122,12 +103,12 @@ data = data * 0.25
 
 #switch = int(min(max(stime * (1 - math.cos(time.time())), 1), 5))
 #switch = stime * math.cos(time.time())
-switch = random.randint(1, 49)
-pp.pprint(switch)
+#switch = random.randint(1, 49)
+#pp.pprint(switch)
 
-if(switch % 6 == 0):
-    pp.pprint('tremelo...')
-    data = effect.tremolo(data, 0.24)
+#if(switch % 6 == 0):
+#    pp.pprint('tremelo...')
+#    data = effect.tremolo(data, 0.24)
 
 #if(switch % 5 == 0):
 #    pp.pprint('feedback delay...')
@@ -137,9 +118,9 @@ if(switch % 6 == 0):
 #    pp.pprint('delaying...')
 #    data = effect.modulated_delay(data, data, 0.024, 0.26)
 
-if(switch % 2 == 0):
-    pp.pprint('flanger...')
-    data = effect.flanger(data, 0.026)
+#if(switch % 2 == 0):
+#    pp.pprint('flanger...')
+#    data = effect.flanger(data, 0.026)
 
 print("Playing audio...")
 playback.play(data)
