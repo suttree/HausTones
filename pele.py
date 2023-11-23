@@ -40,4 +40,4 @@ while True:
     melody_thread.join()
 
     # Optionally, you can still have a small sleep here, but it's not necessary for the threading logic
-    time.sleep(60)
+    time.sleep(300)
