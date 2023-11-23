@@ -9,9 +9,10 @@ melodies_folder = 'melodies'
 
 def run_melody(script_path):
     try:
-        subprocess.run(['python3', script_path], check=True)
-    except subprocess.CalledProcessError:
-        print(f"Failed to run the script: {script_path}")
+        subprocess.run(['python3', script_path], check=True, stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as e:
+        # 'e.stderr' contains the stderr output from the subprocess
+        print(f"Failed to run the script: {script_path}. Error: {e.stderr.decode()}")
 
 while True:
     # List all files in the 'melodies' folder
