@@ -8,18 +8,14 @@ from timeline import Hit, Timeline
 import pprint, random, math, time
 pp = pprint.PrettyPrinter(indent=4)
 
-# .plan
-# 15 descending notes
-# Every fourth repetition add in a chord with a few seconds of reverb
-
 # Config vars
 stime = 0.0 # Keep track of currect note placement stime in seconds
 timeline = Timeline()
 
 interval = 0.1      # gap between notes
-interval = random.uniform(0.1, 0.6)
+interval = random.uniform(0.1, 1.2)
 offset = 0.2        # offset applied each loop
-offset = interval + random.uniform(0.1, 0.6)
+offset = interval + random.uniform(0.1, 0.7)
 iterations = 48     # number of times to loop
 iterations = random.randint(6, 22)
 
@@ -68,13 +64,14 @@ for i in range(iterations):
 
     
     if(i % 6 == 0 and i > 0):
-        timeline.add(stime + interval, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(stime + interval, Hit(note.shift_down_octave(1), 6.0))
         timeline.add(stime + interval, Hit(note.shift_down_octave(2), 8.0))
+        timeline.add(stime + interval, Hit(note.shift_down_octave(1), 7.0))
+        timeline.add(stime + interval, Hit(note.shift_down_octave(1), 6.0))
+
 
     if(i % 12 == 0 and i > 0):
-        timeline.add(stime + 0.1, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(stime + 0.2, Hit(note.shift_down_octave(1), 6.0))
+        timeline.add(stime + 0.1, Hit(note.shift_down_octave(1), 6.0))
+        timeline.add(stime + 0.2, Hit(note.shift_down_octave(1), 7.0))
         timeline.add(stime + 0.3, Hit(note.shift_down_octave(2), 8.0))
 
     if(i % 24 == 0 and i > 0):
@@ -90,10 +87,10 @@ for i in range(iterations):
         stime -= 3.14
 
     if(interval <= 0.0):
-        interval = 0.2
+        interval = 0.4286
 
     if(offset <= 0.0):
-        offset = 0.2
+        offset = 0.6824
 
 print("Rendering audio...")
 data = timeline.render()
