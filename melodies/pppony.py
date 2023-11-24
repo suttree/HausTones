@@ -48,7 +48,7 @@ for i in range(iterations):
 
         mtime += interval + offset
 
-        if(i % 33 == 0 and i > 0):
+        if(i % 40 == 0 and i > 0):
             mtime -= 0.26
 
         if(i % 22 == 0 and i > 0):

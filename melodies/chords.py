@@ -22,7 +22,7 @@ chord = progression[0]
 time = 0.0 # Keep track of currect note placement time in seconds
 interval = random.uniform(0.8, 2.8)
 offset = 0.0
-iterations = random.randint(4, 32)
+iterations = random.randint(4, 12)
 duration = random.uniform(4.0, 12.0)
 
 timeline = Timeline()

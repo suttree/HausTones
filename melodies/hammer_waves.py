@@ -17,7 +17,7 @@ offset = 0.3
 offset = interval + random.uniform(0.1, 0.8)
 
 iterations = 14
-iterations = random.randint(6, 54)
+iterations = random.randint(6, 24)
 
 # Define key and scale
 key = Note(random.choice(Note.NOTES))
