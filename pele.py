@@ -7,6 +7,9 @@ import threading
 # Path to the 'melodies' folder
 melodies_folder = 'melodies'
 
+# Start by reducing the system volume to 50%
+os.system("./volume.sh")
+
 def run_melody(script_path):
     try:
         subprocess.run(['python3', script_path], check=True, stderr=subprocess.PIPE)
