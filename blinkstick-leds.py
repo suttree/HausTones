@@ -16,6 +16,7 @@ class Main(blinkstick.BlinkStickPro):
         x = 0
         reps = 0
         sign = 1
+
         try:
             while True:
                 self.bstick.set_color(0, x, red, green, blue)
