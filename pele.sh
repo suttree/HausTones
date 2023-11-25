@@ -9,12 +9,12 @@ if [ ! -d "$DIR" ]; then
     exit 1
 fi
 
-# Get a list of files in the directory
-FILES=($DIR/*)
+# Get a list of .py files in the directory
+FILES=($DIR/*.py)
 
-# Check if there are any files
+# Check if there are any .py files
 if [ ${#FILES[@]} -eq 0 ]; then
-    echo "No files found in $DIR."
+    echo "No .py files found in $DIR."
     exit 1
 fi
 
@@ -23,4 +23,4 @@ RANDOM_FILE=${FILES[RANDOM % ${#FILES[@]}]}
 
 # Execute the file
 echo "Running: $RANDOM_FILE"
-"$RANDOM_FILE"
+"/usr/bin/env python3 $RANDOM_FILE"
