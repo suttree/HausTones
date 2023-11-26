@@ -1,2 +1,2 @@
 amixer scontrols
-amixer sset 'Master' 70%
+amixer sset 'Master' 60%
