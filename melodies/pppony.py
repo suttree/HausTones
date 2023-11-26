@@ -49,7 +49,7 @@ for i in range(iterations):
         mtime += interval + offset
 
         if(i % 40 == 0 and i > 0):
-            mtime -= 0.26
+            mtime -= 0.026
 
         if(i % 22 == 0 and i > 0):
             interval += 0.04 * math.cos(time.time())
