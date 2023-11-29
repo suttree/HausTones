@@ -23,7 +23,7 @@ time = 0.0 # Keep track of currect note placement time in seconds
 interval = random.uniform(0.8, 2.8)
 offset = 0.0
 iterations = random.randint(4, 12)
-duration = random.uniform(4.0, 12.0)
+duration = random.uniform(8.0, 12.0)
 
 timeline = Timeline()
 
@@ -36,9 +36,9 @@ for i in range(iterations):
         for note in notes:
             chord_progression.append(note)
 
-    spacer = random.uniform(0.01, 0.2)
+    spacer = random.uniform(0.04, 1.4)
     for index in chord_progression:
-        offset = random.uniform(0.07, 2.625)
+        offset = random.uniform(0.07, 3.142)
 
         chord = progression[index]
         #if(i == random.randint(0,2)):
