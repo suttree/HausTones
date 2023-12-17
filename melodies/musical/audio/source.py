@@ -82,18 +82,22 @@ def square(freq, length, rate=44100, phase=0.0):
     data = generate_wave_input(freq, length, rate, phase)
     return _square(data)
 
-
+ringbuffer_cache = {}
 def ringbuffer(data, length, decay=1.0, rate=44100):
     ''' Repeat data for 'length' amount of time, smoothing to reduce higher
         frequency oscillation. decay is the percent of amplitude decrease.
     '''
-    phase = len(data)
-    length = int(rate * length)
-    out = numpy.resize(data, length)
-    for i in range(phase, length):
-        index = i - phase
-        out[i] = (out[index] + out[index + 1]) * 0.5 * decay
-    return out
+    key = (hash(f"{data}-{length}-{decay}-{rate}"))
+    if key not in ringbuffer_cache:
+        phase = len(data)
+        length = int(rate * length)
+        out = numpy.resize(data, length)
+        for i in range(phase, length):
+            index = i - phase
+            out[i] = (out[index] + out[index + 1]) * 0.5 * decay
+            ringbuffer_cache[key] = out
+    #return out
+    return ringbuffer_cache[key]
 
 
 def pluck(freq, length, decay=0.998, rate=44100):
