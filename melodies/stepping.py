@@ -78,11 +78,11 @@ for i in range(iterations):
         interval += 0.012
         offset += 0.017
 
-    if(i % 36 == 0 and i > 0):
+    if(i % 56 == 0 and i > 0):
         interval -= 0.021
         offset -= 0.013
         
-    if(i % 44 == 0 and i > 0):
+    if(i % 66 == 0 and i > 0):
         pp.pprint('rewinzd')
         stime -= 3.14
 
