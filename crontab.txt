@@ -1,0 +1,2 @@
+0 4 * * * /home/pi/src/HausTones/./volume.sh  >> /tmp/cron.log 2>&1
+0 7,19 * * * /home/pi/src/HausTones/./pele.sh  >> /tmp/cron.log 2>&1
