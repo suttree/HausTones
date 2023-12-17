@@ -10,7 +10,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0
 offset = 12.4421
-iterations = random.randint(3, 27)
+iterations = random.randint(1, 2)
 duration = 18.28281
 
 # Define key and scale
@@ -30,7 +30,7 @@ timeline = Timeline()
 for i in range(iterations):
     for j, n in enumerate(notes):
         note = Note(n)
-        note = note.shift_down_octave(2)
+        note = note.shift_down_octave(1.5)
         timeline.add(time + offset * j, Hit(Note(note), duration))
     time += duration
 
@@ -39,11 +39,11 @@ for i in range(iterations):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.feedback_modulated_delay(data, data, 0.047, 0.83)
+data = effect.feedback_modulated_delay(data, data, 0.6047, 0.83)
 data = effect.tremolo(data, 0.052)
 
 # Reduce volume
-data = data * 0.11
+data = data * 0.07
 
 print("Playing audio...")
 playback.play(data)

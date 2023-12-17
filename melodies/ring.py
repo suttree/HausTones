@@ -9,7 +9,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
 time = 0.0 # Keep track of currect note placement time in seconds
-duration = 3.147 * random.randint(4, 12)
+duration = 3.147 * random.randint(2, 4)
 timeline = Timeline()
 
 # Define key and scale
@@ -29,14 +29,14 @@ for note in notes:
 print("Rendering audio...")
 data = timeline.render()
 
-data = effect.chorus(data, 0.2)
+#data = effect.chorus(data, 0.175)
 #data = effect.feedback_modulated_delay(data, data, 0.36, 0.64)
-#data = effect.modulated_delay(data, data, 0.004, 0.26)
+data = effect.modulated_delay(data, data, 0.214, 0.627)
 #data = effect.tremolo(data, 0.2)
-#data = effect.flanger(data, 0.2)
+data = effect.flanger(data, 0.027)
 
-# Reduce volume to 25%
-data = data * 0.25
+# Reduce volume
+data = data * 0.10
 
 print("Playing audio...")
 playback.play(data)
