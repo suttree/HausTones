@@ -36,7 +36,7 @@ data = effect.modulated_delay(data, data, 0.214, 0.627)
 data = effect.flanger(data, 0.027)
 
 # Reduce volume
-data = data * 0.10
+#data = data * 0.10
 
 print("Playing audio...")
 playback.play(data)

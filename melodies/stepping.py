@@ -96,7 +96,7 @@ print("Rendering audio...")
 data = timeline.render()
 
 # Reduce volume to 25%
-data = data * 0.25
+#data = data * 0.25
 
 #switch = int(min(max(stime * (1 - math.cos(time.time())), 1), 5))
 #switch = stime * math.cos(time.time())

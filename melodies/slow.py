@@ -43,7 +43,7 @@ data = effect.feedback_modulated_delay(data, data, 0.6047, 0.83)
 data = effect.tremolo(data, 0.052)
 
 # Reduce volume
-data = data * 0.07
+#data = data * 0.07
 
 print("Playing audio...")
 playback.play(data)
