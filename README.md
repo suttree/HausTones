@@ -2,6 +2,10 @@
 
 Wind chimes, haus vibes, pele.
 
+## Install
+sudo apt-get install alsa-tools alsa-utils
+
+https://github.com/pimoroni/pirate-audio
 
 ## todo
 
