@@ -7,6 +7,13 @@ sudo apt-get install alsa-tools alsa-utils
 
 https://github.com/pimoroni/pirate-audio
 
+sudo raspi-config and ensure audio output is not HDMI/headphones/etc
+
+/boot/config.txt
+dtparam=audio=off
+dtoverlay=hifiberry-dac
+gpio=25=op,dh
+
 ## todo
 
 - controller script
