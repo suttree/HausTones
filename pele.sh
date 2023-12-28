@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Run volume.sh script
+./volume.sh
+
 # Directory containing the files
 DIR="melodies"
 
