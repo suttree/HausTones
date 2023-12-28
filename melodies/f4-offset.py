@@ -43,7 +43,7 @@ data = timeline.render()
 #data = effect.modulated_delay(data, data, 0.004, 0.26)
 
 # Reduce volume to 25%
-data = data * 0.25
+#data = data * 0.25
 
 print("Playing audio...")
 playback.play(data)
