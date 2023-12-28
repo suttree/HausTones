@@ -42,7 +42,7 @@ data = timeline.render()
 data = effect.tremolo(data, freq=0.2)
 
 # Reduce volume to 10%
-data = data * 0.05
+#data = data * 0.05
 
 #print "Playing audio..."
 playback.play(data)

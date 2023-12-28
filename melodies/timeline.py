@@ -60,4 +60,3 @@ class Timeline:
         data = hit.render()
         out[index:index + len(data)] += data
     return out
-
