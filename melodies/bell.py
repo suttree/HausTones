@@ -44,7 +44,7 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(2, 18)
+iterations = random.randint(5, 18)
 interval = 16.0
 interval = random.uniform(14.2, 22.8)
 offset = 0.6
@@ -60,21 +60,39 @@ for i in range(iterations):
     note = scale.transpose(chord.notes[0].shift_down_octave(1), random.choice((-2, -1, 1, 2)))
     timeline.add(mtime, Hit(note, interval))
 
+    mtime += 0.02
     timeline.add(mtime, Hit(chord.notes[1].shift_down_octave(1), interval + offset))
     timeline.add(mtime, Hit(chord.notes[2].shift_down_octave(2), interval + offset))
+    mtime -= 0.01
 
     mtime += interval - offset
 
-    if(i % 4 == 0 and i > 0):
+    if(i % 2 == 0 and i > 0):
         mtime -= offset
-        interval += 0.1 * math.cos(time.time())
-        offset += 0.1 * math.cos(time.time())
-        
-    if(i % 6 == 0 and i > 0):
+        interval += 0.04 * math.cos(time.time())
+        offset += 0.4 * math.cos(time.time())
+
+    if(i % 3 == 0 and i > 0):
         chord = progression[2]
+        
+    if(i % 5 == 0 and i > 0):
+        mtime -= offset
+        interval -= 0.03 * math.cos(time.time())
+        offset -= 0.36 * math.cos(time.time())
+
+    # add some overlap:
+    if(i % 7 == 0 and i > 0):
+        mtime -= 2.4
+
+    if(i % 9 == 0 and i > 0):
+        chord = progression[1]
+
+    if(i % 11 == 0 and i > 0):
+        chord = progression[0]
 
 data = timeline.render()
-data = effect.feedback_modulated_delay(data, data, 0.36, 0.64)
+data = effect.shimmer(data, 3.147)
+data = effect.feedback_modulated_delay(data, data, 0.36, 0.84)
 #data = effect.modulated_delay(data, data, 0.2, 1.6)
 #data = effect.flanger(data, 0.4)
 
