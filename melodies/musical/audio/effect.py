@@ -1,5 +1,8 @@
 from . import source
 
+import noise, time
+from noise import pnoise2
+
 # TODO: More effects. Distortion, echo, delay, reverb, phaser, pitch shift?
 # TODO: Better generalize chorus/flanger (they share a lot of code)
 
@@ -57,3 +60,9 @@ def tremolo(data, freq, dry=0.5, wet=0.5, rate=44100):
     modwave = (source.sine(freq, length) / 2 + 0.5)
     return (data * dry) + ((data * modwave) * wet)
 
+
+def shimmer(data, scale=0.3147, rate=44100):
+    length = float(len(data)) / rate
+    now = time.time()
+    perlin = pnoise2(now * scale, length * scale, octaves=5, persistence=0.75, lacunarity=2.2)
+    return (data * perlin)
