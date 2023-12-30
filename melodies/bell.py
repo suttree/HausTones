@@ -81,8 +81,8 @@ for i in range(iterations):
         offset -= 0.36 * math.cos(time.time())
 
     # add some overlap:
-    if(i % 7 == 0 and i > 0):
-        mtime -= 2.4
+    if(i % 8 == 0 and i > 0):
+        mtime -= 4.25
 
     if(i % 9 == 0 and i > 0):
         chord = progression[1]
