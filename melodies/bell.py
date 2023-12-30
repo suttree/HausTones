@@ -1,16 +1,3 @@
-# Pick a chord
-# Pick a scale
-# Pluck/strum the notes of the scale
-# Repeat
-# Then fuck with intervals etc
-
-
-# play sequence of notes at interval 0.2
-# play harmony notes at interval 0.4
-# play chord at end of harmony
-# repeat
-
-
 from musical.theory import Note, Scale, Chord
 from musical.audio import source, effect, playback
 
@@ -44,11 +31,9 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(5, 18)
-interval = 16.0
+iterations = random.randint(5, 20)
 interval = random.uniform(14.2, 22.8)
-offset = 0.6
-offset = random.uniform(0.025, 1.2)
+offset = random.uniform(0.025, 1.78)
 pp.pprint(iterations)
 pp.pprint(interval)
 pp.pprint(offset)
@@ -63,31 +48,31 @@ for i in range(iterations):
     mtime += 0.02
     timeline.add(mtime, Hit(chord.notes[1].shift_down_octave(1), interval + offset))
     timeline.add(mtime, Hit(chord.notes[2].shift_down_octave(2), interval + offset))
-    mtime -= 0.01
+    mtime -= 0.04
 
     mtime += interval - offset
 
     if(i % 2 == 0 and i > 0):
         mtime -= offset
-        interval += 0.04 * math.cos(time.time())
-        offset += 0.4 * math.cos(time.time())
+        interval -= 0.042 * math.cos(time.time())
+        offset -= 0.04 * math.cos(time.time())
 
     if(i % 3 == 0 and i > 0):
         chord = progression[2]
         
     if(i % 5 == 0 and i > 0):
         mtime -= offset
-        interval -= 0.03 * math.cos(time.time())
-        offset -= 0.36 * math.cos(time.time())
+        interval -= 0.037 * math.cos(time.time())
+        offset -= 0.036 * math.cos(time.time())
 
-    # add some overlap:
+    if(i % 7 == 0 and i > 0):
+        chord = progression[1]
+
+    # add some more overlap:
     if(i % 8 == 0 and i > 0):
         mtime -= 4.25
 
     if(i % 9 == 0 and i > 0):
-        chord = progression[1]
-
-    if(i % 11 == 0 and i > 0):
         chord = progression[0]
 
 data = timeline.render()
