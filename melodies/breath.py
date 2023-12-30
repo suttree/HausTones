@@ -9,7 +9,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
 time = 0.0
-offset = random.uniform(10.8, 24.2)
+offset = random.uniform(6.8, 14.2)
 iterations = random.randint(8, 42)
 duration = random.uniform(8.7, 12.6)
 nudge_x = random.uniform(0.002, 0.026)

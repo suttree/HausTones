@@ -39,6 +39,7 @@ for i in range(iterations):
 
 print("Rendering audio...")
 data = timeline.render()
+data = effect.shimmer(data, 2.468)
 data = effect.flanger(data, 0.016)
 data = effect.feedback_modulated_delay(data, data, 0.036, 0.64)
 
