@@ -21,6 +21,8 @@ scale = Scale(key, 'chromatic')
 progression = Chord.progression(scale)
 
 for i in range(iterations):
+    if (i > iterations - 2): break # skip the lone notes at the end
+
     chord = progression[2]
     timeline.add(time + 0.000, Hit(scale.transpose(chord.notes[0], -12), duration))
     timeline.add(time + 0.000, Hit(chord.notes[0], duration))
@@ -38,8 +40,8 @@ for i in range(iterations):
 
 #print "Rendering audio..."
 data = timeline.render()
-
-data = effect.tremolo(data, freq=0.2)
+data = effect.shimmer(data, 2.047)
+data = effect.tremolo(data, freq=0.22)
 
 # Reduce volume to 10%
 #data = data * 0.05

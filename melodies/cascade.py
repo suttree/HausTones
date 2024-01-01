@@ -19,6 +19,7 @@ duration = random.uniform(6.0, 18.0)
 key = Note(random.choice(Note.NOTES))
 scale = Scale(key, 'chromatic')
 notes = notes_from_scale(key.note + '4', scale.intervals)
+notes = notes * random.randint(1, 4)
 
 if(random.randint(0,1) > 0):
     note_progression = notes[::-1]
@@ -30,15 +31,17 @@ for i in range(iterations):
         note = Note(note)
         timeline.add(time + offset_i * j, Hit(note, duration))
 
-    time += interval + random.uniform(2.0, 8.0) + offset_i # 2.5 # random.uniform(1.0, 2.0) #1.25
+    time += interval + random.uniform(1.4, 5.37) + offset_i
+    #time += interval + random.uniform(2.0, 8.0) + offset_i # 2.5 # random.uniform(1.0, 2.0) #1.25
+    #time += (len(notes) * offset_i) + random.uniform(0.8, 2.8)
 
 #print "Rendering audio..."
 data = timeline.render()
-
-data = effect.chorus(data, 0.17)
+data = effect.shimmer(data, 3.17)
+data = effect.chorus(data, 0.317)
 
 # Reduce volume to 10%
-data = data * 0.10
+#data = data * 0.10
 
 #print "Playing audio..."
 playback.play(data)

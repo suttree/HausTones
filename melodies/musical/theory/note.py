@@ -47,7 +47,13 @@ class Note:
         ''' Return a new Note instance with the frequency shifted down by one octave
         '''
         return Note(self.index - (12 * octaves))
-    
+
+    # Added by duncan - 01/01/2024
+    def shift_up_octave(self, octaves = 1):
+        ''' Return a new Note instance with the frequency shifted down by one octave
+        '''
+        return Note(self.index + (12 * octaves))
+
     @property
     def note(self):
         ''' note name property

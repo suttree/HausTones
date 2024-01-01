@@ -1,5 +1,5 @@
 from musical.theory import Note, Scale, Chord
-from musical.audio import playback
+from musical.audio import effect, playback
 from musical.utils import notes_from_scale
 
 from timeline import Hit, Timeline
@@ -41,6 +41,8 @@ if(random.randint(0, 1) == 1):
     notes = notes[::-1]
 
 for i in range(iterations):
+    if (i > iterations -4): break # skip the lone notes at the end
+    
     for note in notes:
         note = Note(note)
 
@@ -83,9 +85,9 @@ for i in range(iterations):
         timeline.add(time + 0.2, Hit(chord.notes[0], 4.0))
         """
 
-        timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(time + interval, Hit(note.shift_down_octave(1), 8.0))
-        timeline.add(time + interval, Hit(note.shift_down_octave(2), 8.0))
+        timeline.add(time + interval, Hit(note.shift_down_octave(1), 4.0))
+        timeline.add(time + interval, Hit(note.shift_down_octave(1), 3.0))
+        timeline.add(time + interval, Hit(note.shift_up_octave(1), 3.4))
 
         """
         time += offset
@@ -94,8 +96,17 @@ for i in range(iterations):
         timeline.add(time + interval + 0.4, Hit(note.transpose(12), 4.0))
         """
         
+    if(random.randint(0, 1) == 0):
+        notes = notes[::-1]
+
+    if(random.randint(0, 1) == 1):
+        time = time - random.uniform(-0.4, 0.4)
+        offset = offset - random.uniform(-0.3, 0.3)
+        interval = interval - random.uniform(-0.2, 0.2)
+
 print("Rendering audio...")
 data = timeline.render()
+data = effect.shimmer(data, 3.14)
 
 # Reduce volume to 25%
 #data = data * 0.25
