@@ -8,10 +8,10 @@ import numpy, random, pprint, math, time
 pp = pprint.PrettyPrinter(indent=4)
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1,2,3,4,5]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([1,2,3]))).note
 key = Note(key_note)
 
-scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
+scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'pentatonicminor']
 random.shuffle(scales)
 scale = Scale(key, scales[0])
 
@@ -29,7 +29,7 @@ timeline = Timeline()
 
 for i in range(iterations):
     # simple/dumb way of creating a chord progression
-    notes = [0,0,1,1,2,3,3]
+    notes = [0,0,1,1,2,2,3]
     chord_progression = []
     for i in range(2):
         random.shuffle(notes)
@@ -60,34 +60,33 @@ for i in range(iterations):
             timeline.add(time + (spacer * 4) + offset, Hit(chord.notes[2], duration))
 
         if(random.randint(0,6) > 5):
-            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[0].transpose(12), duration))
+            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[0].transpose(6), duration))
         elif(random.randint(0,6) > 4):
-            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[0].transpose(12), duration))
+            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[0].transpose(2), duration))
             timeline.add(time + (spacer * 8) + offset, Hit(chord.notes[2].transpose(12), duration))
             timeline.add(time + (spacer * 10) + offset, Hit(chord.notes[2].transpose(12), duration))
         elif(random.randint(0,6) > 3):
             timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[0].transpose(12), duration))
             timeline.add(time + (spacer * 8) + offset, Hit(chord.notes[1].transpose(12), duration))
-            timeline.add(time + (spacer * 10) + offset, Hit(chord.notes[2].transpose(12), duration))
+            timeline.add(time + (spacer * 10) + offset, Hit(chord.notes[2].transpose(4), duration))
         elif(random.randint(0,6) > 2):
             timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[2].transpose(12), duration))
-            timeline.add(time + (spacer * 8) + offset, Hit(chord.notes[1].transpose(12), duration))
+            timeline.add(time + (spacer * 8) + offset, Hit(chord.notes[1].transpose(8), duration))
             timeline.add(time + (spacer * 10) + offset, Hit(chord.notes[2].transpose(12), duration))
         elif(random.randint(0,1) > 0):
-            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[1].transpose(12), duration))
+            timeline.add(time + (spacer * 6) + offset, Hit(chord.notes[1].transpose(6), duration))
             timeline.add(time + (spacer * 8) + offset, Hit(chord.notes[1].transpose(12), duration))
             timeline.add(time + (spacer * 10) + offset, Hit(chord.notes[0].transpose(12), duration))
 
-        time += interval * random.uniform(1.8, 2.2)
+        time += interval * random.uniform(1.2, 2.2)
 
 #print "Rendering audio..."
 data = timeline.render()
-
-data = effect.tremolo(data, 0.1)
-#data = effect.flanger(data, 0.1)
+data = effect.shimmer(data, 2.70)
+data = effect.flanger(data, 0.72)
 
 # Reduce volume to 10%
-data = data * 0.10
+#data = data * 0.10
 
 #print "Playing audio..."
 playback.play(data)

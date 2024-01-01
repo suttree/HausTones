@@ -29,6 +29,7 @@ for note in notes:
 print("Rendering audio...")
 data = timeline.render()
 
+data = effect.shimmer(data, 8.74)
 #data = effect.chorus(data, 0.175)
 #data = effect.feedback_modulated_delay(data, data, 0.36, 0.64)
 data = effect.modulated_delay(data, data, 0.214, 0.627)
