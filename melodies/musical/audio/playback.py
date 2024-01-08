@@ -9,6 +9,7 @@ def pygame_play(data, rate=44100):
     pygame.mixer.init(rate, -16, 1, 1024)
     sound = pygame.sndarray.numpysnd.make_sound(encode.as_int16(data))
     length = sound.get_length()
+    sound.set_volume(0.25)
     sound.play()
     pygame.time.wait(int(length * 1000))
     pygame.mixer.quit()
@@ -82,7 +83,8 @@ def play(data, rate=44100):
     ''' Send audio to first available playback method
     '''
     
-    return pyaudio_play(data, rate)
+    return pygame_play(data, rate)
+    #return pyaudio_play(data, rate)
 
     #if pygame_supported():
     #    return pygame_play(data, rate)
@@ -92,3 +94,17 @@ def play(data, rate=44100):
     #    return pyaudio_play(data, rate)
     #else:
     #    raise Exception("No supported playback method #found")
+
+    #def audio_datalist_set_volume(datalist, volume):
+    #    """ Change value of list of audio chunks """
+    #    sound_level = (volume / 100.)
+    #
+    #    for i in range(len(datalist)):
+    #        chunk = numpy.fromstring(datalist[i], numpy.int16)
+    #
+    #        chunk = chunk * sound_level
+    #
+    #        datalist[i] = chunk.astype(numpy.int16)
+        
+    # pyaduio and pydub
+    #https://github.com/jiaaro/pydub
