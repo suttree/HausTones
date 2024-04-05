@@ -83,8 +83,8 @@ def play(data, rate=44100):
     ''' Send audio to first available playback method
     '''
     
-    return pygame_play(data, rate)
-    #return pyaudio_play(data, rate)
+    #return pygame_play(data, rate)
+    return pyaudio_play(data, rate)
 
     #if pygame_supported():
     #    return pygame_play(data, rate)

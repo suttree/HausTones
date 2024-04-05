@@ -14,6 +14,15 @@ dtparam=audio=off
 dtoverlay=hifiberry-dac
 gpio=25=op,dh
 
+## MacOS setup
+cd src/HausTones
+python -m venv venv
+venv/bin/pip3 install noise
+venv/bin/pip3 install numpy
+venv/bin/pip3 install pygame
+venv/bin/pip3 install pyaudio
+venv/bin/python3.12 melodies/Bb-asc.py
+
 ## todo
 
 - controller script
