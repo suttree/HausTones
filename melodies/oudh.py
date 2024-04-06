@@ -1,7 +1,7 @@
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
-from musical.utils import notes_from_scale, add_intervals_to_notes
+from musical.utils import notes_from_scale, add_intervals_to_notes, add_random_float
 import pprint, random
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -17,8 +17,7 @@ timeline = Timeline()
 key_note = Note((random.choice(Note.NOTES), random.choice([1,2,3,4,5]))).note
 key = Note(key_note)
 
-#scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
-scales = ['major', 'pentatonicmajor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
+scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
 random.shuffle(scales)
 scale = Scale(key, scales[0])
 notes = notes_from_scale(key.note, scale.intervals)
@@ -34,14 +33,14 @@ for i, note in enumerate(notes_with_intervals):
     timeline.add(time, Hit(Note(note[0]), duration))
 time += duration
 
-for i in range(60):
+# Now play each note staggered
+# todo: pan effect
+# todo: different 'pluck' effect
+# todo: more notes in notes_from_scale
+for i in range(20):
     for j, note in enumerate(notes_with_intervals):
-        timeline.add(time + note[1], Hit(Note(note[0]), duration))
-        
-    #if j % 20 == 0:
-    #    for note in enumerate(notes_with_intervals):
-    #        timeline.add(time, Hit(Note(note[0]), duration))
-
+        interval = add_random_float(note[1], -0.1, 0.1)
+        timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
 
 

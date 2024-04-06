@@ -1,3 +1,5 @@
+import random
+
 def notes_from_scale(starting_note, intervals):
     starting_note = starting_note[0].upper()
     
@@ -33,5 +35,9 @@ def add_intervals_to_notes(notes):
     for note in notes:
         notes_with_intervals.append([note, interval])
         interval += 1.2
-    
+
     return notes_with_intervals
+    
+def add_random_float(value, min_val=0.0, max_val=1.0):
+    random_float = random.uniform(min_val, max_val)
+    return value + random_float
