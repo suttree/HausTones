@@ -17,7 +17,8 @@ timeline = Timeline()
 key_note = Note((random.choice(Note.NOTES), random.choice([1,2,3,4,5]))).note
 key = Note(key_note)
 
-scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
+#scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
+scales = ['major']
 random.shuffle(scales)
 scale = Scale(key, scales[0])
 notes = notes_from_scale(key.note, scale.intervals)
@@ -29,18 +30,18 @@ pp.pprint(notes)
 pp.pprint(notes_with_intervals)
 
 # Start with all notes on 0
-for i, note in enumerate(notes_with_intervals):
-    timeline.add(time, Hit(Note(note[0]), duration))
-time += duration
+#for i, note in enumerate(notes_with_intervals):
+#    timeline.add(time, Hit(Note(note[0]), duration))
+#time += duration
 
 # Now play each note staggered
 # todo: pan effect
 # todo: different 'pluck' effect
 # todo: more notes in notes_from_scale
-for i in range(20):
+for i in range(3):
     for j, note in enumerate(notes_with_intervals):
         interval = add_random_float(note[1], -0.1, 0.1)
-        timeline.add(time + interval, Hit(Note(note[0]), duration))
+        timeline.add(time + interval, Hit(Note(note[0]), duration/2))
     time += duration
 
 
@@ -60,8 +61,8 @@ for i in range(20):
 print("Rendering audio...")
 data = timeline.render()
 #data = effect.shimmer(data, 2.047)
-data = effect.tremolo(data, freq=0.22)
-data = effect.chorus(data, 0.75)
+#data = effect.tremolo(data, freq=0.22)
+#data = effect.chorus(data, 0.75)
 
 print("Playing audio...")
 playback.play(data)

@@ -108,3 +108,39 @@ def pluck(freq, length, decay=0.998, rate=44100):
     phase = int(rate / freq)
     data = numpy.random.random(phase) * 2 - 1
     return ringbuffer(data, length, decay, rate)
+
+import numpy as np
+
+def ambient_note(freq, length, decay=0.998, rate=44100):
+    """
+    Create an ambient, mellow note at the given frequency using a sine wave
+    with a smooth attack and release envelope.
+    """
+    freq = float(freq)
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    
+    # Generate a sine wave at the given frequency
+    sine_wave = np.sin(2 * np.pi * freq * t)
+    
+    # Create a smooth attack and release envelope
+    attack_time = 0.1  # Adjust the attack time as desired
+    release_time = 0.1  # Adjust the release time as desired
+    attack_samples = int(attack_time * rate)
+    release_samples = int(release_time * rate)
+    sustain_samples = len(sine_wave) - attack_samples - release_samples
+    
+    envelope = np.concatenate([
+        np.linspace(0, 1, attack_samples),
+        np.ones(sustain_samples),
+        np.linspace(1, 0, release_samples)
+    ])
+    
+    # Apply the envelope to the sine wave
+    note = sine_wave * envelope
+    
+    # Apply a gentle lowpass filter to smooth the note
+    b = [0.2, 0.2, 0.2, 0.2, 0.2]
+    a = [1.0]
+    note = np.convolve(note, b, mode='same')
+    
+    return note
