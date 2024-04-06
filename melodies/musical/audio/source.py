@@ -1,5 +1,6 @@
 import math
 import numpy
+import numpy as np
 
 def silence(length, rate=44100):
     ''' Generate 'length' seconds of silence at 'rate'
@@ -108,39 +109,22 @@ def pluck(freq, length, decay=0.998, rate=44100):
     phase = int(rate / freq)
     data = numpy.random.random(phase) * 2 - 1
     return ringbuffer(data, length, decay, rate)
-
-import numpy as np
-
-def ambient_note(freq, length, decay=0.998, rate=44100):
-    """
-    Create an ambient, mellow note at the given frequency using a sine wave
-    with a smooth attack and release envelope.
-    """
+    
+def pluck2(freq, length, decay=0.998, rate=44100):
+    '''
+    Create a gentle and soothing pluck noise at the given frequency.
+    '''
     freq = float(freq)
-    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    phase = int(rate / freq)
     
-    # Generate a sine wave at the given frequency
-    sine_wave = np.sin(2 * np.pi * freq * t)
+    # Generate a simple sine wave instead of white noise
+    data = np.sin(2 * np.pi * np.arange(phase) / phase)
     
-    # Create a smooth attack and release envelope
-    attack_time = 0.1  # Adjust the attack time as desired
-    release_time = 0.1  # Adjust the release time as desired
-    attack_samples = int(attack_time * rate)
-    release_samples = int(release_time * rate)
-    sustain_samples = len(sine_wave) - attack_samples - release_samples
+    # Apply a Hanning window to the sine wave to create a smooth attack and release
+    window = np.hanning(len(data))
+    data *= window
     
-    envelope = np.concatenate([
-        np.linspace(0, 1, attack_samples),
-        np.ones(sustain_samples),
-        np.linspace(1, 0, release_samples)
-    ])
+    # Adjust the decay factor to create a longer and more gradual decay
+    gentle_decay = 0.9995
     
-    # Apply the envelope to the sine wave
-    note = sine_wave * envelope
-    
-    # Apply a gentle lowpass filter to smooth the note
-    b = [0.2, 0.2, 0.2, 0.2, 0.2]
-    a = [1.0]
-    note = np.convolve(note, b, mode='same')
-    
-    return note
+    return ringbuffer(data, length, gentle_decay, rate)

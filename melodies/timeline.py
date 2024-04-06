@@ -43,12 +43,18 @@ def ambient_note(freq, length, decay=0.998, rate=44100):
     # Generate a sine wave at the given frequency
     sine_wave = np.sin(2 * np.pi * freq * t)
     
-    # Create a smooth attack and release envelope
-    attack_time = 0.1  # Adjust the attack time as desired
-    release_time = 0.1  # Adjust the release time as desired
+    # Adjust attack and release times based on the length of the note
+    attack_time = min(length * 0.1, 1.0)  # Limit attack time to 10% of the note length or 1.0 seconds
+    release_time = min(length * 0.1, 1.5)  # Limit release time to 10% of the note length or 1.5 seconds
     attack_samples = int(attack_time * rate)
     release_samples = int(release_time * rate)
     sustain_samples = len(sine_wave) - attack_samples - release_samples
+    
+    if sustain_samples < 0:
+        # If sustain_samples is negative, adjust attack and release samples
+        attack_samples = int(len(sine_wave) * attack_time / (attack_time + release_time))
+        release_samples = len(sine_wave) - attack_samples
+        sustain_samples = 0
     
     envelope = np.concatenate([
         np.linspace(0, 1, attack_samples),
@@ -60,12 +66,36 @@ def ambient_note(freq, length, decay=0.998, rate=44100):
     note = sine_wave * envelope
     
     # Apply a gentle lowpass filter to smooth the note
-    b = [0.2, 0.2, 0.2, 0.2, 0.2]
+    b = [0.1] * 15  # Increase the filter length for more smoothing
     a = [1.0]
     note = np.convolve(note, b, mode='same')
     
     return note
 
+def bell_tone(freq, length, decay=0.996, rate=44100):
+    """
+    Create a simple bell tone at the given frequency using a combination of sine waves.
+    """
+    freq = float(freq)
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    
+    # Generate sine waves at different harmonics
+    fundamental = np.sin(2 * np.pi * freq * t)
+    third_harmonic = np.sin(2 * np.pi * freq * 3 * t) * 0.5
+    fifth_harmonic = np.sin(2 * np.pi * freq * 5 * t) * 0.25
+    
+    # Combine the sine waves
+    bell = fundamental + third_harmonic + fifth_harmonic
+    
+    # Apply an exponential decay envelope
+    envelope = np.exp(-np.linspace(0, length, len(bell)) * (1 - decay))
+    bell *= envelope
+    
+    # Normalize the amplitude
+    bell /= np.max(np.abs(bell))
+    
+    return bell
+    
 class Hit:
     '''
     Rough draft of Hit class. Stores information about the hit and generates
@@ -83,7 +113,10 @@ class Hit:
         # XXX: Currently uses the ambient_note function
         key = (str(self.note), self.duration)
         if key not in Hit.cache:
-            Hit.cache[key] = ambient_note(self.note.frequency(), self.duration)
+            Hit.cache[key] = source.pluck(self.note.frequency(), self.duration)
+            #Hit.cache[key] = source.pluck2(self.note.frequency(), self.duration)
+            #Hit.cache[key] = ambient_note(self.note.frequency(), self.duration)
+            #Hit.cache[key] = bell_tone(self.note.frequency(), self.duration)
         return Hit.cache[key]
 
 class Timeline:
@@ -120,11 +153,11 @@ class Timeline:
 
             # Ensure that the data array fits within the remaining space in out
             remaining_space = len(out) - index
-            if len(data) > remaining_space:
+            if len(data) != remaining_space:
                 data = data[:remaining_space]
-            elif len(data) < remaining_space:
                 data = np.pad(data, (0, remaining_space - len(data)), 'constant')
-
+            
+            # Add the rendered data to the output array
             out[index:index + len(data)] += data
 
     return out

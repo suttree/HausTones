@@ -14,11 +14,10 @@ duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1,2,3,4,5]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([0,1,2,3,4,5,6,7,8,9,10,11]))).note
 key = Note(key_note)
 
-#scales = ['pentatonicmajor', 'mixolydian', 'phrygian', 'japanese', 'pentatonicminor', 'pentatonicmajor']
-scales = ['major']
+scales = ['major', 'pentatonicmajor', 'augmented', 'diminished', 'chromatic', 'wholehalf', 'halfwhole', 'wholetone', 'augmentedfifth', 'japanese', 'oriental', 'ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian']
 random.shuffle(scales)
 scale = Scale(key, scales[0])
 notes = notes_from_scale(key.note, scale.intervals)
@@ -38,9 +37,13 @@ pp.pprint(notes_with_intervals)
 # todo: pan effect
 # todo: different 'pluck' effect
 # todo: more notes in notes_from_scale
-for i in range(3):
+#for i, note in enumerate(notes_with_intervals):
+#    timeline.add(time, Hit(Note(note[0]), duration))
+#time += duration
+
+for i in range(25):
     for j, note in enumerate(notes_with_intervals):
-        interval = add_random_float(note[1], -0.1, 0.1)
+        interval = add_random_float(note[1], -1.25, 0.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration/2))
     time += duration
 
@@ -61,8 +64,13 @@ for i in range(3):
 print("Rendering audio...")
 data = timeline.render()
 #data = effect.shimmer(data, 2.047)
-#data = effect.tremolo(data, freq=0.22)
+data = effect.tremolo(data, freq=4.92)
 #data = effect.chorus(data, 0.75)
+#data = effect.pan(data, len(data) / 44100, 44100, pan_freq=0.2)
+data = effect.feedback_modulated_delay(data, data, 2.26, 0.44)
+#data = effect.modulated_delay(data, data, 0.2, 1.6)
+#data = effect.flanger(data, 0.4)
+
 
 print("Playing audio...")
 playback.play(data)
