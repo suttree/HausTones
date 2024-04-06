@@ -33,10 +33,13 @@ for i, note in enumerate(notes_with_intervals):
     timeline.add(time, Hit(Note(note[0]), duration))
     #time += duration / 2
 
-for i in range(2):
-    for j, note in enumerate(notes_with_intervals):
-        timeline.add(time + note[1], Hit(Note(note[0]), duration))
-    time += duration
+note = notes_with_intervals[0]
+for i in range(3):
+    timeline.add(time + note[1], Hit(Note(note[0]), duration))
+#for i in range(2):
+#    for j, note in enumerate(notes_with_intervals):
+#        timeline.add(time + note[1], Hit(Note(note[0]), duration))
+#    time += duration
 
 
 print("Rendering audio...")
