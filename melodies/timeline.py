@@ -2,6 +2,8 @@ from collections import defaultdict
 
 from musical.audio import source
 
+import numpy as np
+
 # XXX: Early implementation of timeline/hit concepts. Needs lots of work
 
 # TODO: Associate sound source with Hit instances somehow
@@ -9,25 +11,24 @@ from musical.audio import source
 
 
 class Hit:
+    '''
+    Rough draft of Hit class. Stores information about the hit and generates
+    the audio array accordingly. Currently implements a basic cache to avoid
+    having to rerender identical hits
+    '''
+    cache = {}
 
-  ''' Rough draft of Hit class. Stores information about the hit and generates
-      the audio array accordingly. Currently implements a basic cache to avoid
-      having to rerender identical hits
-  '''
+    def __init__(self, note, duration):
+        self.note = note
+        self.duration = duration
 
-  cache = {}
-
-  def __init__(self, note, length):
-    self.note = note
-    self.length = length
-
-  def render(self):
-    # Render hit of "key" for "length" amound of seconds
-    # XXX: Currently only uses a string pluck
-    key = (str(self.note), self.length)
-    if key not in Hit.cache:
-      Hit.cache[key] = source.pluck(self.note, self.length)
-    return Hit.cache[key]
+    def render(self):
+        # Render hit of "key" for "duration" amount of seconds
+        # XXX: Currently only uses a string pluck
+        key = (str(self.note), self.duration)
+        if key not in Hit.cache:
+            Hit.cache[key] = source.pluck(self.note, self.duration)
+        return Hit.cache[key]
 
 
 class Timeline:
@@ -53,10 +54,22 @@ class Timeline:
 
   def render(self):
     # Return timeline as audio array by rendering the hits
-    out = source.silence(self.calculate_length())
+    total_duration = max(time + hit.duration for time, hits in self.hits.items() for hit in hits)
+    length = int(total_duration * self.rate)
+    out = np.zeros(length)
+
     for time, hits in self.hits.items():
-      index = int(time * self.rate)
-      for hit in hits:
-        data = hit.render()
-        out[index:index + len(data)] += data
+        index = int(time * self.rate)
+        for hit in hits:
+            data = hit.render()
+
+            # Ensure that the data array fits within the remaining space in out
+            remaining_space = len(out) - index
+            if len(data) > remaining_space:
+                data = data[:remaining_space]
+            elif len(data) < remaining_space:
+                data = np.pad(data, (0, remaining_space - len(data)), 'constant')
+
+            out[index:index + len(data)] += data
+
     return out

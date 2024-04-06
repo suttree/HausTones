@@ -25,3 +25,13 @@ def notes_from_scale(starting_note, intervals):
         current_note_index = next_note_index
     
     return scale
+
+def add_intervals_to_notes(notes):
+    notes_with_intervals = []
+    interval = 1.0
+    
+    for note in notes:
+        notes_with_intervals.append([note, interval])
+        interval += 0.1
+    
+    return notes_with_intervals
