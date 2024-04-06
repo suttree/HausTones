@@ -83,17 +83,17 @@ def play(data, rate=44100):
     ''' Send audio to first available playback method
     '''
     
-    return pygame_play(data, rate)
-    #return pyaudio_play(data, rate)
+    #return pygame_play(data, rate)
+    return pyaudio_play(data, rate)
 
-    #if pygame_supported():
-    #    return pygame_play(data, rate)
-    #elif oss_supported():
-    #    return oss_play(data, rate)
-    #elif pyaudio_supported():
-    #    return pyaudio_play(data, rate)
-    #else:
-    #    raise Exception("No supported playback method #found")
+    if pygame_supported():
+        return pygame_play(data, rate)
+    elif oss_supported():
+        return oss_play(data, rate)
+    elif pyaudio_supported():
+        return pyaudio_play(data, rate)
+    else:
+        raise Exception("No supported playback method #found")
 
     #def audio_datalist_set_volume(datalist, volume):
     #    """ Change value of list of audio chunks """
