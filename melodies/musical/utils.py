@@ -28,10 +28,10 @@ def notes_from_scale(starting_note, intervals):
 
 def add_intervals_to_notes(notes):
     notes_with_intervals = []
-    interval = 1.0
+    interval = 0.0
     
     for note in notes:
         notes_with_intervals.append([note, interval])
-        interval += 0.1
+        interval += 1.2
     
     return notes_with_intervals
