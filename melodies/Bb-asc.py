@@ -10,19 +10,21 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0 # Keep track of currect note placement time in seconds
 offset = 0.4286
-iterations = random.randint(8, 42)
+iterations = random.randint(14, 28)
 duration = 4.286 # 140bpm
 timeline = Timeline()
 
 # Define key and scale
-key = Note('Bb')
+key = Note('C')
 scale = Scale(key, 'chromatic')
 notes = notes_from_scale(key.note, scale.intervals)
 
 for i in range(iterations):
     for j, note in enumerate(notes):
         timeline.add(time + offset * j, Hit(Note(note), duration))
-    time += duration
+    time += duration/2
+    offset -= 0.002
+    duration += 0.002
         
 print("Rendering audio...")
 data = timeline.render()

@@ -18,7 +18,8 @@ iterations = random.randint(16, 68)
 duration = random.uniform(1.0, 8.0)
 
 # Define key and scale
-key = Note(random.choice(Note.NOTES))
+#key = Note(random.choice(Note.NOTES))
+key = Note('F')
 scale = Scale(key, 'chromatic')
 notes = notes_from_scale(key.note, scale.intervals)
 
@@ -28,12 +29,13 @@ for i in range(iterations):
     for j, note in enumerate(notes[::-1]):
         note = Note(note)
         timeline.add(time + offset_i * j, Hit(note, duration))
-    time += 1.25 #random.uniform(0.75, 2.0) #1.25
+    time += 1.25/2 #random.uniform(0.75, 2.0) #1.25
     offset_i += 0.125 #random.uniform(0.1, 0.275) #0.125
         
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer(data, 3.147)
+#data = effect.shimmer(data, 3.147)
+data = effect.reverb(data, 0.8, 0.025)
 data = effect.tremolo(data, 0.1)
 
 # Reduce volume to 25%

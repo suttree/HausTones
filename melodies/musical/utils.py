@@ -33,11 +33,11 @@ def add_intervals_to_notes(notes):
     interval = 0.0
     
     for note in notes:
-        notes_with_intervals.append([note, interval])
+        notes_with_intervals.append([note, add_random_float(interval, -0.8, 1.02)])
         interval += 1.2
 
     return notes_with_intervals
     
 def add_random_float(value, min_val=0.0, max_val=1.0):
     random_float = random.uniform(min_val, max_val)
-    return value + random_float
+    return round(value + random_float, 2)

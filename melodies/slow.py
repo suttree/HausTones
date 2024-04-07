@@ -41,6 +41,7 @@ print("Rendering audio...")
 data = timeline.render()
 data = effect.feedback_modulated_delay(data, data, 0.6047, 0.83)
 data = effect.tremolo(data, 0.052)
+data = effect.reverb(data, 0.8, 0.025)
 
 # Reduce volume
 #data = data * 0.07
