@@ -100,31 +100,65 @@ def ringbuffer(data, length, decay=1.0, rate=44100):
     #return out
     return ringbuffer_cache[key]
 
-
 def pluck(freq, length, decay=0.998, rate=44100):
     ''' Create a pluck noise at freq by sending white noise through a ring buffer
         http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
     '''
     freq = float(freq)
     phase = int(rate / freq)
-    data = numpy.random.random(phase) * 2 - 1
-    return ringbuffer(data, length, decay, rate)
-    
-def pluck2(freq, length, decay=0.998, rate=44100):
-    '''
-    Create a gentle and soothing pluck noise at the given frequency.
+    data = numpy.random.random(phase) * 2 - 1 # original
+    #data = numpy.random.random(phase) * 0.8 - 0.4 # softer
+    #data = numpy.sin(numpy.linspace(0, numpy.pi * 2, phase)) # electronic
+    #decay = 1.0 # greater sustain
+    return ringbuffer(data, length, decay, rate) # original
+    #reverb_length = 2.0  # Adjust the reverb length as desired # more ambient
+    #reverb_decay = 0.5  # Adjust the reverb decay as desired
+    #return ringbuffer(data, length + reverb_length, decay * reverb_decay, rate)
+
+def soft_pluck(freq, length, decay=0.998, rate=44100):
+    ''' Create a pluck noise at freq by sending white noise through a ring buffer
+        http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
     '''
     freq = float(freq)
     phase = int(rate / freq)
+    data = numpy.random.random(phase) * 0.8 - 0.4 # softer
+    return ringbuffer(data, length, decay, rate) # original
     
-    # Generate a simple sine wave instead of white noise
-    data = np.sin(2 * np.pi * np.arange(phase) / phase)
+def soft_ambient_pluck(freq, length, decay=0.999, rate=44100):
+    freq = float(freq)
+    phase = int(rate / freq)
+    data = numpy.random.random(phase) * 0.8 - 0.4
+    sound = ringbuffer(data, length, decay, rate)
+    reverb_length = 2.0
+    reverb_decay = 0.5
+    return ringbuffer(sound, length + reverb_length, decay * reverb_decay, rate)
+
+def electronic_pluck(freq, length, decay=0.998, rate=44100):
+    ''' Create a pluck noise at freq by sending white noise through a ring buffer
+        http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
+    '''
+    freq = float(freq)
+    phase = int(rate / freq)
+    data = numpy.sin(numpy.linspace(0, numpy.pi * 2, phase))
+    return ringbuffer(data, length, decay, rate)
     
-    # Apply a Hanning window to the sine wave to create a smooth attack and release
-    window = np.hanning(len(data))
-    data *= window
-    
-    # Adjust the decay factor to create a longer and more gradual decay
-    gentle_decay = 0.9995
-    
-    return ringbuffer(data, length, gentle_decay, rate)
+def sustained_pluck(freq, length, decay=0.998, rate=44100):
+    ''' Create a pluck noise at freq by sending white noise through a ring buffer
+        http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
+    '''
+    freq = float(freq)
+    phase = int(rate / freq)
+    data = numpy.random.random(phase) * 2 - 1
+    decay = 0.999 # greater sustain
+    return ringbuffer(data, length, decay, rate) # original
+
+def ambient_pluck(freq, length, decay=0.998, rate=44100):
+    ''' Create a pluck noise at freq by sending white noise through a ring buffer
+        http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
+    '''
+    freq = float(freq)
+    phase = int(rate / freq)
+    data = numpy.random.random(phase) * 2 - 1
+    reverb_length = 2.0  # Adjust the reverb length as desired # more ambient
+    reverb_decay = 0.5  # Adjust the reverb decay as desired
+    return ringbuffer(data, length + reverb_length, decay * reverb_decay, rate)

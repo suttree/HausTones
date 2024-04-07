@@ -33,13 +33,14 @@ for i in range(iterations):
     for j, note in enumerate(notes):
         timeline.add(time + offset * j, Hit(Note(note), duration))
         offset += nudge_x
-    time += duration
+    time += duration/2
 
     offset -= nudge_x * len(notes)
     duration -= nudge_y * len(notes)
 
 print("Rendering audio...")
 data = timeline.render()
+data = effect.reverb(data, 0.8, 0.025)
 data = effect.flanger(data, 0.026)
 
 # Reduce volume to 25%

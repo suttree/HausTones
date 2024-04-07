@@ -31,7 +31,7 @@ timeline = Timeline()
 note = key
 chunks = []
 
-iterations = random.randint(5, 20)
+iterations = random.randint(5, 12)
 interval = random.uniform(14.2, 22.8)
 offset = random.uniform(0.025, 1.78)
 pp.pprint(iterations)
@@ -76,9 +76,10 @@ for i in range(iterations):
         chord = progression[0]
 
 data = timeline.render()
-data = effect.shimmer(data, 3.147)
+#data = effect.shimmer(data, 3.147)
 data = effect.feedback_modulated_delay(data, data, 0.36, 0.84)
 #data = effect.modulated_delay(data, data, 0.2, 1.6)
 #data = effect.flanger(data, 0.4)
+data = effect.reverb(data, 0.8, 0.025)
 
 playback.play(data)

@@ -42,6 +42,7 @@ data = timeline.render()
 data = effect.shimmer(data, 2.0468)
 data = effect.flanger(data, 0.016)
 data = effect.feedback_modulated_delay(data, data, 0.036, 0.64)
+data = effect.reverb(data, 0.8, 1.25)
 
 # Reduce volume to 25%
 #data = data * 0.25

@@ -1,5 +1,6 @@
 from . import encode
 import numpy
+import numpy as np
 
 
 def pygame_play(data, rate=44100):
@@ -64,11 +65,11 @@ def pyaudio_play(data, rate=44100):
     import pyaudio
     p = pyaudio.PyAudio()
     stream = p.open(format=pyaudio.paFloat32, channels=1, rate=rate, output=1)
-    stream.write(data.astype(numpy.float32).tostring())
+    data = data / np.max(np.abs(data))  # Normalize the audio data
+    data = np.clip(data, -1.0, 1.0)  # Clip the audio data to [-1.0, 1.0]
+    stream.write(data.astype(np.float32).tostring())
     stream.close()
     p.terminate()
-
-
 def pyaudio_supported():
     ''' Return True is pyaudio playback is supported
     '''

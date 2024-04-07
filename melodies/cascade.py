@@ -37,8 +37,10 @@ for i in range(iterations):
 
 #print "Rendering audio..."
 data = timeline.render()
+data = effect.reverb(data, 0.8, 0.025)
 data = effect.shimmer(data, 3.17)
 data = effect.chorus(data, 0.317)
+
 
 # Reduce volume to 10%
 #data = data * 0.10
