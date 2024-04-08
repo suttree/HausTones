@@ -40,7 +40,7 @@ pp.pprint(r_scale)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
-    timeline.add(time + 0.1, Hit(Note(note), duration))
+    timeline.add(time + 0.25, Hit(Note(note), duration))
 time += duration
     
 for i in range(75):
@@ -67,7 +67,7 @@ for i in range(25):
     
 # Descending arppegio to close
 for j, note in enumerate(notes[::-1]):
-    timeline.add(time + 0.1, Hit(Note(note), duration))
+    timeline.add(time + 0.5, Hit(Note(note), duration))
 time += duration
 
 
@@ -76,7 +76,7 @@ data = timeline.render()
 data = effect.tremolo(data, freq=1.47)
 data = effect.modulated_delay(data, data, 0.02, 0.03)
 data = effect.reverb(data, 0.8, 0.425)
-data = effect.flanger(data, 0.04)
+data = effect.flanger(data, 0.08)
 
 print("Playing audio...")
 playback.play(data)
