@@ -1,6 +1,6 @@
 import random
 
-def notes_from_scale(starting_note, intervals):
+def notes_from_scale(starting_note, intervals, octave=4):
     starting_note = starting_note[0].upper()
     
     # Define the order of notes in the musical alphabet
@@ -12,16 +12,21 @@ def notes_from_scale(starting_note, intervals):
     # Find the index of the starting note in the musical alphabet
     current_note_index = musical_alphabet.index(starting_note)
     
-    # Append the starting note to the scale
-    scale.append(starting_note)
+    # Append the starting note to the scale with the specified octave
+    scale.append(starting_note + str(octave))
     
     for interval in intervals[:-1]:  # Exclude the last interval
         # Calculate the next note index by adding the interval to the current note index
         next_note_index = (current_note_index + interval) % 12
+        
+        # Determine the octave of the next note
+        if next_note_index < current_note_index:
+            octave += 1
+        
         next_note = musical_alphabet[next_note_index]
         
-        # Append the next note to the scale
-        scale.append(next_note)
+        # Append the next note to the scale with the appropriate octave
+        scale.append(next_note + str(octave))
         
         # Update the current note index for the next iteration
         current_note_index = next_note_index

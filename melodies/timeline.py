@@ -113,14 +113,11 @@ class Hit:
         # XXX: Currently uses the ambient_note function
         key = (str(self.note), self.duration)
         if key not in Hit.cache:
-            #if len(Hit.cache) % 2 == 0:
             #  Hit.cache[key] = source.pluck(self.note.frequency(), self.duration) # original
-            #else:
-            #  Hit.cache[key] = source.electronic_pluck(self.note.frequency(), self.duration) # VIBES
 
-            #  Hit.cache[key] = source.pluck(self.note.frequency(), self.duration) # original            
             Hit.cache[key] = source.electronic_pluck(self.note.frequency(), self.duration) # VIBES
 
+            #Hit.cache[key] = source.solfeggio_pluck(self.note.frequency(), self.duration) # VIBES?!??!
             #Hit.cache[key] = source.soft_ambient_pluck(self.note.frequency(), self.duration)
             #Hit.cache[key] = source.sustained_pluck(self.note.frequency(), self.duration)
             #Hit.cache[key] = source.rounded_pluck(self.note.frequency(), self.duration)
