@@ -14,7 +14,7 @@
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
-from musical.utils import notes_from_scale, add_intervals_to_notes, add_random_float
+from musical.utils import notes_from_scale, extended_notes_from_scale, add_intervals_to_notes, add_random_float
 import pprint, random
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -35,6 +35,7 @@ scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ioni
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
+#notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
 notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
@@ -42,7 +43,7 @@ pp.pprint(r_scale)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
-    timeline.add(time + 0.05 * j, Hit(Note(note), duration))
+    timeline.add(time + 0.20 * j, Hit(Note(note), duration))
 time += duration
     
 for i in range(15):
@@ -53,6 +54,7 @@ for i in range(15):
     
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
+#notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
 notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
@@ -69,9 +71,8 @@ for i in range(5):
     
 # Descending arppegio to close
 for j, note in enumerate(notes[::-1]):
-    timeline.add(time + 0.25 * j, Hit(Note(note), duration))
+    timeline.add(time + 0.40 * j, Hit(Note(note), duration))
 time += duration
-
 
 print("Rendering audio...")
 data = timeline.render()

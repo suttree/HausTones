@@ -63,7 +63,7 @@ def extended_notes_from_scale(starting_note, intervals, num_octaves=2, default_o
             current_note_index = next_note_index
     
     return scale
-    
+
 def add_intervals_to_notes(notes):
     notes_with_intervals = []
     interval = 0.0
