@@ -40,10 +40,9 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-# Ascending arpeggio to open
-for j, note in enumerate(notes):
-    pp.pprint(note)
-    timeline.add(time + 0.1 * j, Hit(Note(note), duration))
+# Descending arppegio to close
+for j, note in enumerate(notes[::-1]):
+    timeline.add(time + 0.25 * j, Hit(Note(note), duration))
 time += duration
 
 print("Rendering audio...")

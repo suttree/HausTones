@@ -42,7 +42,7 @@ pp.pprint(r_scale)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
-    timeline.add(time + 0.25, Hit(Note(note), duration))
+    timeline.add(time + 0.05 * j, Hit(Note(note), duration))
 time += duration
     
 for i in range(75):
@@ -69,7 +69,7 @@ for i in range(25):
     
 # Descending arppegio to close
 for j, note in enumerate(notes[::-1]):
-    timeline.add(time + 0.5, Hit(Note(note), duration))
+    timeline.add(time + 0.25 * j, Hit(Note(note), duration))
 time += duration
 
 
