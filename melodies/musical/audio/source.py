@@ -162,3 +162,32 @@ def ambient_pluck(freq, length, decay=0.998, rate=44100):
     reverb_length = 2.0  # Adjust the reverb length as desired # more ambient
     reverb_decay = 0.5  # Adjust the reverb decay as desired
     return ringbuffer(data, length + reverb_length, decay * reverb_decay, rate)
+    
+import numpy as np
+
+def sine_wave(freq, length, rate=44100):
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    data = np.sin(2 * np.pi * freq * t)
+    return data
+
+def solfeggio_pluck(freq, length, decay=0.998, rate=44100):
+    solfeggio_freqs = [396, 417, 528, 639, 741, 852, 963]  # Solfeggio frequencies
+    
+    # Find the nearest solfeggio frequency to the given frequency
+    nearest_freq = min(solfeggio_freqs, key=lambda x: abs(x - freq))
+    
+    # Generate a sine wave with the nearest solfeggio frequency
+    data = sine_wave(nearest_freq, length, rate)
+    
+    # Apply a decay envelope
+    envelope = np.exp(-np.linspace(0, length, int(length * rate)) * (1 - decay))
+    data *= envelope
+    
+    return data
+
+# Example usage
+freq = 440  # Desired frequency
+length = 2.0  # Length of the sound in seconds
+decay = 0.995  # Decay factor for a more ambient sound
+
+sound = solfeggio_pluck(freq, length, decay)

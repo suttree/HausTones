@@ -42,42 +42,12 @@ pp.pprint(r_scale)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
-    timeline.add(time + 0.25, Hit(Note(note), duration))
+    pp.pprint(note)
+    timeline.add(time + 0.1 * j, Hit(Note(note), duration))
 time += duration
-    
-for i in range(75):
-    for j, note in enumerate(notes_with_intervals):
-        interval = add_random_float(note[1], -1.25, 2.75)
-        timeline.add(time + interval, Hit(Note(note[0]), duration))
-    time += duration
-    
-r_scale = random.choice(scales)
-scale = Scale(key, r_scale)
-notes = notes_from_scale(key.note, scale.intervals)
-notes_with_intervals = add_intervals_to_notes(notes)
-pp.pprint(key)
-pp.pprint(r_scale)
-
-# And breathe....
-time += duration * 2
-
-for i in range(25):
-    for j, note in enumerate(notes_with_intervals):
-        interval = add_random_float(note[1], -0.25, 4.75)
-        timeline.add(time + interval, Hit(Note(note[0]), duration))
-    time += duration
-    
-# Descending arppegio to close
-for j, note in enumerate(notes[::-1]):
-    timeline.add(time + 0.5, Hit(Note(note), duration))
-time += duration
-
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.tremolo(data, freq=1.47)
-data = effect.modulated_delay(data, data, 0.02, 0.03)
-data = effect.reverb(data, 0.8, 0.425)
 
 print("Playing audio...")
 playback.play(data)
