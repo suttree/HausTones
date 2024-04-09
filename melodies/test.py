@@ -23,7 +23,7 @@ pp = pprint.PrettyPrinter(indent=4)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = 5
-duration = 2.0
+duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
@@ -41,15 +41,17 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 # Descending arppegio
-for i in range(10):
-  for j, note in enumerate(notes[::-1]):
-      pp.pprint(note)
-      inc = 0.25 * j*i/2
-      if inc > 6: inc = 5.5
-      pp.pprint(inc)
-      timeline.add(time + 0.25 * j*i/2, Hit(Note(note), duration + 0.25 * j*i/2))
-  #duration += 0.25
-  time += duration
+for x in range(2):
+  pp.pprint(x)
+  for i in range(8):
+    for j, note in enumerate(notes[::-1]):
+        pp.pprint(note)
+        inc = 0.25 * j*i
+        if inc > 14.0: inc = 14 #add_random_float(14.0, -0.4, 0.04)
+        pp.pprint(inc)
+        timeline.add(time + inc, Hit(Note(note), duration + inc))
+    duration += 0.25 # or inc?
+    time += duration
 
 print("Rendering audio...")
 data = timeline.render()
