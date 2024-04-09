@@ -45,7 +45,7 @@ for j, note in enumerate(notes):
     timeline.add(time + 0.05 * j, Hit(Note(note), duration))
 time += duration
     
-for i in range(75):
+for i in range(15):
     for j, note in enumerate(notes_with_intervals):
         interval = add_random_float(note[1], -1.25, 2.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
@@ -61,7 +61,7 @@ pp.pprint(r_scale)
 # And breathe....
 time += duration * 2
 
-for i in range(25):
+for i in range(5):
     for j, note in enumerate(notes_with_intervals):
         interval = add_random_float(note[1], -0.25, 4.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))

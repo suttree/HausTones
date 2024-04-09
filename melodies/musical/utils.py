@@ -33,6 +33,37 @@ def notes_from_scale(starting_note, intervals, octave=4):
     
     return scale
 
+def extended_notes_from_scale(starting_note, intervals, num_octaves=2, default_octave=4):
+    # Define the order of notes in the musical alphabet
+    musical_alphabet = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+    
+    # Initialize a list to store the notes
+    scale = []
+    
+    # Extract the note name and octave number from the starting note
+    note_name = starting_note[:-1].upper() if starting_note[-1].isdigit() else starting_note.upper()
+    octave = int(starting_note[-1]) if starting_note[-1].isdigit() else default_octave
+    
+    # Find the index of the starting note in the musical alphabet
+    current_note_index = musical_alphabet.index(note_name)
+    
+    for _ in range(num_octaves):
+        for interval in intervals:
+            # Append the current note to the scale with the appropriate octave
+            scale.append(musical_alphabet[current_note_index] + str(octave))
+            
+            # Calculate the next note index by adding the interval to the current note index
+            next_note_index = (current_note_index + interval) % 12
+            
+            # Increment the octave if the next note crosses the octave boundary
+            if next_note_index < current_note_index:
+                octave += 1
+            
+            # Update the current note index for the next iteration
+            current_note_index = next_note_index
+    
+    return scale
+    
 def add_intervals_to_notes(notes):
     notes_with_intervals = []
     interval = 0.0
