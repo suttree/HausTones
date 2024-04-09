@@ -23,11 +23,11 @@ pp = pprint.PrettyPrinter(indent=4)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = 5
-duration = 4.0
+duration = 4.5
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([1, 2]))).note
 key = Note(key_note)
 
 #scales = ['chromatic']
@@ -47,17 +47,18 @@ for x in range(2):
     for j, note in enumerate(notes[::-1]):
         pp.pprint(note)
         inc = 0.25 * j*i
-        if inc > 14.0: inc = 14 #add_random_float(14.0, -0.4, 0.04)
-        pp.pprint(inc)
+        if inc > 12.0: inc = add_random_float(12.0, -0.4, 0.4)
         timeline.add(time + inc, Hit(Note(note), duration + inc))
-    duration += 0.25 # or inc?
+        pp.pprint(inc)
+
+    duration += 0.275 # or inc?
     time += duration
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=1.47)
 data = effect.modulated_delay(data, data, 0.02, 0.03)
-data = effect.reverb(data, 0.8, 0.425)
+data = effect.reverb(data, 0.8, 0.625)
 
 print("Playing audio...")
 playback.play(data)

@@ -33,7 +33,7 @@ def notes_from_scale(starting_note, intervals, octave=4):
     
     return scale
 
-def extended_notes_from_scale(starting_note, intervals, num_octaves=2, default_octave=4):
+def extended_notes_from_scale(starting_note, intervals, num_octaves=2, default_octave=3):
     # Define the order of notes in the musical alphabet
     musical_alphabet = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
     
