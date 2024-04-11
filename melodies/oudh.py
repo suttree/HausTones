@@ -31,24 +31,24 @@ key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3, 4]))).not
 key = Note(key_note)
 
 #scales = ['chromatic']
-scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
+scales = ['major', 'pentatonicmajor', 'japanese', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
 notes_with_intervals = add_intervals_to_notes(notes)
-pp.pprint(key)
-pp.pprint(r_scale)
+#pp.pprint(key)
+#pp.pprint(r_scale)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
     timeline.add(time + 0.20 * j, Hit(Note(note), duration))
 time += duration
     
-for i in range(40):
+for i in range(80):
     for j, note in enumerate(notes_with_intervals):
-        interval = add_random_float(note[1], -1.25, 2.75)
+        interval = add_random_float(note[1], -1.24, 2.72)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
     
@@ -57,13 +57,13 @@ scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
 notes_with_intervals = add_intervals_to_notes(notes)
-pp.pprint(key)
-pp.pprint(r_scale)
+#pp.pprint(key)
+#pp.pprint(r_scale)
 
 # And breathe....
-time += duration * 2
+time += duration * 2.2
 
-for i in range(20):
+for i in range(30):
     for j, note in enumerate(notes_with_intervals):
         interval = add_random_float(note[1], -0.25, 4.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
@@ -77,8 +77,8 @@ time += duration
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=1.47)
-data = effect.modulated_delay(data, data, 0.02, 0.03)
-data = effect.reverb(data, 0.8, 0.425)
+data = effect.modulated_delay(data, data, 0.01, 0.002)
+data = effect.reverb(data, 0.8, 0.525)
 
 print("Playing audio...")
 playback.play(data)
