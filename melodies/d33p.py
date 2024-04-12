@@ -41,16 +41,15 @@ notes_with_intervals = add_intervals_to_notes(notes)
 #pp.pprint(r_scale)
 
 # Descending arppegio
-for x in range(2):
+for x in range(1):
   #pp.pprint(x)
-  for i in range(32):
+  for i in range(16):
     for j, note in enumerate(notes[::-1]):
         #pp.pprint(note)
         inc = 0.025 * j * i
         #if inc > 4.0: inc = add_random_float(4.0, -0.4, 0.4)
         timeline.add(time + inc, Hit(Note(note), duration + inc))
         #pp.pprint(inc)
-        timeline.add(time + inc*1.2, Hit(Note(note), duration + inc))
 
     duration += 0.276 # or inc?
     time += duration
