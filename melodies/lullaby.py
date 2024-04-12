@@ -22,7 +22,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = 2
+iterations = 5
 duration = 4.0
 timeline = Timeline()
 
@@ -30,7 +30,7 @@ timeline = Timeline()
 key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
 key = Note(key_note)
 
-scales = ['chromatic','major', 'pentatonicmajor']
+scales = ['pentatonicmajor']
 #scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 
 r_scale = random.choice(scales)
@@ -40,52 +40,26 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-
-# CROSS OVER
-## Ascending
-#for j, note in enumerate(notes):
-#  timeline.add(time + 0.25*j*2, Hit(Note(note), duration*2))
-## Descending arppegio
-#for j, note in enumerate(notes[::-1]):
-#  timeline.add(time + 0.25*j*2, Hit(Note(note), duration))
-#time += duration
-
-# Define key and scale
-time = 0.0 # Keep track of currect note placement time in seconds
-offset = 0.4286
-iterations = 4
-duration = 4.286 # 140bpm
-
-key = Note('C')
-scale = Scale(key, 'pentatonicmajor')
-notes = notes_from_scale(key.note, scale.intervals)
-
-# fuzzy repeater
-for i in range(iterations):
-    for j, note in enumerate(notes[::-1]):
-        timeline.add(time+0.075*j, Hit(Note(note), duration))
-    time += duration
-
-    for n in range(8):
-      for j, note in enumerate(notes[::-1]):
-          timeline.add(time + offset * j, Hit(Note(note), duration))
-          timeline.add(duration/4 + time + offset * j, Hit(Note(note), duration))
-      time += duration/2
-
-    # Cavernous ascender
-    for j, note in enumerate(notes):
-        timeline.add(time+0.95*j, Hit(Note(note), duration*2))
-    time += duration
-
+for n in range(4):
+  for i in range(8):
+    for j, note in enumerate(notes_with_intervals[::-1]):
+      timeline.add(time + 0.25 * j*i, Hit(Note(note[0]), duration))
+      if i > 2:
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
+      if i > 4:
+        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
+    # lullaby
+    for j, note in enumerate(notes_with_intervals[::-1]):
+      timeline.add(time + 0.25 * j*i, Hit(Note(note[0]), duration))
+      if i > 2:
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
+      if i > 4:
+        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.shimmer(data, 0.24)
-data = effect.tremolo(data, 0.1)
-data = effect.reverb(data, 0.8, 0.025)
-
-#data = data * 0.25
-#data = timeline.render() #hah
+data = data * 0.25
 
 print("Playing audio...")
 playback.play(data)

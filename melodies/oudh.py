@@ -43,7 +43,7 @@ notes_with_intervals = add_intervals_to_notes(notes)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
-    timeline.add(time + 0.20 * j, Hit(Note(note), duration))
+    timeline.add(time + 0.40 * j, Hit(Note(note), duration))
 time += duration
     
 for i in range(80):
@@ -68,10 +68,13 @@ for i in range(30):
         interval = add_random_float(note[1], -0.25, 4.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
-    
+
+# And breathe....
+time += duration * 2.4
+
 # Descending arppegio to close
 for j, note in enumerate(notes[::-1]):
-    timeline.add(time + 0.40 * j, Hit(Note(note), duration))
+    timeline.add(time + 1.40 * j, Hit(Note(note), duration))
 time += duration
 
 print("Rendering audio...")

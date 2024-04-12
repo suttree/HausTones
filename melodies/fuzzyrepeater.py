@@ -20,18 +20,18 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
-time = 0.0  # Keep track of current note placement time in seconds
-offset = 0.0
-iterations = 2
-duration = 4.0
+time = 0.0 # Keep track of currect note placement time in seconds
+offset = 0.4286
+iterations = 4
+duration = 4.286 # 140bpm
 timeline = Timeline()
 
 # Define key and scale
 key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
 key = Note(key_note)
 
-scales = ['chromatic','major', 'pentatonicmajor']
-#scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
+#scales = ['chromatic','major', 'pentatonicmajor']
+scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
@@ -40,30 +40,22 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-
-# CROSS OVER
-## Ascending
-#for j, note in enumerate(notes):
-#  timeline.add(time + 0.25*j*2, Hit(Note(note), duration*2))
-## Descending arppegio
-#for j, note in enumerate(notes[::-1]):
-#  timeline.add(time + 0.25*j*2, Hit(Note(note), duration))
-#time += duration
-
-# Define key and scale
-time = 0.0 # Keep track of currect note placement time in seconds
-offset = 0.4286
-iterations = 4
-duration = 4.286 # 140bpm
-
-key = Note('C')
-scale = Scale(key, 'pentatonicmajor')
-notes = notes_from_scale(key.note, scale.intervals)
+#key = Note('C')
+#scale = Scale(key, 'pentatonicmajor')
+#notes = notes_from_scale(key.note, scale.intervals)
 
 # fuzzy repeater
 for i in range(iterations):
     for j, note in enumerate(notes[::-1]):
         timeline.add(time+0.075*j, Hit(Note(note), duration))
+    time += duration
+
+    # Ascending & desending xover
+    for j, note in enumerate(notes):
+      timeline.add(time + 0.25*j*2, Hit(Note(note), duration*2))
+    # Descending arppegio
+    for j, note in enumerate(notes[::-1]):
+      timeline.add(time + 0.25*j*2, Hit(Note(note), duration))
     time += duration
 
     for n in range(8):
