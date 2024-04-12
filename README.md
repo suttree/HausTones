@@ -1,5 +1,7 @@
 # HausTones
 
+codenamne pele, the sad ex-bofriend genererator
+
 Wind chimes, haus vibes, pele.
 
 ## Install
