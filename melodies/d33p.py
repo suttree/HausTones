@@ -61,4 +61,33 @@ data = effect.modulated_delay(data, data, 0.02, 0.003)
 data = effect.reverb(data, 0.8, 0.425)
 
 print("Playing audio...")
-playback.play(data)
+#playback.play(data)
+
+data = data * 0.5
+import wave
+import numpy as np
+from datetime import datetime
+
+now = datetime.now()
+timestamp = now.strftime("%Y%m%d_%H%M%S")
+
+# mono
+output_file = f"output_mono_{timestamp}.wav"
+sample_rate = 44100
+with wave.open(output_file, 'wb') as wav_file:
+    wav_file.setnchannels(1)  # Mono audio
+    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
+    wav_file.setframerate(sample_rate)
+    wav_file.writeframes(playback.encode.as_int16(data).tobytes())
+
+# stereo
+output_file = f"output_stereo_{timestamp}.wav"
+sample_rate = 44100
+stereo_data = np.repeat(data[:, np.newaxis], 2, axis=1)
+with wave.open(output_file, 'wb') as wav_file:
+    wav_file.setnchannels(2)  # Stereo audio
+    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
+    wav_file.setframerate(sample_rate)
+    wav_file.writeframes(playback.encode.as_int16(stereo_data).tobytes())
+
+print(f"Audio exported as {output_file}")
