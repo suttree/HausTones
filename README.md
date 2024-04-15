@@ -34,4 +34,9 @@ gpio=25=op,dh
 - alter volume during day (loud mode vs quiet mode)
 
 ## misc
-scp post/* pi@pele.local:/home/pi/src/pele/post/
+- ./play.local.sh to generate new audios
+- move new files to post
+- Run ./normalise_volume.sh
+- QA
+- Copy files to production
+  - scp post/* pi@pele.local:/home/pi/src/pele/post/
