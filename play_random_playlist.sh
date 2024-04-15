@@ -10,9 +10,10 @@ timestamp=$(date +%Y%m%d_%H%M%S)
 playlist_file="playlist_${timestamp}.txt"
 find "$music_dir" -type f -name "*.wav" | sort -R > "$playlist_file"
 
-# Shuffle and play the playlist using VLC media player (console version)
-# RPi
-#cvlc --random --playlist-autostart --play-and-exit --one-instance --playlist-tree "$playlist_file"
+# Rpi
+sort -Rsort -R  "$playlist_file" | while IFS= read -r line; do
+    aplay "$line"
+done
 
 # OSX
 sort -Rsort -R  "$playlist_file" | while IFS= read -r line; do

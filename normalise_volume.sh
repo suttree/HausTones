@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the path to the folder containing the WAV files
-folder_path="post/"
+folder_path="output/"
 
 # Set the target volume level in dB (decibels)
 target_volume="-10"
