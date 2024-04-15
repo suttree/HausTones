@@ -1,3 +1,4 @@
+import os
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from musical.utils import notes_from_scale
@@ -44,7 +45,7 @@ data = effect.tremolo(data, 0.1)
 print("Playing audio...")
 #playback.play(data)
 
-data = data * 0.5
+#data = data * 0.5
 import wave
 import numpy as np
 from datetime import datetime
@@ -52,8 +53,10 @@ from datetime import datetime
 now = datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
 
+current_script_filename = os.path.basename(__file__)
+
 # mono
-output_file = f"output_mono_{timestamp}.wav"
+output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
 sample_rate = 44100
 with wave.open(output_file, 'wb') as wav_file:
     wav_file.setnchannels(1)  # Mono audio

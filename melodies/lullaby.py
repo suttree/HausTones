@@ -10,7 +10,7 @@
 # TODO: test the asc and desc parts individually, get them working
 # TODO: export to wav for playback later
 
-
+import os
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -62,7 +62,7 @@ for n in range(4):
 print("Rendering audio...")
 data = timeline.render()
 data = effect.shimmer(data, 0.24)
-data = data * 0.5
+#data = data * 0.20
 
 #print("Playing audio...")
 #playback.play(data)
@@ -71,8 +71,10 @@ print("Exporting audio to WAV file...")
 now = datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
 
+current_script_filename = os.path.basename(__file__)
+
 # mono
-output_file = f"output_mono_{timestamp}.wav"
+output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
 sample_rate = 44100
 with wave.open(output_file, 'wb') as wav_file:
     wav_file.setnchannels(1)  # Mono audio
