@@ -32,3 +32,6 @@ gpio=25=op,dh
 
 - fade in and out rain/ambient effects
 - alter volume during day (loud mode vs quiet mode)
+
+## misc
+scp post/* pi@pele.local:/home/pi/src/pele/post/
