@@ -1,10 +1,10 @@
-venv/bin/python3.12 melodies/lullahola.py; 
-venv/bin/python3.12 melodies/d33p.py; 
-venv/bin/python3.12 melodies/fuzzyrepeater.py; 
-venv/bin/python3.12 melodies/droppedd.py;
-venv/bin/python3.12 melodies/vibes.py 
-venv/bin/python3.12 melodies/lullaby.py; 
-venv/bin/python3.12 melodies/oudh.py; 
+venv/bin/python3.12 melodies2.orig/lullahola.py; 
+venv/bin/python3.12 melodies2.orig/d33p.py; 
+venv/bin/python3.12 melodies2.orig/fuzzyrepeater.py; 
+venv/bin/python3.12 melodies2.orig/droppedd.py;
+venv/bin/python3.12 melodies2.orig/vibes.py 
+venv/bin/python3.12 melodies2.orig/lullaby.py; 
+venv/bin/python3.12 melodies2.orig/oudh.py; 
 
 # Scales get weird outside of morning an evening?
 4am to 9am normal

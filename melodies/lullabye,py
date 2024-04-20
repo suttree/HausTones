@@ -43,43 +43,4 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-for n in range(4):
-  for i in range(8):
-    for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i, Hit(Note(note[0]), duration))
-      if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
-      if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
-    # lullaby
-    for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i, Hit(Note(note[0]), duration))
-      if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
-      if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
-
-print("Rendering audio...")
-data = timeline.render()
-data = effect.shimmer(data, 0.24)
-#data = data * 0.20
-
-#print("Playing audio...")
-#playback.play(data)
-
-print("Exporting audio to WAV file...")
-now = datetime.now()
-timestamp = now.strftime("%Y%m%d_%H%M%S")
-
-current_script_filename = os.path.basename(__file__)
-
-# mono
-output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
-sample_rate = 44100
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(1)  # Mono audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(data).tobytes())
-
-print(f"Audio exported as {output_file}")
+for n in range(4

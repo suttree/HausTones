@@ -16,6 +16,9 @@ from musical.audio import effect, playback
 from timeline import Hit, Timeline
 from musical.utils import notes_from_scale, extended_notes_from_scale, add_intervals_to_notes, add_random_float
 import pprint, random
+import wave
+import numpy as np
+from datetime import datetime
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -62,12 +65,14 @@ for n in range(4):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer(data, 0.24)
 
-data = data * 0.5
-import wave
-import numpy as np
-from datetime import datetime
+# Normalize audio data
+max_amplitude = np.max(np.abs(data))
+scaling_factor = 1.0 / max_amplitude
+normalized_data = data * scaling_factor
+
+# Apply effects
+normalized_data = effect.shimmer(normalized_data, 0.24)
 
 now = datetime.now()
 timestamp = now.strftime("%Y%m%d_%H%M%S")
@@ -79,16 +84,6 @@ with wave.open(output_file, 'wb') as wav_file:
     wav_file.setnchannels(1)  # Mono audio
     wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
     wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(data).tobytes())
-
-# stereo
-output_file = f"output_stereo_{timestamp}.wav"
-stereo_data = np.repeat(data[:, np.newaxis], 2, axis=1)
-sample_rate = 44100
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(2)  # Stereo audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(stereo_data).tobytes())
+    wav_file.writeframes(playback.encode.as_int16(normalized_data).tobytes())
 
 print(f"Audio exported as {output_file}")
