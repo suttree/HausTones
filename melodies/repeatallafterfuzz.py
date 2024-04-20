@@ -10,7 +10,7 @@
 # TODO: test the asc and desc parts individually, get them working
 # TODO: export to wav for playback later
 
-import os
+import os, math
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -47,28 +47,27 @@ pp.pprint(r_scale)
 # fuzzy repeater
 for i in range(iterations):
     for j, note in enumerate(notes[::-1]):
-        timeline.add(time+0.0075*j, Hit(Note(note), duration))
+        timeline.add(time+0.0075*j+1, Hit(Note(note), duration))
     time += duration
 
     # Ascending & desending xover
     for j, note in enumerate(notes[::3]):
-      timeline.add(time + 0.25*j*2, Hit(Note(note), duration*2))
+      timeline.add(time + 0.25*j*2+1, Hit(Note(note), duration*2))
     # Descending arppegio
     for j, note in enumerate(notes[::-4]):
-      timeline.add(time + 0.25*j*2, Hit(Note(note), duration/2))
+      timeline.add(time + 0.25*j*2+1, Hit(Note(note), duration/2))
     time += duration
 
     for n in range(8):
       for j, note in enumerate(notes_with_intervals):
-          timeline.add(time + offset * j, Hit(Note(note[0]), note[1]))
+          timeline.add(time + offset * j+1, Hit(Note(note[0]), note[1]))
           timeline.add(duration/4 + time + offset * j, Hit(Note(note[0]), note[1]))
-      time += duration/2
+      time += duration
 
     # Cavernous ascender
     for j, note in enumerate(notes + notes[::-1]):
-        timeline.add(time+0.95*j, Hit(Note(note), duration*2))
+        timeline.add(time+0.95*j * math.sin(i+1), Hit(Note(note), duration*2))
     time += duration
-
 
 print("Rendering audio...")
 data = timeline.render()
