@@ -17,14 +17,14 @@ duration = 4.286 # 140bpm
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([1, 2, 3]))).note
 key = Note(key_note)
 
 scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 2)
+notes = extended_notes_from_scale(key.note, scale.intervals, 3)
 notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
@@ -61,39 +61,8 @@ data = effect.shimmer(data, 0.24)
 data = effect.tremolo(data, 0.1)
 data = effect.reverb(data, 0.8, 0.025)
 
-#data = data * 0.25
-#data = timeline.render() #hah
+data = data * 0.1
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-#print("Playing audio...")
-#playback.play(data)
-
-#data = data * 0.5
-import wave
-import numpy as np
-from datetime import datetime
- 
-now = datetime.now()
-timestamp = now.strftime("%Y%m%d_%H%M%S")
-
-current_script_filename = os.path.basename(__file__)
-
-# mono
-output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
-sample_rate = 44100
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(1)  # Mono audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(data).tobytes())
-
-# stereo
-output_file = f"output_stereo_{timestamp}.wav"
-sample_rate = 44100
-stereo_data = np.repeat(data[:, np.newaxis], 2, axis=1)
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(2)  # Stereo audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(stereo_data).tobytes())
-
-print(f"Audio exported as {output_file}")
+playback.play(data)

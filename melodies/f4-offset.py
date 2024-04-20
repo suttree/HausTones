@@ -55,3 +55,6 @@ data = effect.shimmer(data, 2.4)
 
 print("Playing audio...")
 playback.play(data)
+
+from musical.utils import save_normalized_audio
+save_normalized_audio(data)

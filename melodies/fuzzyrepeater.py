@@ -30,7 +30,7 @@ duration = 4.286 # 140bpm
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([1, 2, 3]))).note
 key = Note(key_note)
 
 #scales = ['chromatic','major', 'pentatonicmajor']
@@ -43,14 +43,10 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-#key = Note('C')
-#scale = Scale(key, 'pentatonicmajor')
-#notes = notes_from_scale(key.note, scale.intervals)
-
 # fuzzy repeater
 for i in range(iterations):
     for j, note in enumerate(notes[::-1]):
-        timeline.add(time+0.075*j, Hit(Note(note), duration))
+        timeline.add(time+0.075*j+1, Hit(Note(note), duration))
     time += duration
 
     # Ascending & desending xover
@@ -74,29 +70,12 @@ for i in range(iterations):
 
 print("Rendering audio...")
 data = timeline.render()
+effect.shimmer(data, 0.24)
+effect.tremolo(data, 0.1)
+effect.reverb(data, 0.8, 0.025)
 
-# Normalize audio data
-max_amplitude = np.max(np.abs(data))
-scaling_factor = 1.0 / max_amplitude
-normalized_data = data * scaling_factor
+data = data * 0.1
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-# Apply effects
-normalized_data = effect.shimmer(normalized_data, 0.24)
-normalized_data = effect.tremolo(normalized_data, 0.1)
-normalized_data = effect.reverb(normalized_data, 0.8, 0.025)
-
-now = datetime.now()
-timestamp = now.strftime("%Y%m%d_%H%M%S")
-
-current_script_filename = os.path.basename(__file__)
-
-# mono
-output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
-sample_rate = 44100
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(1)  # Mono audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(normalized_data).tobytes())
-
-print(f"Audio exported as {output_file}")
+playback.play(data)
