@@ -5,7 +5,6 @@ venv/bin/python3.12 melodies/droppedd.py;
 venv/bin/python3.12 melodies/vibes.py 
 venv/bin/python3.12 melodies/lullaby.py; 
 venv/bin/python3.12 melodies/oudh.py; 
-venv/bin/python3.12 melodies/repeatallafterfuzz.py;
 venv/bin/python3.12 melodies/repeatofuzzder.py;
 
 # Scales get weird outside of morning an evening?
