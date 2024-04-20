@@ -1,5 +1,24 @@
-import random
+import random,os
+from datetime import datetime
+import soundfile as sf
+import numpy as np
 
+def save_normalized_audio(data, samplerate=44100, current_script_filename=''):
+    # Save the rendered audio to a temporary file
+    temp_file = "tmp/temp_audio.wav"
+    sf.write(temp_file, data, samplerate=samplerate)
+
+    audio, sr = sf.read(temp_file)
+    normalized_audio = audio / np.max(np.abs(audio))
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    output_file = f"output/{current_script_filename}_output_{timestamp}.wav"
+
+    sf.write(output_file, normalized_audio, samplerate=sr)
+
+    print(f"Audio exported as {output_file}")
+
+    return output_file
+    
 def notes_from_scale(starting_note, intervals, octave=4):
     starting_note = starting_note[0].upper()
     

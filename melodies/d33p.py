@@ -10,7 +10,7 @@
 # TODO: test the asc and desc parts individually, get them working
 # TODO: export to wav for playback later
 
-import os
+import os, math
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -22,66 +22,46 @@ from datetime import datetime
 
 pp = pprint.PrettyPrinter(indent=4)
 
-# Config vars
-time = 0.0  # Keep track of current note placement time in seconds
+time = 0.0 
 offset = 0.0
 iterations = 5
-duration = 2.24
+duration = 4.24
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1, 2]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 
-#scales = ['chromatic']
-scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
-
+scales = ['chromatic', 'major', 'pentatonicmajor', 'mixolydian']
+alt_scales = ['japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 2)
+notes = extended_notes_from_scale(key.note, scale.intervals, 3)
 notes_with_intervals = add_intervals_to_notes(notes)
-#pp.pprint(key)
-#pp.pprint(r_scale)
 
-# Descending arppegio
 for x in range(1):
-  #pp.pprint(x)
-  for i in range(16):
+  for i in range(8):
     for j, note in enumerate(notes[::-1]):
-        #pp.pprint(note)
-        inc = 0.025 * j * i
-        #if inc > 4.0: inc = add_random_float(4.0, -0.4, 0.4)
+        inc = 0.025 * math.sin(j+1) * i+1
         timeline.add(time + inc, Hit(Note(note), duration + inc))
-        #pp.pprint(inc)
+        if i % 5 == 0:
+          timeline.add(time + inc, Hit(Note(note), duration + inc - 0.25))
 
-    duration += 0.276 # or inc?
+    #duration += math.sin(0.276) * (i+1)
+    duration += 0.246 - math.sin(i)/2
+    pp.pprint(duration)
+
+    if duration >+ 14.4:
+      duration = 4.281 + math.cos(1.40)/2
     time += duration
 
 print("Rendering audio...")
 data = timeline.render()
+data = effect.modulated_delay(data, data, 0.002, 0.023)
+data = effect.reverb(data, 0.8, 0.425)
 
-# Normalize audio data
-max_amplitude = np.max(np.abs(data))
-scaling_factor = 1.0 / max_amplitude
-normalized_data = data * scaling_factor
+data = data * 0.1
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-# Apply effects
-normalized_data = effect.tremolo(normalized_data, freq=1.7)
-normalized_data = effect.modulated_delay(normalized_data, normalized_data, 0.02, 0.003)
-normalized_data = effect.reverb(normalized_data, 0.8, 0.425)
-
-now = datetime.now()
-timestamp = now.strftime("%Y%m%d_%H%M%S")
-
-current_script_filename = os.path.basename(__file__)
-
-# mono
-output_file = f"{current_script_filename}_output_mono_{timestamp}.wav"
-sample_rate = 44100
-with wave.open(output_file, 'wb') as wav_file:
-    wav_file.setnchannels(1)  # Mono audio
-    wav_file.setsampwidth(2)  # 2 bytes per sample (16-bit)
-    wav_file.setframerate(sample_rate)
-    wav_file.writeframes(playback.encode.as_int16(normalized_data).tobytes())
-
-print(f"Audio exported as {output_file}")
+playback.play(data)

@@ -16,6 +16,13 @@ dtparam=audio=off
 dtoverlay=hifiberry-dac
 gpio=25=op,dh
 
+## Use
+source venv/bin/activate
+pip install -r requirements.txt
+pip install --upgrade setuptools
+source venv/bin/activate
+venv/bin/python3.12 melodies/lullaby.py 
+
 ## todo
 
 - controller script
