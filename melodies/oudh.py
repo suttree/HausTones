@@ -80,7 +80,7 @@ time += duration
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=1.7)
-data = effect.modulated_delay(data, data, 0.01, 0.002)
+#data = effect.modulated_delay(data, data, 0.01, 0.002)
 data = effect.reverb(data, 0.8, 0.525)
 
 data = data * 0.1
