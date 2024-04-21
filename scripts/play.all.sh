@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the directory containing the .wav files
-music_dir="post"
+music_dir="../output/"
 
 # Get the current datetime timestamp
 timestamp=$(date +%Y%m%d_%H%M%S)
