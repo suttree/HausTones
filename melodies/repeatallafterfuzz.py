@@ -73,10 +73,10 @@ print("Rendering audio...")
 data = timeline.render()
 data = effect.shimmer(data, 0.24)
 data = effect.tremolo(data, 0.1)
-data = effect.reverb(data, 0.8, 0.025)
+#data = effect.reverb(data, 0.8, 0.025)
 
 data = data * 0.1
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
