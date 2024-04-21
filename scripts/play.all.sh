@@ -1,21 +1,22 @@
 #!/bin/bash
 
-# Set the directory containing the .wav files
-music_dir="../output/"
+# Set the path to the "output" folder
+output_folder="output"
 
-# Get the current datetime timestamp
-timestamp=$(date +%Y%m%d_%H%M%S)
+# Get an array of all the .wav files in the "output" folder
+wav_files=("$output_folder"/*.wav)
 
-# Create the playlist file with a random order of .wav files
-playlist_file="playlist_${timestamp}.txt"
-find "$music_dir" -type f -name "*.wav" | sort -R > "$playlist_file"
+# Get the total number of .wav files
+num_files=${#wav_files[@]}
 
-# Rpi
-sort -Rsort -R  "$playlist_file" | while IFS= read -r line; do
-    aplay "$line"
+# Shuffle the array randomly
+shuffled_files=( $(shuf -e "${wav_files[@]}") )
+
+# Play the shuffled .wav files using aplay
+for file in "${shuffled_files[@]}"
+do
+  echo "Playing: $file"
+  aplay "$file"
 done
 
-# OSX
-sort -Rsort -R  "$playlist_file" | while IFS= read -r line; do
-    afplay "$line"
-done
+echo "All files have been played."
