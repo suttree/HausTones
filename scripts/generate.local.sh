@@ -6,6 +6,8 @@ venv/bin/python3.12 melodies/vibes.py
 venv/bin/python3.12 melodies/lullaby.py; 
 venv/bin/python3.12 melodies/oudh.py; 
 venv/bin/python3.12 melodies/repeatofuzzder.py;
+venv/bin/python3.12 melodies/genevive.py;
+venv/bin/python3.12 melodies/four-four.py;
 
 # Scales get weird outside of morning an evening?
 #4am to 9am normal
