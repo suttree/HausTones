@@ -2,17 +2,63 @@ import random,os
 from datetime import datetime
 import soundfile as sf
 import numpy as np
+from scipy.signal import butter, lfilter
 
-def save_normalized_audio(data, samplerate=44100, current_script_filename=''):
+def butter_bandpass(lowcut, highcut, fs, order=5):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype='band')
+    return b, a
+
+def butter_bandpass_filter(data, lowcut, highcut, fs, order=5):
+    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data)
+    return y
+
+def compress_audio(audio, threshold=-20, ratio=3, attack=5, release=50):
+    # Convert threshold to linear scale
+    threshold_linear = 10 ** (threshold / 20)
+    
+    # Apply compression
+    compressed_audio = np.zeros_like(audio)
+    gain = 1.0
+    for i in range(len(audio)):
+        if np.abs(audio[i]) > threshold_linear:
+            gain = threshold_linear / (ratio * np.abs(audio[i]))
+        else:
+            gain = 1.0
+        gain = max(gain, compressed_audio[i-1] * np.exp(-1 / (release * 44100)))
+        gain = min(gain, compressed_audio[i-1] * np.exp(1 / (attack * 44100)))
+        compressed_audio[i] = audio[i] * gain
+    
+    return compressed_audio
+
+def save_normalized_audio(data, samplerate=44100, current_script_filename='utils.py'):
     # Save the rendered audio to a temporary file
-    temp_file = "tmp/temp_audio.wav"
+    temp_file = "output/temp_audio.wav"
     sf.write(temp_file, data, samplerate=samplerate)
 
+    # Load the audio file with soundfile
     audio, sr = sf.read(temp_file)
-    normalized_audio = audio / np.max(np.abs(audio))
+
+    # Apply bandpass filter to limit extreme frequencies
+    lowcut = 100  # Hz
+    highcut = 10000  # Hz
+    filtered_audio = butter_bandpass_filter(audio, lowcut, highcut, sr)
+
+    # Apply audio compression
+    compressed_audio = compress_audio(filtered_audio)
+
+    # Normalize the audio
+    normalized_audio = compressed_audio / np.max(np.abs(compressed_audio))
+
+    # Generate the output file name with the script name and timestamp
+    #”current_script_filename = os.path.basename(__file__)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_file = f"output/{current_script_filename}_output_{timestamp}.wav"
 
+    # Save the normalized audio to the output file
     sf.write(output_file, normalized_audio, samplerate=sr)
 
     print(f"Audio exported as {output_file}")
