@@ -16,7 +16,7 @@ from musical.audio import effect, playback
 from timeline import Hit, Timeline
 from musical.utils import notes_from_scale, extended_notes_from_scale, add_intervals_to_notes, add_random_float
 import pprint, random
-import wave, os
+import wave, os, math
 import numpy as np
 from datetime import datetime
 
@@ -30,7 +30,7 @@ duration = 6.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 
 #scales = ['chromatic']
@@ -51,7 +51,7 @@ for n in range(4):
       if i > 2:
         # add an incidental melody
         interval = 1.0
-        timeline.add(time + 0.25 * j*i + interval, Hit(Note(note[0]), duration))
+        timeline.add(time + 0.25 * j*i * math.cos(interval), Hit(Note(note[0]), duration))
         
       timeline.add(time + 0.25 * j*i, Hit(Note(note[0]), duration))
 

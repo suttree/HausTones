@@ -59,7 +59,7 @@ for x in range(1):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.modulated_delay(data, data, 0.002, 0.023)
+#data = effect.modulated_delay(data, data, 0.002, 0.023)
 data = effect.reverb(data, 0.8, 0.425)
 
 data = data * 0.1
