@@ -60,14 +60,14 @@ for a in range(2):
           timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), note[1])) 
         if i > 4:
           timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), note[1]))
-  duration += math.cos(a)
+  duration -= math.cos(a)
 
   #time += measure_duration
 
 print("Rendering audio...")
 data = timeline.render()
-#data = effect.tremolo(data, freq=1.7)
-data = effect.shimmer(data, 0.24)
+data = effect.tremolo(data, freq=0.7)
+data = effect.shimmer(data, 0.34)
 
 data = data * 0.1
 from musical.utils import save_normalized_audio
