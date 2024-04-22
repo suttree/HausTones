@@ -28,22 +28,49 @@ measure_duration = 4.826
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
-scale = Scale(key, 'pentatonicmajor')
+
+scales = ['pentatonicmajor', 'major', 'mixolydian']
+#scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
+
+r_scale = random.choice(scales)
+scale = Scale(key, r_scale)
 notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 notes_with_intervals = add_intervals_to_notes(notes)
+pp.pprint(key)
+pp.pprint(r_scale)
+for a in range(2):
+  for n in range(4):
+    for j, note in enumerate(notes_with_intervals[::3]):
+        timeline.add(time, Hit(Note(note[0]), measure_duration))
 
-for note in enumerate(notes_with_intervals):
-    timeline.add(time, Hit(Note(note[0][0]), note[0][1]))
+    for i in range(8):
+      for j, note in enumerate(notes_with_intervals):
+        timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]), note[1]))
+        if i > 2:
+          timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
+        if i > 4:
+          timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
+
+      # lullaby
+      for j, note in enumerate(notes_with_intervals[::4]):
+        timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]), duration))
+        if i > 2:
+          timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), note[1])) 
+        if i > 4:
+          timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), note[1]))
+  duration -= math.cos(a)
+
+  #time += measure_duration
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=0.7)
 data = effect.shimmer(data, 0.34)
 
-#data = data * 0.1
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+data = data * 0.1
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
