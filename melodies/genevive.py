@@ -124,4 +124,4 @@ data = data * 0.1
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100)
 
-#playback.play(data)
+playback.play(data)
