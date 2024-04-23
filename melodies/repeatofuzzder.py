@@ -58,7 +58,7 @@ for i in range(iterations):
 print("Rendering audio...")
 data = timeline.render()
 data = effect.shimmer(data, 0.24)
-data = effect.tremolo(data, 0.1)
+#data = effect.tremolo(data, 0.1)
 #data = effect.reverb(data, 0.8, 0.025)
 
 data = data * 0.1

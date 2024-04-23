@@ -114,11 +114,11 @@ for i in range(2):
 ## And breathe....
 #time += duration * 2.4
 
-
-
 print("Rendering audio...")
 data = timeline.render()
 data = effect.shimmer(data, 0.024)
+data = effect.tremolo(data, freq=0.4)
+data = effect.reverb(data, 0.8, 0.0525)
 
 data = data * 0.1
 from musical.utils import save_normalized_audio
