@@ -43,18 +43,24 @@ def save_normalized_audio(data, samplerate=44100, current_script_filename='utils
     audio, sr = sf.read(temp_file)
 
     # Apply bandpass filter to limit extreme frequencies
-    lowcut = 100  # Hz
-    highcut = 10000  # Hz
+    lowcut = 100 # Hz
+    highcut = 10000 # Hz
     filtered_audio = butter_bandpass_filter(audio, lowcut, highcut, sr)
 
     # Apply audio compression
     compressed_audio = compress_audio(filtered_audio)
 
     # Normalize the audio
-    normalized_audio = compressed_audio / np.max(np.abs(compressed_audio))
+    max_val = np.max(np.abs(compressed_audio))
+    epsilon = 1e-8  # Small value to avoid division by zero
+
+    if max_val < 1e-6:
+        print("Warning: Audio signal is very weak. Skipping normalization.")
+        normalized_audio = compressed_audio
+    else:
+        normalized_audio = compressed_audio / (max_val + epsilon)
 
     # Generate the output file name with the script name and timestamp
-    #”current_script_filename = os.path.basename(__file__)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_file = f"output/{current_script_filename}_output_{timestamp}.wav"
 
@@ -62,7 +68,6 @@ def save_normalized_audio(data, samplerate=44100, current_script_filename='utils
     sf.write(output_file, normalized_audio, samplerate=sr)
 
     print(f"Audio exported as {output_file}")
-
     return output_file
     
 def notes_from_scale(starting_note, intervals, octave=4):

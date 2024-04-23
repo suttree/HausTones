@@ -11,6 +11,7 @@ venv/bin/python3.12 melodies/four-four.py;
 venv/bin/python3.12 melodies/hoot.py;
 venv/bin/python3.12 melodies/genevive.py;
 venv/bin/python3.12 melodies/beats.py;
+venv/bin/python3.12 melodies/tune.py;
 
 # Scales get weird outside of morning an evening?
 #4am to 9am normal
