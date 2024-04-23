@@ -63,7 +63,7 @@ for n in range(4):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer(data, 0.24)
+data = effect.shimmer(data, 0.234)
 
 data = data * 0.1
 from musical.utils import save_normalized_audio
