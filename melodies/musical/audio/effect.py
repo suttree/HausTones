@@ -103,34 +103,51 @@ def reverb(data, delay=50, decay=0.5, wet=0.5, rate=44100):
     
     return (data * (1 - wet)) + (out * wet)
 
-def pan(data, length, rate=44100, pan_freq=0.5):
+def pan(data, pan_amount=0.5):
+    ''' Panning effect
     '''
-    Apply a slow panning effect from left to right to the audio data.
+    # Validate pan_amount to be in range [-1, 1]
+    pan_amount = max(-1, min(pan_amount, 1))
+
+    # Calculate left and right channel gains based on pan_amount
+    left_gain = np.sqrt(0.5 - pan_amount / 2)
+    right_gain = np.sqrt(0.5 + pan_amount / 2)
+
+    # Apply panning
+    left_channel = data * left_gain
+    right_channel = data * right_gain
+
+    # Stack left and right channels horizontally
+    panned_audio = np.column_stack((left_channel, right_channel))
+
+    return panned_audio
+    
+def simple_pan(data, pan_amount=0.5):
+    ''' Simple Panning effect
     '''
-    # Generate a sine wave for panning
-    t = np.arange(len(data)) / rate
-    pan_wave = np.sin(2 * np.pi * pan_freq * t)
-    
-    # Normalize the panning wave between 0 and 1
-    pan_wave = (pan_wave + 1) / 2
-    
-    # Create left and right channel multipliers
-    left_mult = 1 - pan_wave
-    right_mult = pan_wave
-    
-    # Apply panning to the audio data
-    left_channel = data * left_mult.reshape(-1, 1)
-    right_channel = data * right_mult.reshape(-1, 1)
-    
-    # Combine the left and right channels
-    panned_data = np.hstack((left_channel, right_channel))
-    
-    return panned_data
-    
-def panned_tremolo(data, freq, dry=0.5, wet=0.5, rate=44100, pan_freq=0.5):
+    # Validate pan_amount to be in range [0, 1]
+    pan_amount = max(0, min(pan_amount, 1))
+
+    # Split the audio into left and right channels
+    left_channel = data * (1 - pan_amount)
+    right_channel = data * pan_amount
+
+    # Stack left and right channels horizontally
+    panned_audio = np.column_stack((left_channel, right_channel))
+
+    return panned_audio
+
+def simple_delay(data, delay_samples=1000, feedback=0.5, wet=0.5):
+    ''' Simple Delay effect
     '''
-    Apply a tremolo effect with slow panning from left to right to the audio data.
-    '''
-    tremolo_data = tremolo(data, freq, dry, wet, rate)
-    panned_data = pan(tremolo_data, len(data) / rate, rate, pan_freq)
-    return panned_data
+    # Create an empty array to store delayed audio
+    delayed_audio = np.zeros_like(data)
+
+    # Apply delay effect
+    for i in range(delay_samples, len(data)):
+        delayed_audio[i] = data[i - delay_samples] + feedback * delayed_audio[i - delay_samples]
+
+    # Mix original and delayed audio
+    output_audio = (1 - wet) * data + wet * delayed_audio
+
+    return output_audio

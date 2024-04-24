@@ -53,8 +53,7 @@ data = effect.shimmer(data, 2.4)
 # Reduce volume to 25%
 #data = data * 0.25
 
-print("Playing audio...")
-playback.play(data)
-
 from musical.utils import save_normalized_audio
-save_normalized_audio(data)
+save_normalized_audio(data, 44100, os.path.basename(__file__))
+
+playback.play(data)
