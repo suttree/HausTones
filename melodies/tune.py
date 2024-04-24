@@ -32,7 +32,7 @@ notesi = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-for j in range(2):
+for j in range(8):
   timeline.add(time + eighth_note, Hit(Note(notes[2]), duration))
   timeline.add(time + eighth_note, Hit(Note(notes[-2]), duration))
   timeline.add(time + eighth_note, Hit(Note(notes[-4]), duration))

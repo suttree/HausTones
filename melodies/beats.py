@@ -22,7 +22,7 @@ scale = Scale(key, 'pentatonicmajor')
 notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 notes_with_intervals = add_intervals_to_notes(notes)
 
-for i in range(2):
+for i in range(8):
   for note in enumerate(notes_with_intervals):
       n = note[1]
       timeline.add(time, Hit(Note(n[0]), measure_duration))
@@ -32,6 +32,7 @@ for i in range(2):
         timeline.add(time, Hit(Note(n[0]), measure_duration))
 
       time += duration + math.cos(n[1])
+  time += measure_duration
 
 print("Rendering audio...")
 data = timeline.render()
