@@ -62,8 +62,7 @@ data = timeline.render()
 #data = effect.modulated_delay(data, data, 0.002, 0.023)
 data = effect.reverb(data, 0.8, 0.425)
 
-data = data * 0.1
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-#playback.play(data)
+playback.play(data)
