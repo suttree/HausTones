@@ -43,7 +43,6 @@ pp.pprint(r_scale)
 # Descending arppegio
 for i in range(7):
   for j, note in enumerate(notes[::-1]):
-      pp.pprint(note)
       timeline.add(time + 0.25 * j*i, Hit(Note(note), duration))
       for x in range(7):
         timeline.add(time + 0.25 * j*i*x, Hit(Note(note), duration/2))
