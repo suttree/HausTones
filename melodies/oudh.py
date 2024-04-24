@@ -57,15 +57,16 @@ scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
 notes_with_intervals = add_intervals_to_notes(notes)
-#pp.pprint(key)
-#pp.pprint(r_scale)
+
+pp.pprint(key)
+pp.pprint(r_scale)
 
 # And breathe....
 time += duration * 2.2
 
 for i in range(30):
     for j, note in enumerate(notes_with_intervals):
-        interval = add_random_float(note[1], -0.25, 4.75)
+        interval = note[1] #add_random_float(note[1], -0.25, 4.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
 

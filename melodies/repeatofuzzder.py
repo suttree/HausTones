@@ -26,6 +26,7 @@ r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 notes = extended_notes_from_scale(key.note, scale.intervals, 3)
 notes_with_intervals = add_intervals_to_notes(notes)
+
 pp.pprint(key)
 pp.pprint(r_scale)
 
