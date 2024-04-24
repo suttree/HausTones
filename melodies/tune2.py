@@ -29,9 +29,11 @@ sixteenth_note = duration/16
 timeline = Timeline()
 notes = notes_from_scale(key.note, scale.intervals)
 notesi = add_intervals_to_notes(notes)
+
 pp.pprint(scale)
 pp.pprint(key)
 pp.pprint(r_scale)
+
 for j in range(6):  
   timeline.add(time + sixteenth_note, Hit(Note(notes[2]), duration))
   timeline.add(time + sixteenth_note, Hit(Note(notes[4]), duration))
