@@ -40,7 +40,7 @@ for j in range(8):
   timeline.add(time + sixteenth_note, Hit(Note(notes[2]), duration))
   timeline.add(time + sixteenth_note, Hit(Note(notes[2]), duration))
   
-  time += duration * j * math.sin(time)
+  time += duration 
 
   timeline.add(time + eighth_note, Hit(Note(notesi[0][0]), duration))
   timeline.add(time + eighth_note, Hit(Note(notesi[0][0]), duration))
@@ -62,7 +62,7 @@ for j in range(8):
   timeline.add(time + sixteenth_note, Hit(Note(notes[4]), duration))  
   timeline.add(time + sixteenth_note, Hit(Note(notes[4]), duration))  
 
-  time += duration * j * math.sin(time)
+  time += duration * math.sin(j)
   
   for k, note in enumerate(notes[::2]):
     if k % 2 == 0:
@@ -75,10 +75,10 @@ for j in range(8):
   time += duration + 0.25
 
 data = timeline.render()
+data = effect.simple_pan(data)
 data = effect.shimmer(data, 0.24)
-data = effect.flanger(data, freq=0.025)
-data = effect.tremolo(data, freq=0.04)
 data = effect.reverb(data, 0.8, 0.425)
+data = effect.simple_delay(data)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
