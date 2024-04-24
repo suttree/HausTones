@@ -8,7 +8,7 @@ pp = pprint.PrettyPrinter(indent=4)
 
 key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
 key = Note(key_note)
-scales = ['japanese', 'locrian', 'ionian', 'mixolydian', 'phrygian', 'chromatic']
+scales = ['japanese', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 notes = notes_from_scale(key.note, scale.intervals, 4)

@@ -31,7 +31,7 @@ key = Note(key_note)
 scales = ['ionian', 'phrygian', 'major']
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 3)
+notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 
 pp.pprint(key)
 pp.pprint(r_scale)
@@ -41,27 +41,28 @@ for i in range(iterations):
   timeline.add(time + sixteenth_note, Hit(Note(notes[2]), duration))
 
   timeline.add(time + eighth_note, Hit(Note(notes[-2]), duration))
-  timeline.add(time + eighth_note, Hit(Note(notes[-3]), duration))
+  timeline.add(time + eighth_note, Hit(Note(notes[-5]), duration))
 
-  timeline.add(time + quarter_note, Hit(Note(notes[2]), duration))
-  timeline.add(time + quarter_note, Hit(Note(notes[3]), duration))
+  timeline.add(time + quarter_note, Hit(Note(notes[0]), duration))
+  timeline.add(time + quarter_note, Hit(Note(notes[4]), duration))
 
   timeline.add(time + half_note, Hit(Note(notes[0]).shift_down_octave(1), duration))
   
   for j in range(i):
-    if j > 2:
-      x = 2
-    else:
-      x = j
-    timeline.add(time + three_quarter_note + 0.01, Hit(Note(notes[0]).shift_down_octave(x), duration))
+    x = j % 2
+    timeline.add(time + three_quarter_note, Hit(Note(notes[0]).shift_down_octave(x), duration))
+    timeline.add(time + three_quarter_note, Hit(Note(notes[5]).shift_down_octave(x), duration))
   
-  time += duration + math.cos(duration)
+  time += duration + math.cos(duration) * math.sin(i+1)
   
   # melodie
-  for j, note in enumerate(notes[2::-2]):
+  for j, note in enumerate(notes[0::-2]):
     timeline.add(time + eighth_note, Hit(Note(note), duration*2))
-  for j, note in enumerate(notes[4::]):
+  for j, note in enumerate(notes[5::3]):
     timeline.add(time + eighth_note, Hit(Note(note), duration))
+
+  timeline.add(time + sixteenth_note, Hit(Note(notes[3]), duration))
+  timeline.add(time + sixteenth_note/2, Hit(Note(notes[5]), duration))
 
   time += duration + math.cos(duration)
 time += duration + math.sin(duration)
@@ -72,8 +73,6 @@ data = timeline.render()
 data = effect.simple_delay(data, 500, 0.2, 1.77)
 data = effect.shimmer(data, 0.234)
 data = effect.reverb(data, 0.8, 0.525)
-data = effect.modulated_delay(data, data, 0.01, 0.002)
-data = effect.simple_pan(data, 0.8)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
