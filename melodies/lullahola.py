@@ -64,7 +64,6 @@ data = timeline.render()
 #data = effect.tremolo(data, freq=1.7)
 data = effect.shimmer(data, 0.16)
 
-data = data * 0.1
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
