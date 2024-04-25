@@ -163,3 +163,4 @@ cython_debug/
 *.sw*
 .DS_Store
 post/*
+tmp/temp_audio.wav
