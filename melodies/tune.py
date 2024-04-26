@@ -6,7 +6,7 @@ from musical.utils import notes_from_scale, extended_notes_from_scale, add_inter
 import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([1, 2]))).note
 key = Note(key_note)
 scales = ['major', 'pentatonicmajor', 'japanese', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 r_scale = random.choice(scales)

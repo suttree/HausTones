@@ -27,7 +27,7 @@ duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 
 #scales = ['chromatic']
