@@ -18,7 +18,7 @@ increment = math.sin(0.1975)
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 
 scales = ['major', 'pentatonicmajor']
