@@ -17,9 +17,11 @@ play_shuffled_files() {
     # Play the shuffled .wav files using aplay
     for file in "${shuffled_files[@]}"
     do
-	amixer sset 'Master' 50%
+        amixer sset 'Master' 50%
         echo "Playing: $file"
         aplay "$file"
+        sleep_duration=$((RANDOM % 61 + 30))
+        sleep $sleep_duration
     done
 }
 
