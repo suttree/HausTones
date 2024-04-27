@@ -42,7 +42,7 @@ notes_with_intervals = add_intervals_to_notes(notes)
 for x in range(1):
   for i in range(8):
     for j, note in enumerate(notes[::-1]):
-        inc = 0.025 * math.sin(j+1) * i+1
+        inc = 0.025 * math.sin(j+1) * i+1``
         if j % 2 == 0:
           inc += math.cos(j*0.25)
         timeline.add(time + inc, Hit(Note(note), duration + inc))
@@ -50,8 +50,8 @@ for x in range(1):
           timeline.add(time + inc, Hit(Note(note), duration + inc - 0.25))
 
     #duration += math.sin(0.276) * (i+1)
-    duration += 0.246 - math.sin(i)/2
-    pp.pprint(duration)
+    duration += 0.246 - math.sin(i)/2``
+    pp.pprint(duration))
 
     if duration >+ 14.4:
       duration = 4.281 + math.cos(1.40)/2
