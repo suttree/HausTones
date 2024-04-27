@@ -30,28 +30,29 @@ duration = 4.286 # 140bpm
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1, 2, 3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2,3]))).note
 key = Note(key_note)
 
 #scales = ['chromatic','major', 'pentatonicmajor']
-scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
+scales = ['major', 'pentatonicmajor', 'ionian', 'phrygian']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 2)
+notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
 # fuzzy repeater
 for i in range(iterations):
-    for j, note in enumerate(notes[::-1]):
-        timeline.add(time+0.075*j+1, Hit(Note(note), duration))
-    time += duration
+    # a classic waterfall/cascade, removed for now though
+    #for j, note in enumerate(notes[::-1]):
+    #    timeline.add(time+0.075*j+1, Hit(Note(note), duration))
+    #time += duration
 
     # Ascending & desending xover
     for j, note in enumerate(notes):
-      timeline.add(time + 0.25*j*2, Hit(Note(note), duration*2))
+      timeline.add(time + 0.25*j*2, Hit(Note(note), duration))
     # Descending arppegio
     for j, note in enumerate(notes[::-1]):
       timeline.add(time + 0.25*j*2, Hit(Note(note), duration))
@@ -65,7 +66,7 @@ for i in range(iterations):
 
     # Cavernous ascender
     for j, note in enumerate(notes):
-        timeline.add(time+0.95*j, Hit(Note(note), duration*2))
+        timeline.add(time+0.95*j, Hit(Note(note), duration))
     time += duration
 
 print("Rendering audio...")
