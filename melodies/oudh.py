@@ -1,16 +1,4 @@
-# Je n'est vivre
-
-# To keep: oudh, pppony, Bb-asc/desc, slow
-# To run: venv/bin/python3.12 melodies/stepping.py
-
-# todo: use Ara melodies?
-# todo: more notes in notes_from_scale
-# todo: add interval to notes should pass a param that starts at 0.0 and increases (0.1, 0.2) etc, incl option to add noise to the increments)
-
-# TODO: test the asc and desc parts individually, get them working
-# TODO: export to wav for playback later
-
-import os
+import os, math
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -27,27 +15,30 @@ duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0, 1, 2, 3, 4]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 
-#scales = ['chromatic']
-scales = ['major', 'pentatonicmajor', 'japanese', 'locrian', 'ionian', 'mixolydian', 'phrygian']
+scales = ['major', 'pentatonicmajor']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
-notes_with_intervals = add_intervals_to_notes(notes)
-#pp.pprint(key)
-#pp.pprint(r_scale)
+random.shuffle(notes)
+notesi = add_intervals_to_notes(notes)
+#random.shuffle(notesi)
+
+pp.pprint(key)
+pp.pprint(r_scale)
+pp.pprint(notes)
 
 # Ascending arpeggio to open
 for j, note in enumerate(notes):
     timeline.add(time + 0.40 * j, Hit(Note(note), duration))
 time += duration
     
-for i in range(80):
-    for j, note in enumerate(notes_with_intervals):
+for i in range(20):
+    for j, note in enumerate(notesi):
         interval = add_random_float(note[1], -1.24, 2.72)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
@@ -56,27 +47,28 @@ r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
-notes_with_intervals = add_intervals_to_notes(notes)
+notesi = add_intervals_to_notes(notes)
 
 pp.pprint(key)
 pp.pprint(r_scale)
+pp.pprint(notes)
 
 # And breathe....
-time += duration * 2.2
+time += duration * 2.2 * math.sin(time)
 
 for i in range(30):
-    for j, note in enumerate(notes_with_intervals):
+    for j, note in enumerate(notesi):
         interval = note[1] #add_random_float(note[1], -0.25, 4.75)
         timeline.add(time + interval, Hit(Note(note[0]), duration))
     time += duration
 
 # And breathe....
-time += duration * 2.4
+time += duration * 2.4 * math.sin(i)
 
 # Descending arppegio to close
 for j, note in enumerate(notes[::-1]):
     timeline.add(time + 1.40 * j, Hit(Note(note), duration))
-time += duration
+time += duration * math.cos(duration)
 
 print("Rendering audio...")
 data = timeline.render()

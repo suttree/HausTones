@@ -30,10 +30,10 @@ duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([1, 2, 3]))).note
+key_note = Note( (random.choice(Note.NOTES),0)).note
 key = Note(key_note)
 
-scales = ['pentatonicmajor']
+scales = ['pentatonicmajor', 'phrygian', 'major']
 #scales = ['major', 'pentatonicmajor', 'japanese', 'diminished', 'locrian', 'ionian', 'mixolydian', 'phrygian']
 
 r_scale = random.choice(scales)
@@ -43,27 +43,37 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
+def play_chord(notes, duration):
+  pp.pprint(notes[0])
+  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
+  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
+  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
+  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
+                                   
 for n in range(4):
   for i in range(8):
     for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]), duration))
+      timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]), duration/2))
       if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
+        timeline.add(time + 2.00 * j*i*0.0027, Hit(Note(note[0]), duration/2))
+
+    play_chord(notes_with_intervals, duration * math.sin(time))
+
     # lullaby
     for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i+2, Hit(Note(note[0]), duration))
+      timeline.add(time + 0.25 * j*i+2, Hit(Note(note[0]), duration/2))
       if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration)) 
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration))
+        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration/2))
         
-    duration += 0.24 + math.sin(i)/2
+    duration += 0.2074
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer(data, 0.234)
+data = effect.shimmer_wobble(data, 2.234)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
