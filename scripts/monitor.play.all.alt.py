@@ -2,6 +2,7 @@ import os
 import random
 import time
 from pydub import AudioSegment
+from pydub.generators import silence
 
 # Set the path to the "output" folder
 output_folder = "output"
@@ -36,6 +37,12 @@ def play_shuffled_files():
         # Remove the temporary file
         os.remove(temp_file)
 
+        # Play 30 seconds of silent audio
+        silent_audio = silence(duration=30000)  # 30 seconds in milliseconds
+        silent_audio.export("silent.wav", format="wav")
+        os.system("aplay silent.wav")
+        os.remove("silent.wav")
+
         # Generate a random sleep duration between 30 and 90 seconds
         sleep_duration = random.randint(30, 90)
         print(f"Sleeping for {sleep_duration} seconds...")
@@ -58,4 +65,3 @@ while True:
 
     # Wait for 60 seconds before checking again
     time.sleep(60)
-
