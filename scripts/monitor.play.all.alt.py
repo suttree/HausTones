@@ -2,10 +2,13 @@ import os
 import random
 import time
 from pydub import AudioSegment
-from pydub.generators import silence
 
 # Set the path to the "output" folder
 output_folder = "output"
+
+# Function to generate silent audio
+def generate_silence(duration_ms):
+    return AudioSegment.silent(duration=duration_ms)
 
 # Function to play the shuffled .wav files
 def play_shuffled_files():
@@ -18,7 +21,7 @@ def play_shuffled_files():
     # Play the shuffled .wav files using aplay
     for file in wav_files:
         # Set the volume to 50%
-        os.system("amixer sset 'Master' 50%")
+        os.system("amixer sset 'Master' 75%")
         
         # Load the audio file
         audio = AudioSegment.from_wav(os.path.join(output_folder, file))
@@ -37,8 +40,8 @@ def play_shuffled_files():
         # Remove the temporary file
         os.remove(temp_file)
 
-        # Play 30 seconds of silent audio
-        silent_audio = silence(duration=30000)  # 30 seconds in milliseconds
+        # Generate 30 seconds of silent audio
+        silent_audio = generate_silence(30000)  # 30 seconds in milliseconds
         silent_audio.export("silent.wav", format="wav")
         os.system("aplay silent.wav")
         os.remove("silent.wav")
