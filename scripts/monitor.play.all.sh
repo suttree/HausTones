@@ -17,7 +17,7 @@ play_shuffled_files() {
     # Play the shuffled .wav files using aplay
     for file in "${shuffled_files[@]}"
     do
-        amixer sset 'Master' 50%
+        source "~/src/pele/.volume.py"
         echo "Playing: $file"
         aplay "$file"
         sleep_duration=$((RANDOM % 61 + 30))

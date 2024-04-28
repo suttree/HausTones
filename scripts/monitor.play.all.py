@@ -61,7 +61,7 @@ def play_shuffled_files():
 
 def is_within_time_range():
     current_hour = datetime.now().hour
-    return (6 <= current_hour < 9) or (18 <= current_hour < 23)
+    return (6 <= current_hour < 13) or (18 <= current_hour < 23)
 
 # Continuously monitor the "output" folder and play new files within the specified time ranges
 while True:
