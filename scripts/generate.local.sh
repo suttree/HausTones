@@ -9,9 +9,10 @@ venv/bin/python3.12 melodies/tune.py;
 venv/bin/python3.12 melodies/droppedd.py;
 venv/bin/python3.12 melodies/vibes4u.py;
 venv/bin/python3.12 melodies/genevive.py;
-venv/bin/python3.12 melodies/beats.p.:y;
-venv/bin/python3.12 melodies/tune/?2.py;
+venv/bin/python3.12 melodies/beats.py;
+venv/bin/python3.12 melodies/tune.py;
 venv/bin/python3.12 melodies/vibes2u.py;
+
 venv/bin/python3.12 melodies/lullaby.py;
 venv/bin/python3.12 melodies/vibes8u.py;
 venv/bin/python3.12 melodies/four-four.py;
