@@ -28,7 +28,7 @@ r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
 #notes = notes_from_scale(key.note, scale.intervals)
 notes = notes_from_scale(key.note, scale.intervals)
-notes = extended_notes_from_scale(key.note, scale.intervals, 3)
+notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 notes_with_intervals = add_intervals_to_notes(notes)
 
 pp.pprint(key)
@@ -39,7 +39,7 @@ for i in range(2):
   for i in range(2):
     localtime = time
     for j, note in enumerate(notes):
-        timeline.add(time + 0.40, Hit(Note(notes[0]), duration))
+        timeline.add(time + 0.40, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
     for j, note in enumerate(notes[::2]):
         timeline.add(localtime + 1.40, Hit(Note(note), duration))
         localtime += increment
@@ -57,7 +57,7 @@ for i in range(2):
   for i in range(2):
     localtime = time
     for j, note in enumerate(notes):
-        timeline.add(time + 0.40, Hit(Note(notes[0]), duration))
+        timeline.add(time + 0.40, Hit(Note(notes[0]), duration/2))
     for j, note in enumerate(notes[::2]):
         timeline.add(localtime + 1.40, Hit(Note(note), duration))
         localtime += increment

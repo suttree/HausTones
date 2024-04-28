@@ -37,21 +37,21 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 for i in range(iterations):
-  timeline.add(time + sixteenth_note, Hit(Note(notes[0]), duration))
+  timeline.add(time + sixteenth_note, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
   timeline.add(time + sixteenth_note, Hit(Note(notes[2]), duration))
 
   timeline.add(time + eighth_note, Hit(Note(notes[-2]), duration))
   timeline.add(time + eighth_note, Hit(Note(notes[-5]), duration))
 
-  timeline.add(time + quarter_note, Hit(Note(notes[0]), duration))
+  timeline.add(time + quarter_note, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
   timeline.add(time + quarter_note, Hit(Note(notes[4]), duration))
 
   timeline.add(time + half_note, Hit(Note(notes[0]).shift_down_octave(1), duration))
   
   for j in range(i):
     x = j % 2
-    timeline.add(time + three_quarter_note, Hit(Note(notes[0]).shift_down_octave(x), duration))
-    timeline.add(time + three_quarter_note, Hit(Note(notes[5]).shift_down_octave(x), duration))
+    timeline.add(time + three_quarter_note, Hit(Note(notes[0]).shift_up_octave(x), duration))
+    timeline.add(time + three_quarter_note, Hit(Note(notes[5]).shift_up_octave(x), duration))
   
   time += duration + math.cos(duration) * math.sin(i+1)
   
