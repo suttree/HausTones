@@ -44,30 +44,28 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 def play_chord(notes, duration):
-  pp.pprint(notes[0])
-  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
-  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
-  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
-  timeline.add(time, Hit(Note(note[0][0]), notes[0][1]))
+  timeline.add(time, Hit(Note(notes[0][0]).shift_up_octave(1), notes[0][1]))
+  timeline.add(time, Hit(Note(notes[2][0]).shift_up_octave(1), notes[2][1]))
+  timeline.add(time, Hit(Note(notes[4][0]).shift_up_octave(1), notes[4][1]))
                                    
 for n in range(4):
   for i in range(8):
     for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]), duration/2))
+      timeline.add(time + 0.25 * j*i+1, Hit(Note(note[0]).shift_up_octave(1), duration/2))
       if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration/2)) 
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i*0.0027, Hit(Note(note[0]), duration/2))
+        timeline.add(time + 2.00 * j*i*0.0027, Hit(Note(note[0]).shift_up_octave(1), duration/2))
 
     play_chord(notes_with_intervals, duration * math.sin(time))
 
     # lullaby
     for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i+2, Hit(Note(note[0]), duration/2))
+      timeline.add(time + 0.25 * j*i+2, Hit(Note(note[0]).shift_up_octave(1), duration/2))
       if i > 2:
-        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]), duration/2)) 
+        timeline.add(time + 1.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]), duration/2))
+        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2))
         
     duration += 0.2074
 

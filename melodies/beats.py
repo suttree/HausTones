@@ -16,7 +16,7 @@ measure_duration = 4.826
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([3]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([2]))).note
 key = Note(key_note)
 scale = Scale(key, 'pentatonicmajor')
 notes = extended_notes_from_scale(key.note, scale.intervals, 1)
@@ -25,11 +25,11 @@ notes_with_intervals = add_intervals_to_notes(notes)
 for i in range(8):
   for note in enumerate(notes_with_intervals):
       n = note[1]
-      timeline.add(time, Hit(Note(n[0]), measure_duration))
+      timeline.add(time, Hit(Note(n[0]).shift_up_octave(1), measure_duration))
 
       for note in enumerate(notes_with_intervals[::3]):
         n = note[1]
-        timeline.add(time, Hit(Note(n[0]), measure_duration))
+        timeline.add(time, Hit(Note(n[0]).shift_up_octave(1), measure_duration))
 
       time += duration + math.cos(n[1])
   time += measure_duration
