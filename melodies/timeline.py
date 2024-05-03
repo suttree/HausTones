@@ -134,7 +134,7 @@ class Hit:
             frequency *= 1 + np.random.normal(0, 0.01)
             #Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
             #Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
-            #Hit.cache[key] = bell_tone(frequency, self.duration)
+            #Hit.cache[key] = bell_tone(frequency, self.duration) #
 
             
             #if self.duration % 2 < 0.5:
