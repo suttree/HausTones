@@ -72,7 +72,7 @@ def ambient_note(freq, length, decay=0.998, rate=44100):
     
     return note
 
-def bell_tone(freq, length, decay=0.996, rate=44100):
+def bell_tone(freq, length, attack=0.01, decay=0.2, sustain_level=0.6, release=0.5, rate=44100):
     """
     Create a simple bell tone at the given frequency using a combination of sine waves.
     """
@@ -87,15 +87,29 @@ def bell_tone(freq, length, decay=0.996, rate=44100):
     # Combine the sine waves
     bell = fundamental + third_harmonic + fifth_harmonic
     
-    # Apply an exponential decay envelope
-    envelope = np.exp(-np.linspace(0, length, len(bell)) * (1 - decay))
+    # Apply ADSR envelope
+    envelope = adsr_envelope(len(bell), attack, decay, sustain_level, release, rate)
     bell *= envelope
     
     # Normalize the amplitude
     bell /= np.max(np.abs(bell))
     
     return bell
-    
+
+def adsr_envelope(length, attack, decay, sustain_level, release, rate=44100):
+    attack_samples = int(attack * rate)
+    decay_samples = int(decay * rate)
+    release_samples = int(release * rate)
+    sustain_samples = length - attack_samples - decay_samples - release_samples
+
+    envelope = np.zeros(length)
+    envelope[:attack_samples] = np.linspace(0, 1, attack_samples)
+    envelope[attack_samples:attack_samples+decay_samples] = np.linspace(1, sustain_level, decay_samples)
+    envelope[attack_samples+decay_samples:attack_samples+decay_samples+sustain_samples] = sustain_level
+    envelope[-release_samples:] = np.linspace(sustain_level, 0, release_samples)
+
+    return envelope
+
 class Hit:
     '''
     Rough draft of Hit class. Stores information about the hit and generates
@@ -115,7 +129,24 @@ class Hit:
         if key not in Hit.cache:
             #  Hit.cache[key] = source.pluck(self.note.frequency(), self.duration) # original
 
-            Hit.cache[key] = source.electronic_pluck(self.note.frequency(), self.duration) # VIBES
+            frequency = self.note.frequency()
+            # Apply a small random frequency variation
+            frequency *= 1 + np.random.normal(0, 0.01)
+            #Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
+            #Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
+            #Hit.cache[key] = bell_tone(frequency, self.duration)
+
+            
+            #if self.duration % 2 < 0.5:
+            #   Hit.cache[key] = bell_tone(self.note.frequency(), self.duration)
+            #elif self.duration % 2 < 1.0:
+            #  Hit.cache[key] = source.electronic_pluck(self.note.frequency(), self.duration) # VIBES
+            #else:
+            #    Hit.cache[key] = ambient_note(self.note.frequency(), self.duration)
+            
+            #Hit.cache[key] = ambient_note(self.note.frequency(), self.duration)
+            #Hit.cache[key] = bell_tone(self.note.frequency(), self.duration)
+            #Hit.cache[key] = source.electronic_pluck(self.note.frequency(), self.duration) # VIBES
 
             #Hit.cache[key] = source.solfeggio_pluck(self.note.frequency(), self.duration) # VIBES?!??!
             #Hit.cache[key] = source.soft_ambient_pluck(self.note.frequency(), self.duration)
@@ -167,5 +198,7 @@ class Timeline:
             
             # Add the rendered data to the output array
             out[index:index + len(data)] += data
+
+    out = np.interp(out, (out.min(), out.max()), (-1, 1))
 
     return out

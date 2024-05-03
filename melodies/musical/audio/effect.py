@@ -151,3 +151,90 @@ def simple_delay(data, delay_samples=1000, feedback=0.5, wet=0.5):
     output_audio = (1 - wet) * data + wet * delayed_audio
 
     return output_audio
+
+def distortion(data, gain=5.0, clip_level=0.8):
+    ''' Distortion effect
+    '''
+    clipped_data = np.tanh(data * gain) * clip_level
+    return clipped_data
+
+def echo(data, delay=0.5, decay=0.5, wet=0.5, rate=44100):
+    ''' Echo effect
+    '''
+    delay_samples = int(delay * rate)
+    output_audio = np.zeros_like(data)
+    
+    for i in range(len(data)):
+        output_audio[i] = data[i]
+        if i >= delay_samples:
+            output_audio[i] += decay * output_audio[i - delay_samples]
+    
+    return (data * (1 - wet)) + (output_audio * wet)
+    
+import soundfile as sf
+import resampy
+import numpy as np
+def pitch_shift(data, semitones, sample_rate=44100):
+    """
+    Apply pitch shifting to the audio data.
+    
+    :param data: numpy array representing the audio data
+    :param semitones: number of semitones to shift the pitch
+    :param sample_rate: sample rate of the audio data (default: 44100 Hz)
+    :return: pitch-shifted audio data
+    """
+    pitch_ratio = 2 ** (semitones / 12)
+
+    # Write the audio data to a temporary file
+    temp_file = 'temp_audio.wav'
+    sf.write(temp_file, data, sample_rate)
+
+    # Read the audio data from the temporary file
+    shifted_data, _ = sf.read(temp_file)
+
+    # Resample the audio data to apply pitch shifting
+    shifted_data = resampy.resample(shifted_data, sample_rate, int(sample_rate / pitch_ratio))
+
+    return shifted_data
+    
+import numpy as np
+from scipy.signal import lfilter
+def wah(data, freq=1000, q=10, gain=2, rate=44100):
+    ''' Wah effect
+    '''
+    freq = np.clip(freq, 0, rate / 2)
+    q = np.clip(q, 1, 100)
+    gain = np.clip(gain, 1, 10)
+
+    # Calculate filter coefficients
+    w0 = 2 * np.pi * freq / rate
+    alpha = np.sin(w0) / (2 * q)
+    b0 = (1 - np.cos(w0)) / 2
+    b1 = 1 - np.cos(w0)
+    b2 = b0
+    a0 = 1 + alpha
+    a1 = -2 * np.cos(w0)
+    a2 = 1 - alpha
+
+    # Apply filter
+    b = [b0 / a0, b1 / a0, b2 / a0]
+    a = [1, a1 / a0, a2 / a0]
+    output = lfilter(b, a, data)
+
+    # Apply gain
+    output *= gain
+
+    return output
+
+def autowah(data, freq_range=(500, 3000), rate=44100, lfo_freq=2, q=10, gain=2):
+    ''' Autowah effect
+    '''
+    min_freq, max_freq = freq_range
+    lfo = np.sin(2 * np.pi * lfo_freq * np.arange(len(data)) / rate)
+    freq = min_freq + (max_freq - min_freq) * (lfo + 1) / 2
+
+    output = np.zeros_like(data)
+    for i in range(len(data)):
+        output[i] = wah(data[i:i+1], freq=freq[i], q=q, gain=gain, rate=rate)
+
+    return output
