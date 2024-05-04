@@ -122,19 +122,22 @@ class Hit:
         self.note = note
         self.duration = duration
 
-    def render(self):
+    def render(self, style):
         # Render hit of "key" for "duration" amount of seconds
-        # XXX: Currently uses the ambient_note function
-        key = (str(self.note), self.duration)
+        key = (str(self.note), self.duration, style)
         if key not in Hit.cache:
             #  Hit.cache[key] = source.pluck(self.note.frequency(), self.duration) # original
 
             frequency = self.note.frequency()
             # Apply a small random frequency variation
             frequency *= 1 + np.random.normal(0, 0.01)
-            #Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
-            #Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
-            #Hit.cache[key] = bell_tone(frequency, self.duration) #
+            
+            if style == 1:
+              Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
+            elif style == 2:
+              Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
+            elif style == 3:
+              Hit.cache[key] = bell_tone(frequency, self.duration) # VURBZ
 
             
             #if self.duration % 2 < 0.5:
@@ -179,7 +182,7 @@ class Timeline:
         length = max(length, time + hit.length)
     return length
 
-  def render(self):
+  def render(self, style = 1):
     # Return timeline as audio array by rendering the hits
     total_duration = max(time + hit.duration for time, hits in self.hits.items() for hit in hits)
     length = int(total_duration * self.rate)
@@ -188,7 +191,7 @@ class Timeline:
     for time, hits in self.hits.items():
         index = int(time * self.rate)
         for hit in hits:
-            data = hit.render()
+            data = hit.render(style)
 
             # Ensure that the data array fits within the remaining space in out
             remaining_space = len(out) - index
