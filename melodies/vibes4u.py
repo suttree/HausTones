@@ -10,7 +10,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(4, 18)
+iterations = random.randint(8, 22)
 duration = 4.0
 timeline = Timeline()
 
@@ -72,6 +72,7 @@ data = timeline.render()
 
 data = effect.simple_delay(data, 500, 0.2, 1.77)
 data = effect.shimmer(data, 0.234)
+data = effect.autowah(data, (200, 1000))
 data = effect.reverb(data, 0.8, 0.525)
 
 from musical.utils import save_normalized_audio
