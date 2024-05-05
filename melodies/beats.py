@@ -22,7 +22,7 @@ scale = Scale(key, 'pentatonicmajor')
 notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 notes_with_intervals = add_intervals_to_notes(notes)
 
-for i in range(8):
+for i in range(12):
   for note in enumerate(notes_with_intervals):
       n = note[1]
       timeline.add(time, Hit(Note(n[0]).shift_up_octave(1), measure_duration))
@@ -38,6 +38,7 @@ print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=0.7)
 data = effect.shimmer(data, 0.34)
+data = effect.wah(data, (800, 2000))
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))

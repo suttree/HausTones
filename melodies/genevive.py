@@ -35,8 +35,8 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 # arppegio to open
-for i in range(2):
-  for i in range(2):
+for i in range(6):
+  for i in range(4):
     localtime = time
     for j, note in enumerate(notes):
         timeline.add(time + 0.40, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
@@ -54,7 +54,7 @@ for i in range(2):
   notes = notes_from_scale(key.note, scale.intervals)
   notes_with_intervals = add_intervals_to_notes(notes)
 
-  for i in range(2):
+  for i in range(4):
     localtime = time
     for j, note in enumerate(notes):
         timeline.add(time + 0.40, Hit(Note(notes[0]), duration/2))
@@ -120,6 +120,7 @@ data = timeline.render()
 data = effect.shimmer(data, 0.024)
 data = effect.tremolo(data, freq=0.4)
 data = effect.reverb(data, 0.8, 0.0525)
+data = effect.pitch_shift(data, 2)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))

@@ -14,7 +14,7 @@ venv/bin/python3.12 melodies/beats.py;
 venv/bin/python3.12 melodies/tune.py;
 venv/bin/python3.12 melodies/vibes2u.py;
 venv/bin/python3.12 melodies/vale.py;
-venv/bin/python3.12 melodies/lullaby.py;
+#venv/bin/python3.12 melodies/lullaby.py;
 #venv/bin/python3.12 melodies/vibes8u.py;
 #venv/bin/python3.12 melodies/four-four.py;
 #venv/bin/python3.12 melodies/neue.py;

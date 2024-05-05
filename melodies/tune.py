@@ -32,7 +32,7 @@ notesi = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
-for j in range(8):
+for j in range(12):
   timeline.add(time + eighth_note, Hit(Note(notes[2]), duration))
   timeline.add(time + eighth_note, Hit(Note(notes[-2]), duration))
   timeline.add(time + eighth_note, Hit(Note(notes[-4]), duration))
@@ -75,7 +75,6 @@ for j in range(8):
   time += duration + 0.25
 
 data = timeline.render()
-data = effect.simple_pan(data)
 data = effect.shimmer(data, 0.24)
 data = effect.reverb(data, 0.8, 0.425)
 data = effect.simple_delay(data)

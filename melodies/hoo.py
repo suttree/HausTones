@@ -41,7 +41,7 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 # Descending arppegio
-for i in range(4):
+for i in range(8):
   for j, note in enumerate(notes[::-2]):
       timeline.add(time + j*i, Hit(Note(notes[-1]), duration))
       timeline.add(time + j*i, Hit(Note(notesi[i][1]), duration))
@@ -60,6 +60,8 @@ print("Rendering audio...")
 data = timeline.render()
 data = effect.simple_delay(data)
 data = effect.shimmer(data, 0.24)
+data = effect.echo(data)
+data = effect.reverb(data, 0.8, 0.025)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))

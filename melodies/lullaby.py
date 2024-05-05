@@ -30,7 +30,7 @@ duration = 4.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note( (random.choice(Note.NOTES),0)).note
+key_note = Note( (random.choice(Note.NOTES),2)).note
 key = Note(key_note)
 
 scales = ['pentatonicmajor', 'phrygian', 'major']
@@ -55,23 +55,24 @@ for n in range(4):
       if i > 2:
         timeline.add(time + 1.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i*0.0027, Hit(Note(note[0]).shift_up_octave(1), duration/2))
+        timeline.add(time + 1.25 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2))
 
-    play_chord(notes_with_intervals, duration * math.sin(time))
+    play_chord(notes_with_intervals, duration * math.sin(i))
 
     # lullaby
     for j, note in enumerate(notes_with_intervals[::-1]):
-      timeline.add(time + 0.25 * j*i+2, Hit(Note(note[0]).shift_up_octave(1), duration/2))
+      timeline.add(time + 0.25 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2))
       if i > 2:
         timeline.add(time + 1.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2)) 
       if i > 4:
-        timeline.add(time + 2.00 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2))
+        timeline.add(time + 1.25 * j*i, Hit(Note(note[0]).shift_up_octave(1), duration/2))
         
-    duration += 0.2074
+    duration += 0.02074
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer_wobble(data, 2.234)
+data = effect.echo(data)
+data = effect.shimmer_wobble(data, 2.074)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
