@@ -54,8 +54,13 @@ def play_shuffled_files():
 # Function to check if the current time is within the specified ranges
 def is_within_time_range():
     current_hour = int(time.strftime("%H"))
+    current_day = int(time.strftime("%w"))  # 0 for Sunday, 6 for Saturday
 
-    return (6 <= current_hour < 9) or (12 <= current_hour < 14) or (18 <= current_hour < 23)
+    # Check if it's not a weekend and the time is within the specified ranges
+    if current_day != 0 and current_day != 6:
+        return (6 <= current_hour < 9) or (12 <= current_hour < 14) or (18 <= current_hour < 23)
+    else:
+        return (12 <= current_hour < 14) or (18 <= current_hour < 23)
 
 # Continuously monitor the "output" folder and play new files within the specified time ranges
 while True:
