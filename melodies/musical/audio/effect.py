@@ -171,70 +171,84 @@ def echo(data, delay=0.5, decay=0.5, wet=0.5, rate=44100):
     
     return (data * (1 - wet)) + (output_audio * wet)
     
-import soundfile as sf
-import resampy
-import numpy as np
-def pitch_shift(data, semitones, sample_rate=44100):
-    """
-    Apply pitch shifting to the audio data.
+#import soundfile as sf
+#import resampy
+#import numpy as np
+#def pitch_shift(data, semitones, sample_rate=44100):
+#    """
+#    Apply pitch shifting to the audio data.
+#    
+#    :param data: numpy array representing the audio data
+#    :param semitones: number of semitones to shift the pitch
+#    :param sample_rate: sample rate of the audio data (default: 44100 Hz)
+#    :return: pitch-shifted audio data
+#    """
+#    pitch_ratio = 2 ** (semitones / 12)
+#
+#    # Write the audio data to a temporary file
+#    temp_file = 'temp_audio.wav'
+#    sf.write(temp_file, data, sample_rate)
+#
+#    # Read the audio data from the temporary file
+#    shifted_data, _ = sf.read(temp_file)
+#
+#    # Resample the audio data to apply pitch shifting
+#    shifted_data = resampy.resample(shifted_data, sample_rate, int(sample_rate / pitch_ratio))
+#
+#    return shifted_data
     
-    :param data: numpy array representing the audio data
-    :param semitones: number of semitones to shift the pitch
-    :param sample_rate: sample rate of the audio data (default: 44100 Hz)
-    :return: pitch-shifted audio data
-    """
-    pitch_ratio = 2 ** (semitones / 12)
+#import numpy as np
+#from scipy.signal import lfilter
+#def wah(data, freq=1000, q=10, gain=2, rate=44100):
+#    ''' Wah effect
+#    '''
+#    freq = np.clip(freq, 0, rate / 2)
+#    q = np.clip(q, 1, 100)
+#    gain = np.clip(gain, 1, 10)
+#
+#    # Calculate filter coefficients
+#    w0 = 2 * np.pi * freq / rate
+#    alpha = np.sin(w0) / (2 * q)
+#    b0 = (1 - np.cos(w0)) / 2
+#    b1 = 1 - np.cos(w0)
+#    b2 = b0
+#    a0 = 1 + alpha
+#    a1 = -2 * np.cos(w0)
+#    a2 = 1 - alpha
+#
+#    # Apply filter
+#    b = [b0 / a0, b1 / a0, b2 / a0]
+#    a = [1, a1 / a0, a2 / a0]
+#    output = lfilter(b, a, data)
+#
+#    # Apply gain
+#    output *= gain
+#
+#    return output
+#
+#def autowah(data, freq_range=(500, 3000), rate=44100, lfo_freq=2, q=10, gain=2):
+#    ''' Autowah effect
+#    '''
+#    min_freq, max_freq = freq_range
+#    lfo = np.sin(2 * np.pi * lfo_freq * np.arange(len(data)) / rate)
+#    freq = min_freq + (max_freq - min_freq) * (lfo + 1) / 2
+#
+#    output = np.zeros_like(data)
+#    for i in range(len(data)):
+#        output[i] = wah(data[i:i+1], freq=freq[i], q=q, gain=gain, rate=rate)
+#
+#    return output
 
-    # Write the audio data to a temporary file
-    temp_file = 'temp_audio.wav'
-    sf.write(temp_file, data, sample_rate)
-
-    # Read the audio data from the temporary file
-    shifted_data, _ = sf.read(temp_file)
-
-    # Resample the audio data to apply pitch shifting
-    shifted_data = resampy.resample(shifted_data, sample_rate, int(sample_rate / pitch_ratio))
-
-    return shifted_data
+def octave(data, wet=0.5, rate=44100):
+    '''
+    Octave effect
+    '''
+    out = data.copy()
     
-import numpy as np
-from scipy.signal import lfilter
-def wah(data, freq=1000, q=10, gain=2, rate=44100):
-    ''' Wah effect
-    '''
-    freq = np.clip(freq, 0, rate / 2)
-    q = np.clip(q, 1, 100)
-    gain = np.clip(gain, 1, 10)
-
-    # Calculate filter coefficients
-    w0 = 2 * np.pi * freq / rate
-    alpha = np.sin(w0) / (2 * q)
-    b0 = (1 - np.cos(w0)) / 2
-    b1 = 1 - np.cos(w0)
-    b2 = b0
-    a0 = 1 + alpha
-    a1 = -2 * np.cos(w0)
-    a2 = 1 - alpha
-
-    # Apply filter
-    b = [b0 / a0, b1 / a0, b2 / a0]
-    a = [1, a1 / a0, a2 / a0]
-    output = lfilter(b, a, data)
-
-    # Apply gain
-    output *= gain
-
-    return output
-
-def autowah(data, freq_range=(500, 3000), rate=44100, lfo_freq=2, q=10, gain=2):
-    ''' Autowah effect
-    '''
-    min_freq, max_freq = freq_range
-    lfo = np.sin(2 * np.pi * lfo_freq * np.arange(len(data)) / rate)
-    freq = min_freq + (max_freq - min_freq) * (lfo + 1) / 2
-
-    output = np.zeros_like(data)
-    for i in range(len(data)):
-        output[i] = wah(data[i:i+1], freq=freq[i], q=q, gain=gain, rate=rate)
-
-    return output
+    # Shift the pitch up by one octave (12 semitones)
+    octave_data = pitch_shift(data, semitones=12, sample_rate=rate)
+    
+    # Combine the original data with the octave-shifted data
+    out = (data * (1 - wet)) + (octave_data * wet)
+    
+    return out
