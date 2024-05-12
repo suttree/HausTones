@@ -12,7 +12,8 @@ from datetime import datetime
 def save_normalized_audio(data, samplerate=44100, current_script_filename=''):
     # Save the rendered audio to a temporary file
     temp_file = "tmp/temp_audio.wav"
-    sf.write(temp_file, data, samplerate=samplerate)
+    #sf.write(temp_file, data, samplerate=samplerate)
+    sf.write(temp_file, np.ravel(data), samplerate=samplerate)
 
     audio, sr = sf.read(temp_file)
     normalized_audio = audio / np.max(np.abs(audio))
