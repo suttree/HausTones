@@ -1,1 +1,1 @@
-amixer sset 'Master' 75%
+amixer sset 'Master' 50%
