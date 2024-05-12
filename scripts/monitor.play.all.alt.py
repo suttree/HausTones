@@ -20,8 +20,8 @@ def play_shuffled_files():
 
     # Play the shuffled .wav files using aplay
     for file in wav_files:
-        # Set the volume to 50%
-        os.system("amixer sset 'Master' 75%")
+        # Set the volume 
+        os.system("amixer sset 'Master' 50%")
         
         # Load the audio file
         audio = AudioSegment.from_wav(os.path.join(output_folder, file))
@@ -60,7 +60,7 @@ def is_within_time_range():
     if current_day != 0 and current_day != 6:
         return (6 <= current_hour < 9) or (12 <= current_hour < 14) or (18 <= current_hour < 23)
     else:
-        return (12 <= current_hour < 14) or (18 <= current_hour < 23)
+        return (12 <= current_hour < 14) or (16 <= current_hour < 23)
 
 # Continuously monitor the "output" folder and play new files within the specified time ranges
 while True:
@@ -68,8 +68,6 @@ while True:
         print("Monitoring the 'output' folder for new .wav files...")
         play_shuffled_files()
         print("All files have been played. Restarting the playlist...")
-    else:
-        print("Current time is outside the specified ranges. Waiting...")
 
     # Wait for 60 seconds before checking again
     time.sleep(60)
