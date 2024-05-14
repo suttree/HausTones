@@ -79,6 +79,8 @@ data = effect.shimmer(data, 0.24)
 data = effect.reverb(data, 0.8, 0.425)
 data = effect.simple_delay(data)
 
+data = data * 0.25
+
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 

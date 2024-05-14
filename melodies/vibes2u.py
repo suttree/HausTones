@@ -74,6 +74,8 @@ data = effect.shimmer(data, 0.234)
 data = effect.echo(data)
 #data = effect.modulated_delay(data, data, 0.01, 0.002)
 
+data = data * 0.25
+
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
