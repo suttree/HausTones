@@ -21,7 +21,7 @@ def play_shuffled_files():
     # Play the shuffled .wav files using aplay
     for file in wav_files:
         # Set the volume 
-        os.system("amixer sset 'Master' 50%")
+        os.system("amixer set 'Master' 25%")
         
         # Load the audio file
         audio = AudioSegment.from_wav(os.path.join(output_folder, file))
