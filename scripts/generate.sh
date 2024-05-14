@@ -1,12 +1,4 @@
-#python3 melodies/lullahola.py;
-#python3 melodies/d33p.py;
-#python3 melodies/fuzzyrepeater.py;
-#python3 melodies/hoot.py;
-#python3 melodies/repeatofuzzder.py;
-#python3 melodies/vibes.py;
-#python3 melodies/oudh.py;
 python3 melodies/tune.py
-#python3 melodies/droppedd.py;
 python3 melodies/vibes4u.py
 python3 melodies/genevive.py
 python3 melodies/hoo.py
@@ -14,10 +6,5 @@ python3 melodies/beats.py
 python3 melodies/tune.py
 python3 melodies/vibes2u.py
 python3 melodies/vale.py
-#python3 melodies/lullaby.py;
-#python3 melodies/vibes8u.py;
-#python3 melodies/four-four.py;
-#python3 melodies/neue.py;
 python3 melodies/holdingon.py
-#python3 melodies/fuzzyrepeater.py;
 python3 melodies/hoot.py
