@@ -239,16 +239,24 @@ def echo(data, delay=0.5, decay=0.5, wet=0.5, rate=44100):
 #
 #    return output
 
+import numpy as np
+
 def octave(data, wet=0.5, rate=44100):
     '''
     Octave effect
     '''
     out = data.copy()
     
-    # Shift the pitch up by one octave (12 semitones)
-    octave_data = pitch_shift(data, semitones=12, sample_rate=rate)
+    # Create an array of zeros with the same length as data
+    octave_data = np.zeros_like(data)
+    
+    # Shift the pitch up by one octave (12 semitones) manually
+    # This can be achieved by skipping every other sample in the data array
+    octave_data[:-1:2] = data[1::2]
+    octave_data[1::2] = data[:-1:2]
     
     # Combine the original data with the octave-shifted data
     out = (data * (1 - wet)) + (octave_data * wet)
     
     return out
+
