@@ -73,6 +73,8 @@ data = timeline.render()
 data = effect.octave(data, 0.74)
 data = effect.shimmer_wobble(data, 0.74)
 
+data = data * 0.25
+
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
