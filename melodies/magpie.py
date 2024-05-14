@@ -29,7 +29,7 @@ scales = ['pentatonicminor', 'ionian']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 4)
+notes = extended_notes_from_scale(key.note, scale.intervals, 3)
 notesi = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
@@ -53,7 +53,7 @@ def play_chord(notes, duration):
   timeline.add(time, Hit(Note(notes[0][0]).shift_down_octave(1), notes[4][1]))
 
 
-for i in range(3):
+for i in range(6):
     play_chord(notesi, half_note)
     time += sixteenth_note
     play_chord(notesi, half_note)
