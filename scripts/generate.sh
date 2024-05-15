@@ -1,3 +1,5 @@
+rm /home/pi/src/pele/output/*.wav
+
 python3 melodies/tune.py
 python3 melodies/vibes4u.py
 python3 melodies/genevive.py
