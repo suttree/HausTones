@@ -9,18 +9,26 @@ import soundfile as sf
 from scipy.signal import butter, lfilter
 from datetime import datetime
 
-def save_normalized_audio(data, samplerate=44100, current_script_filename=''):
+def save_normalized_audio(data, samplerate=44100, current_script_filename='', volume=0.5):
     # Save the rendered audio to a temporary file
     temp_file = "tmp/temp_audio.wav"
-    #sf.write(temp_file, data, samplerate=samplerate)
     sf.write(temp_file, np.ravel(data), samplerate=samplerate)
 
+    # Read the temporary audio file
     audio, sr = sf.read(temp_file)
+    
+    # Normalize the audio by dividing by the max absolute amplitude
     normalized_audio = audio / np.max(np.abs(audio))
+    
+    # Apply the volume scaling
+    adjusted_audio = normalized_audio * volume
+    
+    # Create a timestamp for the output filename
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_file = f"output/{current_script_filename}_output_{timestamp}.wav"
-
-    sf.write(output_file, normalized_audio, samplerate=sr)
+    
+    # Write the adjusted audio to a new file
+    sf.write(output_file, adjusted_audio, samplerate=sr)
 
     print(f"Audio exported as {output_file}")
 
