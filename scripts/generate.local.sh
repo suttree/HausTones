@@ -21,3 +21,4 @@ venv/bin/python3.12 melodies/vale.py;
 venv/bin/python3.12 melodies/holdingon.py;
 #venv/bin/python3.12 melodies/fuzzyrepeater.py;
 venv/bin/python3.12 melodies/hoot.py;
+venv/bin/python3.12 melodies/wed.py;
