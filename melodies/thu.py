@@ -44,7 +44,7 @@ def play_chord(notes, duration):
 for i in range(iterations):
   play_chord(notes, measure_duration)
 
-  #time += duration * 2
+  time += duration
   random.shuffle(notes)
 time += duration * 2
 
