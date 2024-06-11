@@ -6,7 +6,7 @@ python3 melodies/wed.py
 python3 melodies/thu.py
 python3 melodies/genevive.py
 #python3 melodies/hoo.py
-#python3 melodies/beats.py
+python3 melodies/beats.py
 #python3 melodies/tune.py
 python3 melodies/vibes2u.py
 #python3 melodies/vale.py
