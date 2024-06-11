@@ -59,7 +59,7 @@ for i in range(8):
 print("Rendering audio...")
 data = timeline.render()
 data = effect.simple_delay(data)
-data = effect.shimmer(data, 0.24)
+#data = effect.shimmer(data, 0.24)
 data = effect.echo(data)
 data = effect.reverb(data, 0.8, 0.025)
 
