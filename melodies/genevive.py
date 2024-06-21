@@ -72,7 +72,7 @@ pp.pprint(r_scale)
 def play_triad(time):
   timeline.add(time + 0.0042 + math.sin(increment), Hit(Note(notes[0]), duration))
   timeline.add(time + 0.0042 + math.sin(increment), Hit(Note(notes[3]), duration))
-  timeline.add(time + 0.0042 + math.sin(increment), Hit(Note(notes[5]), duration))
+  timeline.add(time + 0.0044 + math.sin(increment), Hit(Note(notes[5]), duration))
       
 def strum_chord(time):
   for j, note in enumerate(notes):
@@ -146,7 +146,7 @@ data = effect.echo(data)
 
 data = data * 0.25
 
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
