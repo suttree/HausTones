@@ -31,12 +31,12 @@ key = Note(key_note)
 scales = ['major', 'japanese', 'ionian', 'augmented', 'augmentedfifth', 'melodicminor']
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 0)
+notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 pp.pprint(key)
 pp.pprint(r_scale)
 
 def reset():
-  key_note = Note((random.choice(Note.NOTES), random.choice([0]))).note
+  key_note = Note((random.choice(Note.NOTES), random.choice([2,3]))).note
   key = Note(key_note)
   r_scale = random.choice(scales)
   scale = Scale(key, r_scale)
