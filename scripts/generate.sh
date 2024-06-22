@@ -14,3 +14,4 @@ python3 melodies/holdingon.py
 #python3 melodies/hoot.py
 #python3 melodies/magpie.py
 python3 melodies/jun.py
+python3 melodies/fas.py
