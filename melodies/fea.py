@@ -65,7 +65,7 @@ data = effect.reverb(data)
 data = effect.echo(data)
 data = effect.shimmer_wobble(data)
 
-data = data * 0.25
+data = data * 0.10
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
