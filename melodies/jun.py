@@ -41,8 +41,6 @@ def reset():
   r_scale = random.choice(scales)
   scale = Scale(key, r_scale)
   notes = notes_from_scale(key.note, scale.intervals)
-  pp.pprint(key)
-  pp.pprint(r_scale)
 
 for i in range(iterations):
   random.shuffle(notes)
@@ -53,14 +51,14 @@ for i in range(iterations):
   reset()
   
 print("Rendering audio...")
-data = timeline.render()
+data = timeline.render(2)
 data = effect.echo(data)
 data = effect.simple_delay(data, 250, 0.28, 0.977)
 
 # Reduce volume to 25%
 data = data * 0.25
 
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
