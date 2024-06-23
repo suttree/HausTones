@@ -16,7 +16,7 @@ iterations = random.randint(12, 46)
 increment = math.sin(0.19750)
 timeline = Timeline()
 
-measure_duration = 64.00
+measure_duration = 36.00
 half_measure = measure_duration/2
 duration = measure_duration/4
 whole_note = duration
