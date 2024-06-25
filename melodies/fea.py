@@ -16,7 +16,7 @@ iterations = random.randint(12, 46)
 increment = math.sin(0.19750)
 timeline = Timeline()
 
-measure_duration = 36.00
+measure_duration = 26.00
 half_measure = measure_duration/2
 duration = measure_duration/4
 whole_note = duration
@@ -42,23 +42,23 @@ pp.pprint(r_scale)
 
 def triad(time):
   top = random.choice([0,2,3,5])
-  timeline.add(time + 0.0067 + math.sin(increment), Hit(Note(notes[0]), duration))
-  timeline.add(time + 0.0073 + math.sin(increment), Hit(Note(notes[3]), duration))
-  timeline.add(time + 0.0084 + math.cos(increment), Hit(Note(notes[top]), duration))
+  timeline.add(time + 0.067 + math.sin(increment), Hit(Note(notes[0]), duration))
+  timeline.add(time + 0.073 + math.sin(increment), Hit(Note(notes[3]), duration))
+  timeline.add(time + 0.094 + math.cos(increment), Hit(Note(notes[top]), duration))
       
 def strum(time, offset = 0.0035):
-  for j, note in enumerate(notes):
+  for j, note in enumerate(notes[::-1]):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
   
 for i in range(iterations):
-  strum(time, 0.0037 * math.cos(i))
-  time += sixteenth_note
+  strum(time, 0.0047 * math.cos(i))
+  time += half_note + increment + math.sin(increment)
   triad(time)
   time += half_note + math.cos(increment) * math.sin(increment)
-  increment += 0.02
+  increment += 0.2
 
 print("Rendering audio...")
-data = timeline.render(2)
+data = timeline.render()
 data = effect.tremolo(data, freq=7.7)
 data = effect.simple_delay(data)
 data = effect.reverb(data)
