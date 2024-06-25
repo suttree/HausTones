@@ -68,11 +68,7 @@ print(is_within_time_range())
 
 
 # Continuously monitor the "output" folder and play new files within the specified time ranges
-while True:
-    if is_within_time_range():
-        print("Monitoring the 'output' folder for new .wav files...")
-        play_shuffled_files()
-        print("All files have been played. Restarting the playlist...")
-
-    # Wait for 60 seconds before checking again
-    time.sleep(60)
+if is_within_time_range():
+    print("Monitoring the 'output' folder for new .wav files...")
+    play_shuffled_files()
+    print("All files have been played. Restarting the playlist...")
