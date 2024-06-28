@@ -1,6 +1,6 @@
 # Je n'est vivre
 
-import os, math
+import os, math, time
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -10,10 +10,10 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
+increment = random.uniform(0.2, 0.82) + math.cos(time.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = random.randint(12, 46)
-increment = math.sin(0.19750)
 timeline = Timeline()
 
 measure_duration = 64.00
@@ -41,20 +41,22 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 def triad(time):
-  timeline.add(time + 0.0062 + math.sin(increment), Hit(Note(notes[0]), duration))
-  timeline.add(time + 0.0073 + math.sin(increment), Hit(Note(notes[3]), duration))
-  timeline.add(time + 0.0084 + math.cos(increment), Hit(Note(notes[5]), duration))
+  timeline.add(time + 0.062 + math.sin(increment), Hit(Note(notes[0]), duration))
+  timeline.add(time + 0.073 + math.sin(increment), Hit(Note(notes[3]), duration))
+  timeline.add(time + 0.084 + math.cos(increment), Hit(Note(notes[5]), duration))
       
-def strum(time, offset = 0.0035):
+def strum(time, offset = 0.035):
   for j, note in enumerate(notes):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
-  
+
+time += sixteenth_note + random.uniform(1.5, 6.2)
+
 for i in range(iterations):
-  strum(time, 0.0037 * math.cos(i))
+  strum(time, 0.037 * math.cos(i))
   time += sixteenth_note
   triad(time)
-  time += half_note + math.cos(increment) * math.sin(increment)
-  increment += 0.02
+  time += half_note + (1 * math.cos(increment)) * math.sin(increment)
+  increment += 0.028
 
 print("Rendering audio...")
 data = timeline.render()
