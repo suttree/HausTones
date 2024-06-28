@@ -39,7 +39,9 @@ def play_chord(notes, duration):
   timeline.add(time, Hit(Note(notes[0]), duration))
   timeline.add(time, Hit(Note(notes[2]).shift_down_octave(2), duration))
   timeline.add(time + 0.05, Hit(Note(notes[4]), duration))
-  timeline.add(time + 0.1, Hit(Note(notes[5]), duration))
+  timeline.add(time + 0.1, Hit(Note(notes[2]), duration))
+
+time += sixteenth_note + random.uniform(0.8, 4.4)
 
 for i in range(iterations):
   play_chord(notes, measure_duration)

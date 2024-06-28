@@ -1,6 +1,6 @@
 # Je n'est vivre
 
-import os, math
+import os, math, time
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -10,10 +10,10 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
+increment = random.uniform(0.025, 0.64) + math.cos(time.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = random.randint(12, 46)
-increment = math.sin(0.19750)
 timeline = Timeline()
 
 measure_duration = 16.00
@@ -40,6 +40,8 @@ notes_with_intervals = add_intervals_to_notes(notes)
 pp.pprint(key)
 pp.pprint(r_scale)
 
+time += 0.472 + random.uniform(1.3, 2.7)
+
 for i in range(iterations):
   for j, note in enumerate(notes[::-2]):
     timeline.add(time + math.sin(i), Hit(Note(notes[0]), sixteenth_note))
@@ -47,11 +49,11 @@ for i in range(iterations):
     time += sixteenth_note + math.cos(increment)
 
 print("Rendering audio...")
-data = timeline.render(2)
+data = timeline.render()
 
 data = data * 0.15
 
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
