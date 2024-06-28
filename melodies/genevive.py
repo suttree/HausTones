@@ -1,6 +1,6 @@
 # Je n'est vivre
 
-import os, math
+import os, math, time
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -10,11 +10,11 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
+increment = math.sin(0.19750) * math.cos(time.time())
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = random.randint(12, 46)
 duration = 42.0
-increment = math.sin(0.19750)
 timeline = Timeline()
 
 # Define key and scale
@@ -41,10 +41,12 @@ def play_triad(time):
 def strum_chord(time):
   for j, note in enumerate(notes):
       timeline.add(time + 0.0035 * j + math.sin(increment), Hit(Note(note), duration))
-  
+
+time += 0.24 + random.uniform(4.2, 6.4)
+
 for i in range(iterations):
   strum_chord(time)
-  time += duration/16
+  time += duration/16 + 1 * math.sin(i)
   play_triad(time)
   time += duration/16 + math.cos(increment) * math.sin(increment)
 

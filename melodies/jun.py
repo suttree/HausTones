@@ -1,4 +1,4 @@
-import os, math
+import os, math, time
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -8,6 +8,7 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
+increment = math.sin(2.8743) + math.cos(time.time())
 time = 0.0 
 offset = 0.0
 iterations = random.randint(6, 26)
@@ -42,18 +43,30 @@ def reset():
   scale = Scale(key, r_scale)
   notes = notes_from_scale(key.note, scale.intervals)
 
+def strum(time, offset = 0.035):
+  for j, note in enumerate(notes):
+      timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
+
+time += sixteenth_note + random.uniform(1.8, 5.5)
+
 for i in range(iterations):
+  time += sixteenth_note
   random.shuffle(notes)
+  strum(time, 0.037 * math.cos(i))
+  time += sixteenth_note
+  
   for i in range(3):
-    timeline.add(time, Hit(Note(notes[i]), measure_duration))
+    timeline.add(time + 0.01 * i, Hit(Note(notes[i]), half_measure))
     time += duration
   time += sixteenth_note
   reset()
+  increment += 0.79
   
 print("Rendering audio...")
-data = timeline.render(2)
+data = timeline.render()
 data = effect.echo(data)
-data = effect.simple_delay(data, 250, 0.28, 0.977)
+data = effect.tremolo(data, freq=6.9)
+data = effect.simple_delay(data, 25, 0.328, 0.5977)
 
 # Reduce volume to 25%
 data = data * 0.25

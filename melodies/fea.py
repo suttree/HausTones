@@ -1,6 +1,6 @@
 # Je n'est vivre
 
-import os, math
+import os, math, time
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -10,10 +10,10 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
+increment = random.uniform(0.02, 0.84) + math.cos(time.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
 iterations = random.randint(12, 46)
-increment = math.sin(0.19750)
 timeline = Timeline()
 
 measure_duration = 26.00
@@ -49,6 +49,8 @@ def triad(time):
 def strum(time, offset = 0.0035):
   for j, note in enumerate(notes[::-1]):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
+
+time += 0.37 + random.uniform(0.8, 3.4)
   
 for i in range(iterations):
   strum(time, 0.0047 * math.cos(i))

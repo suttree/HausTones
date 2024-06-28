@@ -22,6 +22,8 @@ scale = Scale(key, 'pentatonicmajor')
 notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 notes_with_intervals = add_intervals_to_notes(notes)
 
+time += 0.38 + random.uniform(0.8, 4.3)
+
 for i in range(12):
   for note in enumerate(notes_with_intervals):
       n = note[1]
@@ -33,6 +35,12 @@ for i in range(12):
 
       time += duration + math.sin(n[1])
   time += measure_duration
+  
+  #if i % 4 == 0:
+  #  notes_with_intervals = add_intervals_to_notes(notes[::2])
+    
+  #if i % 8 == 0:
+  #  notes_with_intervals = add_intervals_to_notes(notes[::-1])
 
 print("Rendering audio...")
 data = timeline.render()
