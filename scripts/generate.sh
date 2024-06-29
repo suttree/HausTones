@@ -17,3 +17,4 @@ python3 melodies/fie.py
 #python3 melodies/magpie.py
 python3 melodies/jun.py
 python3 melodies/fas.py
+python3 melodies/cia.py
