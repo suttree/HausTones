@@ -15,7 +15,7 @@ offset = 0.0
 iterations = random.randint(12, 48)
 timeline = Timeline()
 
-measure_duration = 46.00
+measure_duration = 26.00
 half_measure = measure_duration/2
 duration = measure_duration/4
 whole_note = duration
@@ -42,35 +42,31 @@ pp.pprint(r_scale)
 def strum_chord(time, notes):
   timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(2), three_quarter_note))
   for j, note in enumerate(notes):
-      jump = random.uniform(0.02, 0.1)
+      jump = random.uniform(0.02, 0.4)
       timeline.add(time + jump * j + math.sin(increment), Hit(Note(note), half_note))
 
 # pause to start
 time += 0.472 + random.uniform(1.3, 2.7)
 
-for i in range(iterations * 48):
+for i in range(iterations * 8):
   strum_chord(time, notes)
-  waiter = random.uniform(0.01, 0.06)
+  waiter = random.uniform(0.01, 0.86)
   increment += math.cos(waiter)
 
   if random.randint(2, 22) > 8:
     random.shuffle(notes)
   
   strum_chord(time, notes)
-  waiter = random.uniform(0.02, 0.09)
+  waiter = random.uniform(0.02, 0.94)
   time += math.sin(waiter)
-  
-  if random.randint(2, 16) > 6:
-    random.shuffle(notes)
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.modulated_delay(data, data, 0.05, 0.2)
-data = effect.reverb(data)
 
 data = data * 0.10
 
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
