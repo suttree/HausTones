@@ -14,7 +14,7 @@ iterations = random.randint(12, 36)
 duration = 4.0
 timeline = Timeline()
 
-measure_duration = 36.00
+measure_duration = 14.00
 half_measure = measure_duration/2
 duration = measure_duration/4
 whole_note = duration
@@ -47,13 +47,14 @@ for i in range(iterations):
     if j % 3 == 0:
       timeline.add(time + eighth_note, Hit(Note(note).shift_down_octave(1), duration*2))
     else:
-      timeline.add(time, Hit(Note(note).shift_down_octave(1), duration*2))
+      timeline.add(time + sixteenth_note, Hit(Note(note).shift_down_octave(1), duration*2))
     timeline.add(time + eighth_note + quarter_note, Hit(Note(note).shift_down_octave(1), duration))
-  time += sixteenth_note
-  timeline.add(time + 0.02, Hit(Note(notes[2]).shift_down_octave(1), duration))
+  #time += sixteenth_note
+  #timeline.add(time + 0.02, Hit(Note(notes[2]).shift_down_octave(1), duration))
 
   time += duration * 2
-  random.shuffle(notes)
+  if random.randint(0, 6) > 3:
+    random.shuffle(notes)
 time += duration * 2
   
 print("Rendering audio...")
