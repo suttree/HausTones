@@ -1,6 +1,5 @@
-# Je n'est vivre
-
-import os, math, time
+import os, math
+import time as thetime
 from musical.theory import Note, Scale, Chord
 from musical.audio import effect, playback
 from timeline import Hit, Timeline
@@ -10,13 +9,13 @@ import pprint, random
 pp = pprint.PrettyPrinter(indent=4)
 
 # Config vars
-increment = random.uniform(0.025, 0.64) + math.cos(time.time()) * math.sin(0.19750)
+increment = random.uniform(0.025, 0.64) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(12, 46)
+iterations = random.randint(12, 48)
 timeline = Timeline()
 
-measure_duration = 16.00
+measure_duration = 46.00
 half_measure = measure_duration/2
 duration = measure_duration/4
 whole_note = duration
@@ -34,26 +33,44 @@ scales = ['japanese', 'major', 'ionian', 'mixolydian', 'phrygian', 'major', 'jap
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 1)
+notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 notes_with_intervals = add_intervals_to_notes(notes)
 
 pp.pprint(key)
 pp.pprint(r_scale)
 
+def strum_chord(time, notes):
+  timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(2), three_quarter_note))
+  for j, note in enumerate(notes):
+      jump = random.uniform(0.02, 0.1)
+      timeline.add(time + jump * j + math.sin(increment), Hit(Note(note), half_note))
+
+# pause to start
 time += 0.472 + random.uniform(1.3, 2.7)
 
-for i in range(iterations):
-  for j, note in enumerate(notes[::-2]):
-    timeline.add(time + math.sin(i), Hit(Note(notes[0]), sixteenth_note))
-    timeline.add(time + sixteenth_note, Hit(Note(note), sixteenth_note + math.sin(increment)))
-    time += sixteenth_note + math.cos(increment)
+for i in range(iterations * 48):
+  strum_chord(time, notes)
+  waiter = random.uniform(0.01, 0.06)
+  increment += math.cos(waiter)
+
+  if random.randint(2, 22) > 8:
+    random.shuffle(notes)
+  
+  strum_chord(time, notes)
+  waiter = random.uniform(0.02, 0.09)
+  time += math.sin(waiter)
+  
+  if random.randint(2, 16) > 6:
+    random.shuffle(notes)
 
 print("Rendering audio...")
 data = timeline.render()
+data = effect.modulated_delay(data, data, 0.05, 0.2)
+data = effect.reverb(data)
 
-data = data * 0.15
+data = data * 0.10
 
-from musical.utils import save_normalized_audio
-save_normalized_audio(data, 44100, os.path.basename(__file__))
+#from musical.utils import save_normalized_audio
+#save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-#playback.play(data)
+playback.play(data)
