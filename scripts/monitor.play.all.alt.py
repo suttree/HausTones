@@ -61,7 +61,7 @@ def is_within_time_range():
     if current_day != 0 and current_day != 6:
         return ((6 == current_hour and current_minute >= 30) or (7 < current_hour < 9) or (18 <= current_hour < 20))
     else:
-        return ((10 <= current_hour < 11) or ((13 <= current_hour < 15) or (17 <= current_hour < 19))
+        return (10 <= current_hour < 11) or ((13 <= current_hour < 15) or (17 <= current_hour < 19))
 
 # Example usage
 print(is_within_time_range())
