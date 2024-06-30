@@ -16,6 +16,9 @@ dtparam=audio=off
 dtoverlay=hifiberry-dac
 gpio=25=op,dh
 
+sudo apt-get install portaudio19-dev
+sudo apt-get install python-pyaudio
+
 ## Use
 source venv/bin/activate
 pip install -r requirements.txt
