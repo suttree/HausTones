@@ -61,7 +61,6 @@ for i in range(iterations):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.tremolo(data, freq=7.7)
 data = effect.simple_delay(data)
 data = effect.reverb(data)
 data = effect.echo(data)
