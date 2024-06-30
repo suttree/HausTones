@@ -52,7 +52,8 @@ def strum(time, offset = 0.035):
 
 def strum2(time, offset = 0.3417):
   for j, note in enumerate(notes):
-      timeline.add(time + offset * 0.1 * math.cos(j), Hit(Note(note).shift_up_octave(1), duration))
+      timeline.add(time + offset * 0.1 * math.cos(j), Hit(Note(note), duration))
+  timeline.add(time + offset * 0.42, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
       
 time += sixteenth_note + random.uniform(1.5, 6.2)
 
@@ -70,9 +71,9 @@ print("Rendering audio...")
 data = timeline.render()
 #data = effect.reverb(data)
 #data = effect.echo(data)
-data = effect.shimmer_wobble(data)
 data = effect.tremolo(data, freq=1.314)
 data = effect.simple_delay(data, 500)
+data = effect.shimmer_wobble(data)
 
 data = data * 0.25
 
