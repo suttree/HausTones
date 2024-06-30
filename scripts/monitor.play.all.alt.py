@@ -59,9 +59,9 @@ def is_within_time_range():
 
     # Check if it's not a weekend and the time is within the specified ranges
     if current_day != 0 and current_day != 6:
-        return ((6 == current_hour and current_minute >= 45) or (6 < current_hour < 9) or (18 <= current_hour < 20))
+        return ((6 == current_hour and current_minute >= 30) or (7 < current_hour < 9) or (18 <= current_hour < 20))
     else:
-        return ((12 <= current_hour < 14) or (16 <= current_hour < 18))
+        return ((10 <= current_hour < 11) or ((13 <= current_hour < 15) or (17 <= current_hour < 19))
 
 # Example usage
 print(is_within_time_range())
