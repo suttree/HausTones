@@ -64,7 +64,7 @@ print("Rendering audio...")
 data = timeline.render()
 data = effect.modulated_delay(data, data, 0.05, 0.2)
 
-data = data * 0.10
+#data = data * 0.10
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))

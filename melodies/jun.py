@@ -69,7 +69,7 @@ data = effect.tremolo(data, freq=6.9)
 data = effect.simple_delay(data, 25, 0.328, 0.5977)
 
 # Reduce volume to 25%
-data = data * 0.25
+#data = data * 0.25
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
