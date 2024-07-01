@@ -48,7 +48,7 @@ data = effect.tremolo(data, freq=0.7)
 data = effect.shimmer_wobble(data, 0.34)
 #data = effect.wah(data, (800, 2000))
 
-#data = data * 0.25
+data = data * 0.85
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
