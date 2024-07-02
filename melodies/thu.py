@@ -10,7 +10,7 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(6, 26)
+iterations = random.randint(16, 54)
 duration = 4.0
 timeline = Timeline()
 

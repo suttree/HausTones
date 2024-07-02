@@ -12,7 +12,7 @@ pp = pprint.PrettyPrinter(indent=4)
 increment = random.uniform(0.025, 0.64) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(12, 48)
+iterations = random.randint(24, 64)
 timeline = Timeline()
 
 measure_duration = 26.00
