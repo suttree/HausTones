@@ -12,7 +12,7 @@ pp = pprint.PrettyPrinter(indent=4)
 increment = random.uniform(0.025, 0.64) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(24, 64)
+iterations = random.randint(24, 36)
 timeline = Timeline()
 
 measure_duration = 26.00
@@ -40,10 +40,10 @@ pp.pprint(key)
 pp.pprint(r_scale)
 
 def strum_chord(time, notes):
-  timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(2), three_quarter_note))
+  timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(1), three_quarter_note))
   for j, note in enumerate(notes):
-      jump = random.uniform(0.02, 0.4)
-      timeline.add(time + jump * j + math.sin(increment), Hit(Note(note), half_note))
+      jump = random.uniform(0.02, 1.3)
+      timeline.add(time + jump * j + math.sin(increment), Hit(Note(note).shift_down_octave(0), half_note))
 
 # pause to start
 time += 0.472 + random.uniform(1.3, 2.7)
@@ -57,14 +57,16 @@ for i in range(iterations * 8):
     random.shuffle(notes)
   
   strum_chord(time, notes)
-  waiter = random.uniform(0.02, 0.94)
+  waiter = random.uniform(0.02, 1.24)
   time += math.sin(waiter)
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.modulated_delay(data, data, 0.05, 0.2)
+data = effect.modulated_delay(data, data * 0.25, 0.05, 0.02)
+#data = effect.simple_delay(data)
+#data = effect.echo(data)
 
-data = data * 0.85
+data = data * 0.10
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))

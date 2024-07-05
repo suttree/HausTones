@@ -32,6 +32,173 @@ import numpy as np
 
 import numpy as np
 
+import numpy as np
+
+import numpy as np
+
+def piano_pluck(freq, length, decay=0.996, rate=44100, brightness=0.5):
+    """
+    Create a piano-like pluck sound at the given frequency.
+    
+    :param freq: Frequency of the note
+    :param length: Length of the sound in seconds
+    :param decay: Decay factor (0.996 gives a more piano-like sustain)
+    :param rate: Sample rate
+    :param brightness: Controls the brightness of the tone (0 to 1)
+    """
+    freq = float(freq)
+    phase = int(rate / freq)
+    
+    # Generate initial excitation using a combination of sine waves
+    harmonics = [1, 2, 3, 4, 5]
+    excitation = np.zeros(phase)
+    for harmonic in harmonics:
+        amplitude = 1 / harmonic
+        excitation += amplitude * np.sin(np.linspace(0, harmonic * np.pi * 2, phase))
+    
+    # Normalize the excitation
+    excitation /= np.max(np.abs(excitation))
+    
+    # Apply brightness control
+    excitation = excitation * brightness + (1 - brightness) * np.random.rand(phase)
+    
+    # Create the output buffer
+    num_samples = int(length * rate)
+    output = np.zeros(num_samples)
+    
+    # Karplus-Strong algorithm with modifications for piano-like sound
+    for i in range(num_samples):
+        output[i] = excitation[i % phase]
+        excitation[i % phase] = decay * 0.5 * (excitation[i % phase] + excitation[(i + 1) % phase])
+        
+        # Add a slight pitch modulation for more natural sound
+        if i % 1000 == 0:
+            phase = int(rate / (freq + np.random.uniform(-0.1, 0.1)))
+    
+    return output
+
+# Example usage
+# You'll need to implement or import a function to play the audio
+# play_audio(piano_pluck(440, 2, brightness=0.7))
+
+def dulcimer_pluck(freq, length, decay=0.9985, rate=44100, brightness=0.8):
+    """
+    Create a dulcimer-like pluck sound at the given frequency.
+    
+    :param freq: Frequency of the note
+    :param length: Length of the sound in seconds
+    :param decay: Decay factor (0.9985 gives a quicker decay typical of dulcimers)
+    :param rate: Sample rate
+    :param brightness: Controls the brightness of the tone (0 to 1)
+    """
+    freq = float(freq)
+    initial_phase = int(rate / freq)
+    
+    # Generate initial excitation using a combination of sine waves
+    # Dulcimers have strong odd harmonics
+    harmonics = [1, 3, 5, 7, 9]
+    excitation = np.zeros(initial_phase)
+    for i, harmonic in enumerate(harmonics):
+        amplitude = 1 / (i + 1)**1.5  # Faster decay of higher harmonics
+        excitation += amplitude * np.sin(np.linspace(0, harmonic * np.pi * 2, initial_phase))
+    
+    # Add some noise to simulate the hammer strike
+    excitation += np.random.rand(initial_phase) * 0.1
+    
+    # Normalize the excitation
+    excitation /= np.max(np.abs(excitation))
+    
+    # Apply brightness control
+    excitation = excitation * brightness + (1 - brightness) * np.random.rand(initial_phase)
+    
+    # Create the output buffer
+    num_samples = int(length * rate)
+    output = np.zeros(num_samples)
+    
+    # Modified Karplus-Strong algorithm for dulcimer-like sound
+    phase = initial_phase
+    for i in range(num_samples):
+        output[i] = excitation[i % initial_phase]
+        # Dulcimer strings have a brighter attack and quicker decay
+        if i < rate * 0.01:  # First 10ms
+            decay_factor = decay * 0.999
+        else:
+            decay_factor = decay
+        excitation[i % initial_phase] = decay_factor * 0.5 * (excitation[i % initial_phase] + excitation[(i - 1) % initial_phase])
+        
+        # Add a slight pitch modulation for more natural sound
+        if i % 500 == 0:  # More frequent modulation for dulcimer's tighter strings
+            phase = int(rate / (freq + np.random.uniform(-0.2, 0.2)))
+            phase = max(min(phase, initial_phase * 2), initial_phase // 2)  # Limit phase variation
+    
+    return output
+
+# Example usage
+# You'll need to implement or import a function to play the audio
+# play_audio(dulcimer_pluck(440, 2, brightness=0.8))
+
+def violin_note(freq, length, vibrato_rate=5, vibrato_depth=0.3, volume_envelope=None, rate=44100):
+    """
+    Create a violin-like sustained note at the given frequency.
+    
+    :param freq: Fundamental frequency of the note
+    :param length: Length of the sound in seconds
+    :param vibrato_rate: Rate of vibrato in Hz
+    :param vibrato_depth: Depth of vibrato (percentage of fundamental frequency)
+    :param volume_envelope: Optional array defining the volume envelope
+    :param rate: Sample rate
+    """
+    # Generate time array
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    
+    # Generate vibrato
+    vibrato = vibrato_depth * np.sin(2 * np.pi * vibrato_rate * t)
+    
+    # Generate the fundamental and harmonics
+    num_harmonics = 15
+    signal = np.zeros_like(t)
+    for n in range(1, num_harmonics + 1):
+        # Violin harmonics typically decrease in amplitude as 1/n^2
+        harmonic_amp = 1.0 / (n ** 2)
+        
+        # Even harmonics are typically weaker in bowed string instruments
+        if n % 2 == 0:
+            harmonic_amp *= 0.5
+        
+        harmonic_freq = n * freq
+        signal += harmonic_amp * np.sin(2 * np.pi * harmonic_freq * (t + vibrato/harmonic_freq))
+    
+    # Normalize the signal
+    signal /= np.max(np.abs(signal))
+    
+    # Apply volume envelope
+    if volume_envelope is None:
+        # Default envelope: quick attack, long sustain, gentle release
+        attack = int(rate * 0.1)  # 100ms attack
+        release = int(rate * 0.3)  # 300ms release
+        sustain_level = 0.8
+        
+        envelope = np.ones_like(signal) * sustain_level
+        envelope[:attack] = np.linspace(0, sustain_level, attack)
+        envelope[-release:] = np.linspace(sustain_level, 0, release)
+    else:
+        envelope = np.interp(np.linspace(0, 1, len(signal)), np.linspace(0, 1, len(volume_envelope)), volume_envelope)
+    
+    signal *= envelope
+    
+    # Add some noise to simulate bow noise
+    bow_noise = np.random.normal(0, 0.005, len(signal))
+    signal += bow_noise
+    
+    # Final normalization
+    signal /= np.max(np.abs(signal))
+    
+    return signal
+
+# Example usage
+# You'll need to implement or import a function to play the audio
+# play_audio(violin_note(440, 3, vibrato_rate=6, vibrato_depth=0.3))
+
 def ambient_note(freq, length, decay=0.998, rate=44100):
     """
     Create an ambient, mellow note at the given frequency using a sine wave
@@ -133,11 +300,24 @@ class Hit:
             frequency *= 1 + np.random.normal(0, 0.01)
             
             if style == 1:
-              Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
+              Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES              
+                #source.electronic_pluck
+              #source.soft_pluck
+                #source.soft_ambient_pluck
+              #source.sustained_pluck
+              #source.ambient_pluck
+              #source.solfeggio_pluck
+                #source.sine
             elif style == 2:
               Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
             elif style == 3:
               Hit.cache[key] = bell_tone(frequency, self.duration) # VURBZ
+            elif style == 4:
+              Hit.cache[key] = piano_pluck(frequency, self.duration)
+            elif style == 5:
+              Hit.cache[key] = dulcimer_pluck(frequency, self.duration)
+            elif style == 6:
+              Hit.cache[key] = violin_note(frequency, self.duration)
 
             
             #if self.duration % 2 < 0.5:

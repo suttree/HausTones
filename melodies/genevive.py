@@ -36,7 +36,7 @@ pp.pprint(r_scale)
 def play_triad(time):
   timeline.add(time + 0.0062 + math.sin(increment), Hit(Note(notes[0]), duration))
   timeline.add(time + 0.0062 + math.sin(increment), Hit(Note(notes[3]), duration))
-  timeline.add(time + 0.0064 + math.sin(increment), Hit(Note(notes[5]), duration))
+  timeline.add(time + 0.0064 + math.sin(increment), Hit(Note(notes[3]), duration))
       
 def strum_chord(time):
   for j, note in enumerate(notes):

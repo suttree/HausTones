@@ -14,7 +14,7 @@ pp = pprint.PrettyPrinter(indent=4)
 increment = random.uniform(0.2, 0.82) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(12, 46)
+iterations = random.randint(1, 2)
 timeline = Timeline()
 
 measure_duration = 52.00
@@ -28,7 +28,7 @@ eighth_note = duration/8
 sixteenth_note = duration/16
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0,1,3,5]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([0,1,2,3,4,5]))).note
 key = Note(key_note)
 
 scales = ['japanese', 'major', 'ionian', 'mixolydian', 'phrygian', 'major', 'japanese', 'ionian', 'augmented', 'augmentedfifth', 'melodicminor']
@@ -53,16 +53,16 @@ def strum(time, offset = 0.035):
 def strum2(time, offset = 0.3417):
   for j, note in enumerate(notes):
       timeline.add(time + offset * 0.1 * math.cos(j), Hit(Note(note), duration))
-  timeline.add(time + offset * 0.42, Hit(Note(notes[0]).shift_up_octave(1), duration/2))
+  timeline.add(time + offset * 0.2, Hit(Note(notes[0]).shift_down_octave(1), duration/2))
       
 time += sixteenth_note + random.uniform(1.5, 6.2)
 
 for i in range(iterations):
   strum(time, 0.037 * math.cos(i))
   time += quarter_note
-  strum2(time, 1.3417 * math.sin(thetime.time()))
+  strum2(time, 0.3417 * math.sin(thetime.time()))
   time += half_note + (1 * math.cos(increment)) * math.sin(increment)
-  increment += 0.028 + math.cos(thetime.time())
+  increment += 0.028 * math.cos(thetime.time())
   
   if i > iterations/2:
     random.shuffle(notes)
@@ -71,13 +71,13 @@ print("Rendering audio...")
 data = timeline.render()
 #data = effect.reverb(data)
 #data = effect.echo(data)
-data = effect.tremolo(data, freq=1.314)
-data = effect.simple_delay(data, 500)
-data = effect.shimmer_wobble(data)
+#data = effect.tremolo(data * 0.80, freq=1.314)
+data = effect.simple_delay(data * 0.50, 500)
+#data = effect.shimmer_wobble(data)
 
 data = data * 0.25
 
-from musical.utils import save_normalized_audio
-save_normalized_audio(data, 44100, os.path.basename(__file__))
+#from musical.utils import save_normalized_audio
+#save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-#playback.play(data)
+playback.play(data)
