@@ -41,19 +41,28 @@ pp.pprint(r_scale)
 
 def strum_chord(time, notes):
   timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(1), three_quarter_note))
-  for j, note in enumerate(notes):
+  for j, note in enumerate(notes[::-2]):
       jump = random.uniform(0.02, 1.3)
       timeline.add(time + jump * j + math.sin(increment), Hit(Note(note).shift_down_octave(0), half_note))
+
+def strum_chord_back(time, notes):
+  timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(1), three_quarter_note))
+  for j, note in enumerate(notes[::-2]):
+      jump = random.uniform(0.04, 1.1)
+      if j > 0 and j % 4 == 0:
+        timeline.add(time + jump * j + math.cos(increment), Hit(Note(note).shift_up_octave(1), three_quarter_note))
+      else:
+        timeline.add(time + jump * j + math.cos(increment), Hit(Note(note).shift_down_octave(0), half_note))
 
 # pause to start
 time += 0.472 + random.uniform(1.3, 2.7)
 
 for i in range(iterations * 8):
-  strum_chord(time, notes)
-  waiter = random.uniform(0.01, 0.86)
+  strum_chord_back(time, notes)
+  waiter = random.uniform(0.07, 0.86)
   increment += math.cos(waiter)
 
-  if random.randint(2, 22) > 8:
+  if random.randint(2, 22) > 12:
     random.shuffle(notes)
   
   strum_chord(time, notes)
@@ -62,7 +71,8 @@ for i in range(iterations * 8):
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.modulated_delay(data, data * 0.25, 0.05, 0.02)
+#data = effect.modulated_delay(data, data * 0.25, 0.05, 0.02)
+data = effect.reverb(data * 0.49)
 #data = effect.simple_delay(data)
 #data = effect.echo(data)
 
