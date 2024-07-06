@@ -166,3 +166,4 @@ post/*
 tmp/temp_audio.wav
 
 venv/
+scripts/post/*.wav
