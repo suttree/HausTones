@@ -12,7 +12,7 @@ pp = pprint.PrettyPrinter(indent=4)
 increment = random.uniform(0.025, 0.64) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = random.randint(24, 36)
+iterations = random.randint(24, 96)
 timeline = Timeline()
 
 measure_duration = 26.00
@@ -33,7 +33,7 @@ scales = ['japanese', 'major', 'ionian', 'mixolydian', 'phrygian', 'major', 'jap
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 2)
+notes = extended_notes_from_scale(key.note, scale.intervals, 3)
 notes_with_intervals = add_intervals_to_notes(notes)
 
 pp.pprint(key)
@@ -41,16 +41,16 @@ pp.pprint(r_scale)
 
 def strum_chord(time, notes):
   timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(1), three_quarter_note))
-  for j, note in enumerate(notes[::-2]):
+  for j, note in enumerate(notes[::-1]):
       jump = random.uniform(0.02, 1.3)
       timeline.add(time + jump * j + math.sin(increment), Hit(Note(note).shift_down_octave(0), half_note))
 
 def strum_chord_back(time, notes):
   timeline.add(time + 0.2, Hit(Note(notes[0]).shift_down_octave(1), three_quarter_note))
-  for j, note in enumerate(notes[::-2]):
+  for j, note in enumerate(notes):
       jump = random.uniform(0.04, 1.1)
       if j > 0 and j % 4 == 0:
-        timeline.add(time + jump * j + math.cos(increment), Hit(Note(note).shift_up_octave(1), three_quarter_note))
+        timeline.add(time + jump * j + math.cos(increment), Hit(Note(note), half_measure))
       else:
         timeline.add(time + jump * j + math.cos(increment), Hit(Note(note).shift_down_octave(0), half_note))
 
@@ -62,7 +62,7 @@ for i in range(iterations * 8):
   waiter = random.uniform(0.07, 0.86)
   increment += math.cos(waiter)
 
-  if random.randint(2, 22) > 12:
+  if random.randint(2, 22) > 8:
     random.shuffle(notes)
   
   strum_chord(time, notes)
@@ -71,10 +71,10 @@ for i in range(iterations * 8):
 
 print("Rendering audio...")
 data = timeline.render()
-#data = effect.modulated_delay(data, data * 0.25, 0.05, 0.02)
-data = effect.reverb(data * 0.49)
-#data = effect.simple_delay(data)
-#data = effect.echo(data)
+data = effect.modulated_delay(data, data * 0.25, 0.05, 0.02)
+#data = effect.reverb(data * 0.49)
+#data = effect.simple_delay(data * 0.49)
+#data = effect.echo(data * 0.49)
 
 data = data * 0.10
 
