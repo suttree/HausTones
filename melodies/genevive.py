@@ -18,7 +18,7 @@ duration = 42.0
 timeline = Timeline()
 
 # Define key and scale
-key_note = Note((random.choice(Note.NOTES), random.choice([0]))).note
+key_note = Note((random.choice(Note.NOTES), random.choice([0,2]))).note
 key = Note(key_note)
 
 scales = ['japanese', 'major', 'ionian', 'mixolydian', 'phrygian', 'major', 'japanese', 'ionian', 'augmented', 'augmentedfifth', 'melodicminor']
@@ -48,7 +48,7 @@ for i in range(iterations):
   strum_chord(time)
   time += duration/16 + 1 * math.sin(i)
   play_triad(time)
-  time += duration/16 + math.cos(increment) * math.sin(increment)
+  time += duration/16 + 0.25 * math.cos(increment) * math.sin(increment)
 
 print("Rendering audio...")
 data = timeline.render()
