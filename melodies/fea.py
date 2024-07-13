@@ -59,6 +59,8 @@ for i in range(iterations):
   time += half_note + math.cos(increment) * math.sin(increment)
   increment += 0.2
 
+time += 0.37 + random.uniform(0.8, 3.4)
+
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=7.7)
@@ -69,7 +71,7 @@ data = effect.shimmer_wobble(data)
 
 data = data * 0.10
 
-from musical.utils import save_normalized_audio
-save_normalized_audio(data, 44100, os.path.basename(__file__))
+#from musical.utils import save_normalized_audio
+#save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-#playback.play(data)
+playback.play(data)

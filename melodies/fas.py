@@ -58,6 +58,8 @@ for i in range(iterations):
   time += half_note + (1 * math.cos(increment)) * math.sin(increment)
   increment += 0.028
 
+time += sixteenth_note + random.uniform(1.5, 6.2)
+
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=7.7)

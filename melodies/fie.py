@@ -70,6 +70,8 @@ for i in range(iterations * 8):
   waiter = random.uniform(0.02, 1.04)
   time += math.sin(waiter)
 
+time += 0.472 + random.uniform(1.3, 2.7)
+
 print("Rendering audio...")
 data = timeline.render()
 data = effect.feedback_modulated_delay(data, data * 0.25, 0.05, 0.02)

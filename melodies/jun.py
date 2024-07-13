@@ -61,7 +61,9 @@ for i in range(iterations):
   time += sixteenth_note
   reset()
   increment += 0.79
-  
+
+time += sixteenth_note + random.uniform(1.8, 5.5)
+
 print("Rendering audio...")
 data = timeline.render()
 data = effect.echo(data)

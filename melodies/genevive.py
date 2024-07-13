@@ -50,6 +50,8 @@ for i in range(iterations):
   play_triad(time)
   time += duration/16 + 0.25 * math.cos(increment) * math.sin(increment)
 
+time += 0.24 + random.uniform(4.2, 6.4)
+
 print("Rendering audio...")
 data = timeline.render()
 data = effect.reverb(data, 0.28, 0.525)

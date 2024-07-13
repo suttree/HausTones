@@ -54,7 +54,9 @@ time += duration * 2
 #for j, note in enumerate(notes[::-4]):
 #  timeline.add(time + eighth_note, Hit(Note(note), duration))
 #  time += 0.1
-  
+
+time += sixteenth_note + random.uniform(0.8, 4.4)
+
 print("Rendering audio...")
 data = timeline.render()
 

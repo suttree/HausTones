@@ -41,6 +41,8 @@ def play_chord(notes, duration):
   timeline.add(time, Hit(Note(notes[3]), duration))
   timeline.add(time, Hit(Note(notes[5]), duration))
 
+time += sixteenth_note + random.uniform(0.8, 4.4)
+
 for i in range(iterations):
   play_chord(notes, measure_duration*2)
   for j, note in enumerate(notes[::-2]):
@@ -68,7 +70,9 @@ notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 for j, note in enumerate(notes[::-4]):
   timeline.add(time + eighth_note, Hit(Note(note), duration))
   time += 0.1
-  
+
+time += sixteenth_note + random.uniform(0.8, 4.4)
+
 print("Rendering audio...")
 data = timeline.render()
 

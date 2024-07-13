@@ -1,9 +1,7 @@
-for f in *.wav; do
-    # Convert WAV to MP3
-    ffmpeg -i "$f" "${f%.wav}.mp3"
+for f in *.mp3; do
     
     # Apply high-pass and low-pass filters
-    ffmpeg -i "${f%.wav}.mp3" -af "highpass=f=200, lowpass=f=3000" "${f%.wav}_filtered.mp3"
+    ffmpeg -i "${f%}.mp3" -af "highpass=f=200, lowpass=f=3000" "${f%}_filtered.mp3"
     
     # Apply noise reduction
     ffmpeg -i "${f%.wav}_filtered.mp3" -af "afftdn" "${f%.wav}_final.mp3"
