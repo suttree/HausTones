@@ -50,7 +50,7 @@ def strum(time, offset = 0.0035):
   for j, note in enumerate(notes[::-1]):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
 
-time += 0.37 + random.uniform(0.8, 3.4)
+time += 0.37 + random.uniform(0.5, 3.4)
   
 for i in range(iterations):
   strum(time, 0.0047 * math.cos(i))
@@ -59,7 +59,7 @@ for i in range(iterations):
   time += half_note + math.cos(increment) * math.sin(increment)
   increment += 0.2
 
-time += 0.37 + random.uniform(0.8, 3.4)
+time += 0.37 + random.uniform(0.9, 4.2)
 
 print("Rendering audio...")
 data = timeline.render()

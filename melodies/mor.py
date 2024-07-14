@@ -14,7 +14,7 @@ pp = pprint.PrettyPrinter(indent=4)
 increment = random.uniform(0.2, 0.82) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.25
-iterations = random.randint(12, 24)
+iterations = random.randint(12, 36)
 timeline = Timeline()
 
 measure_duration = 52.00
@@ -67,6 +67,8 @@ for i in range(iterations):
   
   if i % iterations/2 == 0:
     random.shuffle(notes)
+
+time += 0.37 + random.uniform(0.9, 4.4)
 
 print("Rendering audio...")
 data = timeline.render()
