@@ -44,26 +44,26 @@ time += 0.37 + random.uniform(0.6, 1.2)
 
 # Descending arppegio
 for i in range(8):
-  for j, note in enumerate(notes[::-2]):
+  for j, note in enumerate(notes[::-3]):
       timeline.add(time + j*i, Hit(Note(notes[-1]), duration))
       timeline.add(time + j*i, Hit(Note(notesi[i][1]), duration))
 
-      if (j > 0):
+      if (j > 4):
         timeline.add(time + j*i, Hit(Note(note).shift_up_octave(1), duration))
 
       r = list(notes)
       random.shuffle(r)
-      for jj in r[::3]:
-        timeline.add(time + j*i, Hit(Note(note), duration))
+      for jj in r[::-2]:
+        timeline.add(time + j*i, Hit(Note(note), duration-(math.cos(0.27)*1)))
         
-  time = time + 1.33
+  time = time + 1.88
 
 time += 0.37 + random.uniform(0.6, 2.2)
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.echo(data * .25)
-#data = effect.chorus(data * 0.5, 0.8, 0.025)
+data = effect.chorus(data * 0.5, 0.8, 0.025)
 data = effect.simple_delay(data * 0.6)
 
 #data = data * 0.25

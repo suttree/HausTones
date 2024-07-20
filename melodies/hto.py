@@ -88,7 +88,7 @@ for i in range(6):
 #  
 print("Rendering audio...")
 data = timeline.render()
-data = effect.shimmer(data, 0.24)
+#data = effect.shimmer(data, 0.24)
 data = effect.echo(data)
 #data = effect.pitch_shift(data, 2)
 

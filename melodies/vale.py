@@ -39,10 +39,8 @@ for i in range(12):
   timeline.add(time + sixteenth_note, Hit(Note(notes[0]), duration))
   time += measure_duration
 
-# Render the audio from the timeline
-data = timeline.render(3)
+data = timeline.render()
 data = effect.echo(data)
-#data = effect.autowah(data, (200, 800))
 data = effect.flanger(data, freq=0.025)
 
 data = data * 0.25

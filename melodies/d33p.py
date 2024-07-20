@@ -51,7 +51,6 @@ for x in range(1):
 
     #duration += math.sin(0.276) * (i+1)
     duration += 0.246 - math.sin(i)/2
-    #pp.pprint(duration)
 
     if duration >+ 14.4:
       duration = 4.281 + math.cos(1.40)/2

@@ -63,11 +63,9 @@ time += 0.37 + random.uniform(0.9, 4.2)
 
 print("Rendering audio...")
 data = timeline.render()
-data = effect.tremolo(data, freq=7.7)
-data = effect.simple_delay(data)
-data = effect.reverb(data)
-data = effect.echo(data)
-data = effect.shimmer_wobble(data)
+data = effect.simple_delay(data * 0.7)
+data = effect.reverb(data * 0.4)
+data = effect.shimmer_wobble(data * 0.3)
 
 #data = data * 0.10
 

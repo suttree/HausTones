@@ -13,9 +13,9 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 increment = random.uniform(0.02, 0.84) + math.cos(thetime.time()) * math.sin(0.19750)
 time = 0.0  # Keep track of current note placement time in seconds
-offset = 0.49
-iterations = random.randint(12, 46)
-#iterations = random.randint(1, 4)
+offset = 0.89
+#iterations = random.randint(12, 46)
+iterations = random.randint(1, 4)
 timeline = Timeline()
 
 measure_duration = 30.00
@@ -32,11 +32,11 @@ sixteenth_note = duration/16
 key_note = Note((random.choice(Note.NOTES), random.choice([0,2,4,5]))).note
 key = Note(key_note)
 
-scales = ['japanese', 'major', 'ionian', 'mixolydian', 'phrygian', 'major', 'japanese', 'ionian', 'augmented', 'augmentedfifth', 'melodicminor']
+scales = ['melodicminor', 'chromatic', 'major', 'pentatonicmajor']
 
 r_scale = random.choice(scales)
 scale = Scale(key, r_scale)
-notes = extended_notes_from_scale(key.note, scale.intervals, 3)
+notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 notes_with_intervals = add_intervals_to_notes(notes)
 
 pp.pprint(key)
@@ -44,25 +44,23 @@ pp.pprint(r_scale)
 
 def triad(time):
   top = random.choice([0,2,3,5])
-  timeline.add(time + 0.587 + math.sin(increment), Hit(Note(notes[3]), duration))
-  timeline.add(time + 0.833 + math.cos(increment), Hit(Note(notes[top]), duration))
-  timeline.add(time + 0.907 + math.sin(increment), Hit(Note(notes[0]), duration))
-
+  timeline.add(time + 0.2 + math.sin(increment), Hit(Note(notes[0]), duration))
+  timeline.add(time + 0.4 + math.cos(increment), Hit(Note(notes[top]), duration))
+  timeline.add(time + 0.6 + math.sin(increment), Hit(Note(notes[3]), duration))
 
 def double(time):
-  top = random.choice([1,3,4])
-  timeline.add(time + 0.564 + math.cos(offset), Hit(Note(notes[top]), duration))
-  timeline.add(time + 0.728 + math.cos(increment), Hit(Note(notes[0]), duration))
+  top = random.choice([1,2,4])
+  timeline.add(time + 0.2 + math.cos(offset), Hit(Note(notes[top]), duration))
+  timeline.add(time + 0.4 + math.cos(increment), Hit(Note(notes[0]), duration))
   
-def strum(time, offset = 0.0035):
-  for j, note in enumerate(notes[::-3]):
+def strum(time, offset):
+  for j, note in enumerate(notes):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
 
 time += 0.37 + random.uniform(0.6, 3.2)
 
 for i in range(iterations):
-  strum(time, 0.0047 * math.cos(i))
-  time += three_quarter_note + math.sin(increment) * math.cos(thetime.time())
+  #strum(time, 0.27 * math.cos(i))
 
   if i > 0:
     if i % 4 == 0:
@@ -73,10 +71,7 @@ for i in range(iterations):
       random.shuffle(notes)
 
   triad(time)
-  time += half_note + math.cos(increment) * math.sin(increment)
-  increment += 0.2
-  
-
+  increment += 0.22
 
 time += 0.37 + random.uniform(1.2, 2.3) + math.cos(thetime.time())
 
@@ -90,7 +85,7 @@ data = effect.chorus(data * 0.5, freq=0.49)
 
 #data = data * 0.15
 
-#from musical.utils import save_normalized_audio
-#save_normalized_audio(data, 44100, os.path.basename(__file__))
+from musical.utils import save_normalized_audio
+save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)

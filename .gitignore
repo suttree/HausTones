@@ -169,3 +169,4 @@ venv/
 scripts/post/*.wav
 scripts/post/*.mp3
 temp_audio_final.mp3
+output/*.wav
