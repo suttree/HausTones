@@ -23,3 +23,15 @@ python3 melodies/fas.py
 python3 melodies/bey.py
 python3 melodies/cop.py
 python3 melodies/sun.py
+python3 melodies/bea.py
+python3 melodies/fas.py
+python3 melodies/genevive.py
+python3 melodies/jun.py
+python3 melodies/jul.py
+python3 melodies/thu.py
+python3 melodies/wed.py
+python3 melodies/cia.py
+python3 melodies/hoo.py
+python3 melodies/hto.py
+python3 melodies/wai.py
+python3 melodies/oud.py
