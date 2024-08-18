@@ -260,3 +260,24 @@ def octave(data, wet=0.5, rate=44100):
     
     return out
 
+def volume_swell(data, swell_duration=1.0, sample_rate=44100):
+    ''' Volume Swell effect
+    '''
+    # Calculate the number of samples over which the swell will occur
+    swell_samples = int(swell_duration * sample_rate)
+    
+    # Create an envelope that starts at 0 and ramps up to 1 over the swell duration
+    envelope = np.linspace(0, 1, swell_samples)
+
+    # If the swell duration is shorter than the audio data, apply the envelope to the start of the data
+    if swell_samples < len(data):
+        swelled_data = np.copy(data)
+        swelled_data[:swell_samples] *= envelope
+    else:
+        # If the swell duration is longer than the audio data, apply the envelope to the entire data
+        envelope = np.linspace(0, 1, len(data))
+        swelled_data = data * envelope
+
+    return swelled_data
+  
+

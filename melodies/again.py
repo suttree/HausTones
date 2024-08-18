@@ -11,9 +11,8 @@ pp = pprint.PrettyPrinter(indent=4)
 # Config vars
 time = 0.0  # Keep track of current note placement time in seconds
 offset = 0.0
-iterations = 5
 iterations = random.randint(4, 10)
-duration = 4.0
+duration = 4.2
 
 # Define key and scale
 key = Note('C4')
@@ -44,6 +43,8 @@ sixteenth_note = duration/16
 
 timeline = Timeline()
 
+time += 0.38 + random.uniform(0.8, 4.3)
+
 # Create a separate timeline for each note
 for i, note in enumerate(notes):
     time += half_note
@@ -54,27 +55,38 @@ for i, note in enumerate(notes):
           time += quarter_note
           timeline.add(time, Hit(Note(note), three_quarter_note))
 
-    if i % 5 == 0:
+    if i % 3 == 0 and i > 0:
       random.shuffle(notes)
 
 time += half_note
 
 for i in range(iterations):
   timeline.add(time + whole_note, Hit(Note(notesi[0][1]), duration))
-  timeline.add(time + whole_note, Hit(Note(notesi[0][-1]), duration))
+  
+  top = random.choice([1,2,4])
+  timeline.add(time + whole_note, Hit(Note(notes[top]), duration))
+
   time += 0.1
-  timeline.add(time + whole_note, Hit(Note(notes[0]), duration))
-  time += 0.1
-  timeline.add(time + whole_note, Hit(Note(notes[3]), duration))
+  timeline.add(time + quarter_note, Hit(Note(notes[0]), duration))
+
+  time += 0.45 * math.sin(i)
+  top = random.choice([0,3])
+  timeline.add(time + whole_note, Hit(Note(notes[top]), duration))
 
   time += whole_note
+  
+time += 0.38 + random.uniform(0.8, 4.3)
 
 print("Rendering audio...")
-data = timeline.render() 
+data = timeline.render()
+data = effect.tremolo(data, freq=7.7)
+data = effect.simple_delay(data)
+data = effect.reverb(data)
+data = effect.echo(data)
 data = effect.shimmer_wobble(data)
-data = effect.tremolo(data, 2.42)
+#data = effect.volume_swell(data, swell_duration=1.25)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
 
-playback.play(data)
+#playback.play(data)
