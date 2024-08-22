@@ -35,3 +35,8 @@ python3 melodies/hoo.py
 python3 melodies/hto.py
 python3 melodies/wai.py
 python3 melodies/oud.py
+python3 melodies/bey.py
+python3 melodies/cop.py
+python3 melodies/sun.py
+python3 melodies/tie.py
+python3 melodies/cle.py
