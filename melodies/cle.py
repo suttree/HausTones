@@ -67,7 +67,7 @@ for i in range(iterations):
   time += 2.0 + math.cos(time)
   timeline.add(time+1.0, Hit(Note(notes[2]).shift_down_octave(1), duration))
   
-  time += measure_duration - math.cos(time)
+  time += duration - math.cos(time)
   
   if i % 3 == 0 and i > 0:
     reset()
