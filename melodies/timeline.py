@@ -110,6 +110,102 @@ def adsr_envelope(length, attack, decay, sustain_level, release, rate=44100):
 
     return envelope
 
+import numpy as np
+from scipy import signal
+
+def fm_synth(freq, length, mod_freq=5, mod_index=5, rate=44100):
+    """
+    Create an FM synthesis sound at the given frequency.
+    """
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    carrier = freq
+    modulator = mod_freq
+    modulation = np.sin(2 * np.pi * modulator * t) * mod_index
+    fm_wave = np.sin(2 * np.pi * carrier * t + modulation)
+    
+    # Apply a simple envelope
+    envelope = np.exp(-t * 3)
+    fm_wave *= envelope
+    
+    return fm_wave
+
+def pad_synth(freq, length, num_harmonics=4, rate=44100):
+    """
+    Create a pad synth sound with multiple harmonics.
+    """
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    pad = np.zeros_like(t)
+    
+    for i in range(1, num_harmonics + 1):
+        harmonic = np.sin(2 * np.pi * freq * i * t) * (1 / i)
+        pad += harmonic
+    
+    # Apply a smooth envelope
+    attack_time = min(0.1 * length, 0.5)  # 10% of length or 0.5 seconds, whichever is shorter
+    release_time = min(0.2 * length, 1.0)  # 20% of length or 1.0 seconds, whichever is shorter
+    
+    attack_samples = int(attack_time * rate)
+    release_samples = int(release_time * rate)
+    sustain_samples = max(0, len(pad) - attack_samples - release_samples)
+    
+    envelope = np.concatenate([
+        np.linspace(0, 1, attack_samples),
+        np.ones(sustain_samples),
+        np.linspace(1, 0, release_samples)
+    ])
+    
+    # Ensure the envelope is the same length as the pad
+    if len(envelope) > len(pad):
+        envelope = envelope[:len(pad)]
+    elif len(envelope) < len(pad):
+        envelope = np.pad(envelope, (0, len(pad) - len(envelope)), 'edge')
+    
+    pad *= envelope
+    return pad
+
+def metallic_hit(freq, length, decay=0.99, rate=44100):
+    """
+    Create a metallic hit sound using additive synthesis and fast decay.
+    """
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    metallic = np.zeros_like(t)
+    
+    harmonics = [1, 2.1, 2.9, 4.2, 5.8]  # Non-integer harmonics for metallic sound
+    for harmonic in harmonics:
+        partial = np.sin(2 * np.pi * freq * harmonic * t)
+        partial *= np.exp(-t * (6 + harmonic))  # Faster decay for higher harmonics
+        metallic += partial
+    
+    # Apply overall envelope
+    envelope = np.exp(-t * 20)  # Fast decay
+    metallic *= envelope
+    
+    return metallic
+
+def vocal_formant(freq, length, formants=None, rate=44100):
+    """
+    Create a vocal-like sound using formant synthesis.
+    """
+    if formants is None:
+        formants = [500, 1500, 2500]  # Default formant frequencies
+    
+    t = np.linspace(0, length, int(length * rate), endpoint=False)
+    vocal = np.zeros_like(t)
+    
+    # Generate the fundamental frequency
+    fundamental = np.sin(2 * np.pi * freq * t)
+    
+    # Add formants
+    for formant in formants:
+        resonance = signal.gaussian(len(t), std=rate / (2 * np.pi * (formant - freq)))
+        vocal += fundamental * resonance
+    
+    # Apply envelope
+    envelope = np.exp(-t * 2)
+    vocal *= envelope
+    
+    return vocal
+    
 class Hit:
     '''
     Rough draft of Hit class. Stores information about the hit and generates
@@ -123,22 +219,28 @@ class Hit:
         self.duration = duration
 
     def render(self, style):
-        # Render hit of "key" for "duration" amount of seconds
-        key = (str(self.note), self.duration, style)
-        if key not in Hit.cache:
-            #  Hit.cache[key] = source.pluck(self.note.frequency(), self.duration) # original
-
-            frequency = self.note.frequency()
-            # Apply a small random frequency variation
-            frequency *= 1 + np.random.normal(0, 0.01)
+            key = (str(self.note), self.duration, style)
+            if key not in Hit.cache:
+                frequency = self.note.frequency()
+                frequency *= 1 + np.random.normal(0, 0.01)
             
-            if style == 1:
-              Hit.cache[key] = source.electronic_pluck(frequency, self.duration) # VIBES
-            elif style == 2:
-              Hit.cache[key] = ambient_note(frequency, self.duration) # WHALES
-            elif style == 3:
-              Hit.cache[key] = bell_tone(frequency, self.duration) # VURBZ
-
+                if style == 1:
+                    Hit.cache[key] = source.electronic_pluck(frequency, self.duration)
+                elif style == 2:
+                    Hit.cache[key] = ambient_note(frequency, self.duration)
+                elif style == 3:
+                    Hit.cache[key] = bell_tone(frequency, self.duration)
+                elif style == 4:
+                    Hit.cache[key] = fm_synth(frequency, self.duration)
+                elif style == 5:
+                    Hit.cache[key] = pad_synth(frequency, self.duration)
+                elif style == 6:
+                    Hit.cache[key] = metallic_hit(frequency, self.duration)
+                elif style == 7:
+                    Hit.cache[key] = vocal_formant(frequency, self.duration)
+                else:
+                    # Default to original pluck if an invalid style is provided
+                    Hit.cache[key] = source.pluck(frequency, self.duration)
             
             #if self.duration % 2 < 0.5:
             #   Hit.cache[key] = bell_tone(self.note.frequency(), self.duration)
@@ -159,7 +261,7 @@ class Hit:
             #Hit.cache[key] = source.pluck2(self.note.frequency(), self.duration)
             #Hit.cache[key] = ambient_note(self.note.frequency(), self.duration)
             #Hit.cache[key] = bell_tone(self.note.frequency(), self.duration)
-        return Hit.cache[key]
+            return Hit.cache[key]
 
 class Timeline:
 
