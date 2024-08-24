@@ -60,6 +60,13 @@ def strum(time, offset = 0.035):
   for j, note in enumerate(notes):
       timeline.add(time + offset * math.cos(j) + math.sin(increment), Hit(Note(note), duration))
 
+def reset():
+  key_note = Note((random.choice(Note.NOTES), random.choice([2,3]))).note
+  key = Note(key_note)
+  r_scale = random.choice(scales)
+  scale = Scale(key, r_scale)
+  notes = notes_from_scale(key.note, scale.intervals)
+  
 time += sixteenth_note + random.uniform(0.5, 2.2)
 
 # Descending arppegio
@@ -75,7 +82,7 @@ for i in range(7):
     timeline.add(time + 0.22 * j*i*x, Hit(Note(note), duration/2))
 
   if i % 4 == 0 and i > 0:
-    random.shuffle(notes)
+    reset()
 
   if i > 4:
     triad(time)
@@ -89,8 +96,7 @@ for i in range(7):
 
 print("Rendering audio...")
 data = timeline.render(8)
-data = effect.shimmer(data, 0.74)
-data = effect.feedback_modulated_delay(data, data, 0.02, 0.06)
+data = effect.modulated_delay(data, data, 0.02, 0.06)
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
