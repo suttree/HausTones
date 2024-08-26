@@ -22,7 +22,14 @@ scale = Scale(key, 'pentatonicmajor')
 notes = extended_notes_from_scale(key.note, scale.intervals, 1)
 notes_with_intervals = add_intervals_to_notes(notes)
 
-time += 0.38 + random.uniform(0.8, 4.3)
+def reset():
+  key_note = Note((random.choice(Note.NOTES), random.choice([2,3]))).note
+  key = Note(key_note)
+  r_scale = random.choice(scales)
+  scale = Scale(key, r_scale)
+  notes = notes_from_scale(key.note, scale.intervals)
+  
+time += 0.38 + random.uniform(0.8, 2.3)
 
 for i in range(12):
   for note in enumerate(notes_with_intervals):
@@ -36,19 +43,21 @@ for i in range(12):
       time += duration + math.sin(n[1])
   time += measure_duration
   
-  #if i % 4 == 0:
-  #  notes_with_intervals = add_intervals_to_notes(notes[::2])
+  if i == 6:
+    reset()
+  
+  if i % 4 == 0:
+    notes_with_intervals = add_intervals_to_notes(notes[::2])
     
-  #if i % 8 == 0:
-  #  notes_with_intervals = add_intervals_to_notes(notes[::-1])
+  if i % 8 == 0:
+    notes_with_intervals = add_intervals_to_notes(notes[::-1])
 
 print("Rendering audio...")
 data = timeline.render()
 data = effect.tremolo(data, freq=0.7)
 data = effect.shimmer_wobble(data, 0.34)
-#data = effect.wah(data, (800, 2000))
 
-data = data * 0.25
+#data = data * 0.25
 
 from musical.utils import save_normalized_audio
 save_normalized_audio(data, 44100, os.path.basename(__file__))
