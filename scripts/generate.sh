@@ -43,3 +43,4 @@ python3 melodies/cle.py
 python3 melodies/bee.py
 python3 melodies/tre.py
 python3 melodies/bel.py
+python3 melodies/bel2.py
