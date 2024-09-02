@@ -25,6 +25,7 @@ notes_with_intervals = add_intervals_to_notes(notes)
 def reset():
   key_note = Note((random.choice(Note.NOTES), random.choice([2,3]))).note
   key = Note(key_note)
+  scales = ['japanese', 'ionian', 'mixolydian', 'phrygian', 'japanese', 'ionian', 'melodicminor']
   r_scale = random.choice(scales)
   scale = Scale(key, r_scale)
   notes = notes_from_scale(key.note, scale.intervals)
