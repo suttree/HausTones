@@ -18,7 +18,6 @@ melodies=(
     "melodies/bey.py"
     "melodies/cop.py"
     "melodies/sun.py"
-    "melodies/jul.py"
     "melodies/cia.py"
     "melodies/hoo.py"
     "melodies/hoot.py"
