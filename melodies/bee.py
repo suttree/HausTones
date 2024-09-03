@@ -59,7 +59,7 @@ for i in range(iterations):
   reset()
   for j, note in enumerate(notes[::2]):
     if j == 0:
-    timeline.add(time+0.022*j+math.cos(time), Hit(Note(note).shift_down_octave(1), duration + math.sin(time)))
+      timeline.add(time+0.022*j+math.cos(time), Hit(Note(note).shift_down_octave(1), duration + math.sin(time)))
     timeline.add(time+0.022*j+math.sin(time), Hit(Note(note), duration))
 
   time += half_measure - math.cos(time) * 2
