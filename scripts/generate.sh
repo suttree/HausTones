@@ -32,6 +32,9 @@ melodies=(
     "melodies/ren.py"
     "melodies/exh.py"
     "melodies/zof.py"
+    "melodies/bea.py"
+    "melodies/jul.py"
+    "melodies/wai.py"
 )
 
 # Get the total number of melodies
