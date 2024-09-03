@@ -1,14 +1,3 @@
-#python3 melodies/tune.py
-#python3 melodies/vibes4u.py
-#python3 melodies/hoo.py
-#python3 melodies/tune.py
-#python3 melodies/cia.py
-#python3 melodies/vibes2u.py
-#python3 melodies/vale.py
-#python3 melodies/holdingon.py
-#python3 melodies/hoot.py
-#python3 melodies/magpie.py
-
 #!/bin/bash
 
 # Remove all .wav files from the output directory
