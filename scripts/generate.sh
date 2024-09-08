@@ -40,8 +40,12 @@ melodies=(
 # Get the total number of melodies
 total_melodies=${#melodies[@]}
 
-# Generate a random number of melodies to execute
-num_melodies_to_run=$((RANDOM % total_melodies + 1))
+# Set the minimum and maximum number of melodies to run
+min_melodies=4
+max_melodies=$total_melodies
+
+# Generate a random number of melodies to execute, ensuring it's at least $min_melodies
+num_melodies_to_run=$((RANDOM % (max_melodies - min_melodies + 1) + min_melodies))
 
 # Shuffle the melodies array and pick the first $num_melodies_to_run elements
 shuffled_melodies=($(shuf -e "${melodies[@]}" | head -n $num_melodies_to_run))
