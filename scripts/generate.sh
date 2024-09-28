@@ -42,7 +42,7 @@ melodies=(
 total_melodies=${#melodies[@]}
 
 # Set the minimum and maximum number of melodies to run
-min_melodies=6
+min_melodies=8
 max_melodies=$total_melodies
 
 # Generate a random number of melodies to execute, ensuring it's at least $min_melodies
