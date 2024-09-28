@@ -57,7 +57,6 @@ notes = extended_notes_from_scale(key.note, scale.intervals, 2)
 for i in range(iterations):  
   if i % 3 == 0 and i > 0:
     random.shuffle(intervals)
-    pp.pprint(intervals[0])
 
   timeline.add(time + eighth_note, Hit(Note(notes[0]), duration))
   for j, note in enumerate(notes[::intervals[0]]):
