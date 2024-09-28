@@ -238,6 +238,22 @@ class Hit:
                     Hit.cache[key] = metallic_hit(frequency, self.duration)
                 elif style == 7:
                     Hit.cache[key] = vocal_formant(frequency, self.duration)
+                elif style == 8:
+                    Hit.cache[key] = source.pluck(frequency, self.duration)
+                elif style == 9:
+                    Hit.cache[key] = source.soft_pluck(frequency, self.duration)
+                elif style == 10:
+                    Hit.cache[key] = source.ambient_pluck(frequency, self.duration)
+                elif style == 11: # tight
+                    Hit.cache[key] = source.soft_ambient_pluck(frequency, self.duration)
+                elif style == 12: # bleeps
+                    Hit.cache[key] = source.electronic_pluck2(frequency, self.duration)
+                elif style == 13: # ambo
+                    Hit.cache[key] = source.simple_electronic_pluck(frequency, self.duration)
+                elif style == 14: # highly strung
+                    Hit.cache[key] = source.sustained_pluck(frequency, self.duration)
+                elif style == 15:
+                    Hit.cache[key] = source.ambient_pluck(frequency, self.duration)
                 else:
                     # Default to original pluck if an invalid style is provided
                     Hit.cache[key] = source.pluck(frequency, self.duration)

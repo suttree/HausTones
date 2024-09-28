@@ -141,7 +141,82 @@ def electronic_pluck(freq, length, decay=0.998, rate=44100):
     phase = int(rate / freq)
     data = numpy.sin(numpy.linspace(0, numpy.pi * 2, phase))
     return ringbuffer(data, length, decay, rate)
+
+import numpy
+import scipy.signal
+
+def electronic_pluck2(freq, length, decay=0.998, rate=44100, wave_type='sine', fm_modulation=None):
+    """
+    Create a pluck noise at a given frequency using a wave generator and a ring buffer.
+    Supports different waveforms and optional FM modulation.
     
+    Parameters:
+        freq (float): Frequency of the pluck.
+        length (float): Duration of the sound in seconds.
+        decay (float): Decay rate of the sound (default: 0.998).
+        rate (int): Sample rate (default: 44100).
+        wave_type (str): Type of waveform ('sine', 'square', 'sawtooth', 'triangle').
+        fm_modulation (float or None): Modulation frequency for FM synthesis (default: None).
+    
+    Returns:
+        numpy.ndarray: Generated pluck sound.
+    """
+    freq = float(freq)
+    phase = int(rate / freq)
+
+    # Generate wave based on selected type
+    t = numpy.linspace(0, 1, phase)
+    
+    if wave_type == 'sine':
+        wave = numpy.sin(2 * numpy.pi * freq * t)
+    elif wave_type == 'square':
+        wave = scipy.signal.square(2 * numpy.pi * freq * t)
+    elif wave_type == 'sawtooth':
+        wave = scipy.signal.sawtooth(2 * numpy.pi * freq * t)
+    elif wave_type == 'triangle':
+        wave = scipy.signal.sawtooth(2 * numpy.pi * freq * t, 0.5)
+    else:
+        raise ValueError("Unsupported wave_type. Choose from 'sine', 'square', 'sawtooth', 'triangle'.")
+    
+    # Apply FM modulation if specified
+    if fm_modulation:
+        modulation = numpy.sin(2 * numpy.pi * fm_modulation * t)
+        wave = numpy.sin(2 * numpy.pi * (freq + modulation) * t)
+
+    return ringbuffer(wave, length, decay, rate)
+
+import numpy
+
+def simple_electronic_pluck(freq, length, decay=0.998, rate=44100, wave_type='sine'):
+    """
+    Simple pluck noise generator using a basic wave.
+    
+    Parameters:
+        freq (float): Frequency of the pluck.
+        length (float): Duration of the sound in seconds.
+        decay (float): Decay rate of the sound (default: 0.998).
+        rate (int): Sample rate (default: 44100).
+        wave_type (str): Type of waveform ('sine', 'square', 'sawtooth').
+    
+    Returns:
+        numpy.ndarray: Generated pluck sound.
+    """
+    phase = int(rate / freq)
+    
+    # Generate the wave based on the selected type
+    t = numpy.linspace(0, 1, phase)
+    
+    if wave_type == 'sine':
+        wave = numpy.sin(2 * numpy.pi * t)
+    elif wave_type == 'square':
+        wave = numpy.sign(numpy.sin(2 * numpy.pi * t))
+    elif wave_type == 'sawtooth':
+        wave = 2 * (t - numpy.floor(0.5 + t))
+    else:
+        raise ValueError("Unsupported wave_type. Choose from 'sine', 'square', 'sawtooth'.")
+    
+    return ringbuffer(wave, length, decay, rate)
+
 def sustained_pluck(freq, length, decay=0.998, rate=44100):
     ''' Create a pluck noise at freq by sending white noise through a ring buffer
         http://en.wikipedia.org/wiki/Karplus-Strong_algorithm
